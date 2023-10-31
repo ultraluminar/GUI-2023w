@@ -1,19 +1,24 @@
 from pandas import read_excel
 
-df = read_excel("source/data.xlsx", sheet_name="Stamm-Patienten", header=3, usecols="C:G")
-df.to_csv(path_or_buf="source/patients.csv")
+# parsing the inital data excel file to csv files
+# parsing the patient table
+df_patients = read_excel("source/data.xlsx", sheet_name="Stamm-Patienten", header=3, usecols="C:G")
+df_patients.to_csv(path_or_buf="source/patients.csv")
 
-df = read_excel("source/data.xlsx", sheet_name="Zahnärzte", header=2, usecols="B:E")
-df.to_csv(path_or_buf="source/doctors.csv")
+# parsing the doctor table
+df_doctors = read_excel("source/data.xlsx", sheet_name="Zahnärzte", header=2, usecols="B:E")
+df_doctors.to_csv(path_or_buf="source/doctors.csv")
 
-df = read_excel("source/data.xlsx", sheet_name="Kosten und Behandlungsdauer", header=3, usecols="B:G")
-df.rename(columns={"Unnamed: 5": "gesetzlicher Anteil", "Unnamed: 6": "privater Anteil"}, inplace=True)
+# parsing the costs table
+df_costs = read_excel("source/data.xlsx", sheet_name="Kosten und Behandlungsdauer", header=3, usecols="B:G")
+df_costs.rename(columns={"Unnamed: 5": "gesetzlicher Anteil", "Unnamed: 6": "privater Anteil"}, inplace=True)   # replacing header fields that are missing in the excel file
 
-old_problem = ""
-for i, isnan in enumerate(df["Dentale Problematik"].isna()):
-    if not isnan:
-        old_problem = df["Dentale Problematik"][i]
+# adding the "Dentale Problematik" column in every row instead of only the first
+dental_problem = ""
+for index, is_nan in enumerate(df_costs["Dentale Problematik"].isna()):
+    if not is_nan:
+        dental_problem = df_costs["Dentale Problematik"][index]
     else:
-        df["Dentale Problematik"][i] = old_problem
+        df_costs["Dentale Problematik"][index] = dental_problem
 
-df.to_csv(path_or_buf="source/costs.csv")
+df_costs.to_csv(path_or_buf="source/costs.csv")
