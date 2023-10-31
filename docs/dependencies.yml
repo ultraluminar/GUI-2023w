@@ -1,3 +1,6 @@
+buildin:
+  tkinter
+
 parsing:
   pandas
   openpyxl

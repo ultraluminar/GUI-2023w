@@ -29,7 +29,7 @@ def login(*args):
 
 # --- json setup ---
 
-with open("login/pwd.json") as filestream:
+with open("pwd.json") as filestream:
     logindata: dict = load(filestream)
 
 # --- tkinter ---
