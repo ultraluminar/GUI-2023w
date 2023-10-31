@@ -1,17 +1,20 @@
 from pandas import read_excel
 
+file_path = "source/data.xlsx"
+
 # parsing the inital data excel file to csv files
-# parsing the patient table
-df_patients = read_excel("source/data.xlsx", sheet_name="Stamm-Patienten", header=3, usecols="C:G")
+# parsing the patients table
+df_patients = read_excel(file_path, sheet_name="Stamm-Patienten", header=3, usecols="C:G")
 df_patients.to_csv(path_or_buf="source/patients.csv")
 
-# parsing the doctor table
-df_doctors = read_excel("source/data.xlsx", sheet_name="Zahnärzte", header=2, usecols="B:E")
+# parsing the doctors table
+df_doctors = read_excel(file_path, sheet_name="Zahnärzte", header=2, usecols="B:E")
 df_doctors.to_csv(path_or_buf="source/doctors.csv")
 
 # parsing the costs table
-df_costs = read_excel("source/data.xlsx", sheet_name="Kosten und Behandlungsdauer", header=3, usecols="B:G")
-df_costs.rename(columns={"Unnamed: 5": "gesetzlicher Anteil", "Unnamed: 6": "privater Anteil"}, inplace=True)   # replacing header fields that are missing in the excel file
+df_costs = read_excel(file_path, sheet_name="Kosten und Behandlungsdauer", header=3, usecols="B:G")
+# replacing column names that are missing in the excel file
+df_costs.rename(columns={"Unnamed: 5": "gesetzlicher Anteil", "Unnamed: 6": "privater Anteil"}, inplace=True)
 
 # adding the "Dentale Problematik" column in every row instead of only the first
 dental_problem = ""
