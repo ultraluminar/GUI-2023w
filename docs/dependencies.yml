@@ -1,0 +1,6 @@
+parsing:
+  pandas
+  openpyxl
+
+test:
+  bcrypt
