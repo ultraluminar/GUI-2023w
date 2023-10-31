@@ -1,0 +1,15 @@
+tkinter UI:
+  login page:
+    login
+    sign up
+
+  home page:
+    calendar
+    next appointments (scroll list)
+
+
+program logic:
+  login system:
+    login validation
+    sign up encryption
+    logindata saving
