@@ -5,11 +5,11 @@ file_path = "source/data.xlsx"
 # parsing the inital data excel file to csv files
 # parsing the patients table
 df_patients = read_excel(file_path, sheet_name="Stamm-Patienten", header=3, usecols="C:G")
-df_patients.to_csv(path_or_buf="source/patients.csv")
+df_patients.to_csv(path_or_buf="source/patients.csv", index=False)
 
 # parsing the doctors table
 df_doctors = read_excel(file_path, sheet_name="Zahnärzte", header=2, usecols="B:E")
-df_doctors.to_csv(path_or_buf="source/doctors.csv")
+df_doctors.to_csv(path_or_buf="source/doctors.csv", index=False)
 
 # parsing the costs table
 df_costs = read_excel(file_path, sheet_name="Kosten und Behandlungsdauer", header=3, usecols="B:G")
@@ -24,4 +24,4 @@ for index, is_nan in enumerate(df_costs["Dentale Problematik"].isna()):
     else:
         df_costs["Dentale Problematik"][index] = dental_problem
 
-df_costs.to_csv(path_or_buf="source/costs.csv")
+df_costs.to_csv(path_or_buf="source/costs.csv", index=False)
