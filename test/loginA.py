@@ -7,7 +7,7 @@ from json import load, dump
 # variables
 initial_width = 800
 initial_height = 500
-json_file_path = "pwd.json"
+json_file_path = "test/pwd.json"
 
 # load json
 with open(json_file_path, "r") as filestream:
