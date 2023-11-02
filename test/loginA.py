@@ -14,8 +14,8 @@ with open(json_file_path, "r") as filestream:
     logindata: dict = load(filestream)
 
 # logic
-def mhash(plain: str, salt: bytes = gensalt()) -> bytes:
-    return hashpw(plain.encode(), salt)
+def mhash(plain: str, salt: bytes = gensalt()) -> str:
+    return hashpw(plain.encode(), salt).decode()
 
 def login():
     username = username_var.get()
@@ -44,7 +44,7 @@ def register():
     if username in logindata.keys():
         print("username already exists")
         return
-    if password =="":
+    if password == "":
         print("no password given")
         return
     if " " in password:
@@ -55,7 +55,7 @@ def register():
         return
         
     print(mhash(password))
-    logindata[username] = str(mhash(password))[2:-1]
+    logindata[username] = mhash(password)
     
     with open(json_file_path, "w") as filestream:
         dump(logindata, filestream, indent=4)
