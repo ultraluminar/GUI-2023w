@@ -1,9 +1,20 @@
 from csv import DictReader
 from json import dump
 
-csv_file_path = "test/patients.csv"
+csv_file_path = "patients.csv"
 json_file_path = "test/initialPwd.json"
 initial_pwd = {}
+
+
+from pandas import read_csv
+from bcrypt import checkpw
+from loginA import mhash
+
+df = read_csv(csv_file_path, usecols=["Patient", "ID/Passwort"])
+df["ID/Passwort"].map(lambda pwd: mhash(pwd))
+print(df.to_string())
+
+exit(1)
 
 with open(csv_file_path, "r") as filestream:
     patients_data = DictReader(filestream)
