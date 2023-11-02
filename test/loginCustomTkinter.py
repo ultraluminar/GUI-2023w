@@ -1,8 +1,11 @@
 import tkinter as tk
-from tkinter import ttk
+import customtkinter as ctk
 
 from bcrypt import hashpw, checkpw, gensalt
 from json import load, dump
+
+ctk.set_appearance_mode("System")
+ctk.set_default_color_theme("blue")
 
 # variables
 initial_width = 800
@@ -18,8 +21,8 @@ def mhash(plain: str, salt: bytes = gensalt()) -> str:
     return hashpw(plain.encode(), salt).decode()
 
 def login():
-    username = username_var.get()
-    password = password_var.get()
+    username = username_entry.get()
+    password = password_entry.get()
     
     if username == "":
         return
@@ -35,8 +38,8 @@ def login():
         print("password incorrect")
         
 def register():
-    username = username_var.get()
-    password = password_var.get()
+    username = username_entry.get()
+    password = password_entry.get()
     
     if username == "":
         print("no username given")
@@ -61,7 +64,7 @@ def register():
         dump(logindata, filestream, indent=4)
 
 # window
-window = tk.Tk()
+window = ctk.CTk()
 window.title("login")
 window.geometry(f"{initial_width}x{initial_height}")
 
@@ -70,28 +73,23 @@ username_var = tk.StringVar()
 password_var = tk.StringVar()
 
 # widgets
-username_frame = ttk.Frame(window)
-username_label = ttk.Label(username_frame, text="Nutzername")
-username_entry = ttk.Entry(username_frame, textvariable=username_var)
+login_page_heading = ctk.CTkLabel(window, text="Anmelden oder Registrieren")
+login_frame = ctk.CTkFrame(window)
+login_heading = ctk.CTkLabel(login_frame, text="Bitte melden sie sich an")
+login_heading.grid(row=1, column=0, pady=(20, 0), padx=20, sticky="n")
+username_entry = ctk.CTkEntry(login_frame, placeholder_text="Benutzername")
+username_entry.grid(row=2, column=0, pady=(20, 0), padx=20, sticky="n")
+password_entry = ctk.CTkEntry(login_frame, placeholder_text="Passwort", show="•")
+password_entry.grid(row=3, column=0, pady=(20, 0), padx=20, sticky="n")
+login_button = ctk.CTkButton(login_frame, text="Einloggen", command=login)
+login_button.grid(row=4, column=0, pady=20, padx=20, sticky="n")
 
-password_frame = ttk.Frame(window)
-password_label = ttk.Label(password_frame, text="Passwort")
-password_entry = ttk.Entry(password_frame, textvariable=password_var, show="•")
-
-sign_in_button = ttk.Button(window, text="Anmelden", command=login)
-sign_up_button = ttk.Button(window, text="Registrieren", command=register)
+register_button = ctk.CTkButton(window, text="Registrieren", command=register)
 
 # packing
-username_label.pack(side="left", padx=10)
-username_entry.pack(side="left")
-username_frame.pack()
-
-password_label.pack(side="left", padx=10)
-password_entry.pack(side="left")
-password_frame.pack()
-
-sign_in_button.pack(pady=5)
-sign_up_button.pack()
+login_page_heading.pack(pady=(10, 20))
+login_frame.pack()
+register_button.pack(pady=(30, 0))
 
 # run
 window.bind("<Return>", login)
