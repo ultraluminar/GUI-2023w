@@ -28,6 +28,11 @@ for index, is_nan in enumerate(df_costs["Dentale Problematik"].isna()):
     if not is_nan:
         dental_problem = df_costs["Dentale Problematik"][index]
     else:
+        # FIXME: SettingWithCopyWarning:
+        #   A value is trying to be set on a copy of a slice from a DataFrame
+        #   See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+        #   df_costs["Dentale Problematik"][index] = dental_problem
+        #   ansatz: df_costs.loc[:, ("Dentale Problematik", index)] = dental_problem
         df_costs["Dentale Problematik"][index] = dental_problem
 
 df_costs.to_csv(path_or_buf="source/costs.csv", index=False)
