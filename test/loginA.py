@@ -81,13 +81,14 @@ password_entry = ttk.Entry(password_frame, textvariable=password_var, show="•"
 sign_in_button = ttk.Button(window, text="Anmelden", command=login)
 sign_up_button = ttk.Button(window, text="Registrieren", command=register)
 
-username_frame.pack()
+# packing
 username_label.pack(side="left", padx=10)
 username_entry.pack(side="left")
+username_frame.pack()
 
-password_frame.pack()
 password_label.pack(side="left", padx=10)
 password_entry.pack(side="left")
+password_frame.pack()
 
 sign_in_button.pack(pady=5)
 sign_up_button.pack()
