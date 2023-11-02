@@ -14,8 +14,8 @@ with open(json_file_path, "r") as filestream:
     logindata: dict = load(filestream)
 
 # logic
-def mhash(plain: str, salt: bytes = gensalt()) -> bytes:
-    return hashpw(plain.encode(), salt)
+def mhash(plain: str, salt: bytes = gensalt()) -> str:
+    return hashpw(plain.encode(), salt).decode()
 
 def login():
     username = username_var.get()
@@ -44,7 +44,7 @@ def register():
     if username in logindata.keys():
         print("username already exists")
         return
-    if password =="":
+    if password == "":
         print("no password given")
         return
     if " " in password:
@@ -55,7 +55,7 @@ def register():
         return
         
     print(mhash(password))
-    logindata[username] = str(mhash(password))[2:-1]
+    logindata[username] = mhash(password)
     
     with open(json_file_path, "w") as filestream:
         dump(logindata, filestream, indent=4)
@@ -81,13 +81,14 @@ password_entry = ttk.Entry(password_frame, textvariable=password_var, show="•"
 sign_in_button = ttk.Button(window, text="Anmelden", command=login)
 sign_up_button = ttk.Button(window, text="Registrieren", command=register)
 
-username_frame.pack()
+# packing
 username_label.pack(side="left", padx=10)
 username_entry.pack(side="left")
+username_frame.pack()
 
-password_frame.pack()
 password_label.pack(side="left", padx=10)
 password_entry.pack(side="left")
+password_frame.pack()
 
 sign_in_button.pack(pady=5)
 sign_up_button.pack()
