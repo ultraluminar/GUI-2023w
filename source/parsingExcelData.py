@@ -1,8 +1,8 @@
 from pandas import read_excel, read_csv
 from bcrypt import hashpw, gensalt
 
-file_path = "source/data.xlsx"
-new_file_directory_path = "source"
+file_path = "source/data/data.xlsx"
+new_file_directory_path = "source/data"
 
 # parsing the inital data excel file to csv files
 # parsing the patients table
