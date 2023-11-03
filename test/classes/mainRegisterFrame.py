@@ -20,7 +20,6 @@ class MainRegisterFrame(ctk.CTkScrollableFrame):
         self.register_login_button = ctk.CTkButton(self, text="Login", command=self.linkToLogin)
 
         self.set_pack()
-        print(self)
 
 
     def set_pack(self):

@@ -1,6 +1,4 @@
 import customtkinter as ctk
-from json import load
-from typing import Literal
 
 from test.classes.mainLoginFrame import MainLoginFrame
 from test.classes.mainRegisterFrame import MainRegisterFrame
@@ -13,20 +11,16 @@ ctk.set_default_color_theme("blue")
 initial_width = 800
 initial_height = 500
 input_width = 160
-json_file_path = "test/pwd.json"
 
 
 class App(ctk.CTk):
-    def __init__(self):
+    def __init__(self, pwds: dict):
         super().__init__()
 
-        # load json
-        with open(json_file_path, "r") as filestream:
-            self.pwds: dict = load(filestream)
-
-
+        self.pwds = pwds
         self.title("login")
         self.geometry(f"{initial_width}x{initial_height}")
+
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 

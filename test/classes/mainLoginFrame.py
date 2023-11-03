@@ -4,7 +4,7 @@ from test.classes.loginFormFrame import LoginFormFrame
 
 # variables
 initial_width = 800
-initial_height = 500
+initial_height = 800
 
 class MainLoginFrame(ctk.CTkScrollableFrame):
     def __init__(self, master: ctk.CTk, pwds):
@@ -21,7 +21,6 @@ class MainLoginFrame(ctk.CTkScrollableFrame):
         self.login_register_button = ctk.CTkButton(self, text="Registrieren", command=self.linkToRegister)
 
         self.set_pack()
-        print(self)
 
     def set_pack(self):
         self.login_page_heading.pack(pady=(10, 20))
