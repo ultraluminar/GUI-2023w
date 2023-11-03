@@ -18,8 +18,8 @@ with open(json_file_path, "r") as filestream:
     logindata: dict = load(filestream)
 
 # logic
-def mhash(plain: str, salt: bytes = gensalt()) -> str:
-    return hashpw(plain.encode(), salt).decode()
+def mhash(plain: str) -> str:
+    return hashpw(plain.encode(), gensalt()).decode()
 
 def login():
     username = username_entry.get()
