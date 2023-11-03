@@ -6,5 +6,6 @@ parsing:
   pandas
   openpyxl
 
-test:
+rest:
   bcrypt
+  customtkinter
