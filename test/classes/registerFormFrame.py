@@ -6,7 +6,7 @@ from test.utils import mhash
 
 
 class RegisterFormFrame(ctk.CTkFrame):
-    def __init__(self, master: ctk.CTk, pwds: dict):
+    def __init__(self, master, pwds: dict):
         super().__init__(master=master)
 
         self.pwds = pwds

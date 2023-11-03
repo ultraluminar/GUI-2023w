@@ -2,7 +2,7 @@ import customtkinter as ctk
 from test.utils import mcheck
 
 class LoginFormFrame(ctk.CTkFrame):
-    def __init__(self, master: ctk.CTk, pwds: dict):
+    def __init__(self, master, pwds: dict):
         super().__init__(master=master)
         self.pwds = pwds
         self.font15 = ctk.CTkFont(family="Segoe UI", size=15)
