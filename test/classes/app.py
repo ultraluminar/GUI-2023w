@@ -33,5 +33,4 @@ class App(ctk.CTk):
 
         # run
         self.bind("<Return>", self.main_frame_login.login_form_frame.try_login)
-        print(self)
 
