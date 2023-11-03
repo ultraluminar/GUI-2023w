@@ -22,24 +22,8 @@ with open(json_file_path, "r") as filestream:
 def mhash(plain: str) -> str:
     return hashpw(plain.encode(), gensalt()).decode()
 
-
-def login():
-    username = username_entry.get()
-    password = password_entry.get()
-
-    if username == "":
-        return
-    if username not in logindata.keys():
-        print("username doesn't exist")
-        return
-    if password == "":
-        return
-
-    if checkpw(password.encode(), logindata[username].encode()):
-        print("logged in")
-    else:
-        print("password incorrect")
-
+def mcheck(user: str, pwd: str) -> bool:
+    return checkpw(user.encode(), pwd.encode())
 
 def register():
     username = username_entry.get()
@@ -111,6 +95,23 @@ class LoginFormFrame(ctk.CTkFrame):
         self.password_entry.grid(row=3, column=0, pady=(15, 0), padx=50, sticky="n")
         self.login_button.grid(row=4, column=0, pady=(25, 30), padx=50, sticky="n")
 
+    def login(self, event=None):
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+
+        if username == "":
+            return
+        if username not in logindata.keys():
+            print("username doesn't exist")
+            return
+        if password == "":
+            return
+
+        if mcheck(password, logindata[username]):
+            print("logged in")
+        else:
+            print("password incorrect")
+
 # tk variables
 register_health_ensurance_var = tk.StringVar()
 register_dental_problem_var = tk.StringVar()
@@ -169,5 +170,5 @@ login_register_note.pack(pady=(20, 0))
 login_register_button.pack(pady=(5, 0))
 
 # run
-window.bind("<Return>", login)
+window.bind("<Return>", login_form_frame.login)
 window.mainloop()
