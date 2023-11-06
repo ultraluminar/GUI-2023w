@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from json import load
 
-from classes.mainLoginFrame import MainLoginFrame
+from test.classes.mainLoginFrame import MainLoginFrame
 from test.classes.mainRegisterFrame import MainRegisterFrame
 
 ctk.set_appearance_mode("System")
@@ -36,6 +36,3 @@ class App(ctk.CTk):
 
         # run
         self.bind("<Return>", self.main_frame_login.login_form_frame.try_login)
-
-app = App(logindata)
-app.mainloop()
