@@ -1,5 +1,6 @@
 from pandas import read_excel, read_csv
 from bcrypt import hashpw, gensalt
+from json import dump
 
 file_path = "source/data/data.xlsx"
 new_file_directory_path = "source/data"
@@ -11,7 +12,11 @@ df_patients.to_csv(path_or_buf=f"{new_file_directory_path}/patients.csv", index=
 
 # hashing passwords
 df_patients["Hash"] = df_patients["ID/Passwort"].map(lambda plain: hashpw(plain.encode(), gensalt()).decode())
-df_patients.to_csv(path_or_buf=f"{new_file_directory_path}/pwd.csv", columns=["Patient", "Hash"], index=False)
+df_passwords = df_patients[["Patient", "Hash"]]
+password_dict = df_passwords.to_dict(orient="records")
+json_data = {item["Patient"]: item["Hash"] for item in password_dict}
+with open(f"{new_file_directory_path}/pwd.json", "w", encoding="utf-8") as filestream:
+    dump(json_data, filestream, indent=4, ensure_ascii=False)
 
 # parsing the doctors table
 df_doctors = read_excel(io=file_path, sheet_name="Zahnärzte", header=2, usecols="B:E")
