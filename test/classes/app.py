@@ -4,13 +4,13 @@ from json import load
 from test.classes.mainLoginFrame import MainLoginFrame
 from test.classes.mainRegisterFrame import MainRegisterFrame
 
-ctk.set_appearance_mode("System")
+ctk.set_appearance_mode("system")
 ctk.set_default_color_theme("blue")
 
 # variables
 initial_width = 800
 initial_height = 500
-input_width = 160
+
 json_file_path = "test/pwd.json"
 
 with open(json_file_path, "r") as filestream:
