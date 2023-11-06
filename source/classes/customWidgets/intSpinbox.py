@@ -2,14 +2,14 @@ import tkinter as tk
 import customtkinter as ctk
 
 class IntSpinbox(ctk.CTkFrame):
-    def __init__(self, master, width: int = 100, height: int = 32, step: int = 1, from_: int = 0, to: int = 32):
+    def __init__(self, master, width: int = 100, height: int = 32, step: int = 1, from_: int = 1, to: int = 32):
         super().__init__(master=master, width=width, height=height)
 
         self.step = step
         self.from_ = from_
         self.to = to
 
-        self.entryInt = tk.IntVar(value=0)
+        self.entryInt = tk.IntVar(value=1)
 
         self.configure(fg_color=("gray78", "gray28"))  # set frame color
 

@@ -51,22 +51,52 @@ class RegisterFormFrame(ctk.CTkFrame):
     def try_register(self, event=None) -> None:
         username = self.username_entry.get()
         password = self.password_entry.get()
+        confirm_password = self.confirm_password_entry.get()
+        insurance = self.insurance_var.get()
+        dental_problem = self.dental_problem_var.get()
 
         if username == "":
             print("no username given")
+            self.username_entry.configure(border_color = "red")
             return
-        if username in self.pwds.keys():
-            print("username already exists")
-            return
+        else:
+            self.username_entry.configure(border_color=("#979DA2", "#565B5E"))
         if password == "":
             print("no password given")
+            self.password_entry.configure(border_color = "red")
             return
-        if " " in password:
-            print("password may not contain spaces")
+        else:
+            self.password_entry.configure(border_color=("#979DA2", "#565B5E"))
+        if confirm_password == "":
+            print("confirm your password")
+            self.confirm_password_entry.configure(border_color = "red")
             return
-        if len(password) < 6:
-            print("password must have at least 6 characters")
+        if not confirm_password == password:
+            print("your confirmation password does not match")
+            self.confirm_password_entry.configure(border_color = "red")
             return
+        else:
+            self.confirm_password_entry.configure(border_color=("#979DA2", "#565B5E"))
+        if insurance == "Krankenkassenart":
+            print("choose your type of insurance")
+            print(self.insurance_combobox.cget("border_color"))
+            self.insurance_combobox.configure(border_color = "red")
+            return
+        else:
+            self.insurance_combobox.configure(border_color=("#979DA2", "#565B5E"))
+        if dental_problem == "Dentale Problematik":
+            print("choose your dental problem")
+            self.dental_problem_combobox.configure(border_color = "red")
+            return
+        else:
+            self.dental_problem_combobox.configure(border_color=("#979DA2", "#565B5E"))
+        if username in self.pwds.keys():
+            print("username already exists")
+            self.username_entry.configure(border_color = "red")
+            return
+        else:
+            self.username_entry.configure(border_color=("#979DA2", "#565B5E"))
+        
 
         self.pwds[username] = mhash(password)
 
