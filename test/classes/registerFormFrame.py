@@ -14,8 +14,8 @@ class RegisterFormFrame(ctk.CTkFrame):
 
         self.font15 = ctk.CTkFont(family="Segoe UI", size=15)
 
-        self.insurance_var = tk.StringVar()
-        self.dental_problem_var = tk.StringVar()
+        self.insurance_var = tk.StringVar(value="Krankenkassenart")
+        self.dental_problem_var = tk.StringVar(value="Dentale Problematik")
         self.teeth_count_string = tk.StringVar(value="Anzahl zu behandelnder Zähne")
         self.teeth_count_var = tk.IntVar()
 
@@ -29,10 +29,8 @@ class RegisterFormFrame(ctk.CTkFrame):
 
         self.insurance_combobox = ctk.CTkComboBox(
             self, width=self.input_width, values=self.insurance_types, variable=self.insurance_var, state="readonly")
-        self.insurance_combobox.set("Krankenkassenart")
         self.dental_problem_combobox = ctk.CTkComboBox(
             self, width=self.input_width, values=self.dental_problem_types, variable=self.dental_problem_var, state="readonly")
-        self.dental_problem_combobox.set("Dentale Problematik")
 
         self.teeth_count_entry = ctk.CTkEntry(self, width=self.input_width, textvariable=self.teeth_count_string, state="disabled")
         self.teeth_count_slider = ctk.CTkSlider(
@@ -73,7 +71,6 @@ class RegisterFormFrame(ctk.CTkFrame):
             print("password must have at least 6 characters")
             return
 
-        print(mhash(password))
         self.pwds[username] = mhash(password)
 
         with open("test/pwd.json", mode="w") as filestream:
