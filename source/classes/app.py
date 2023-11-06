@@ -20,8 +20,8 @@ class App(ctk.CTk):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        self.main_frame_login = MainLoginFrame(master=self, pwds=self.pwds)
-        self.main_frame_register = MainRegisterFrame(master=self, pwds=self.pwds)
+        self.main_frame_login = MainLoginFrame(master=self)
+        self.main_frame_register = MainRegisterFrame(master=self)
 
 
         # initial packing
