@@ -26,14 +26,25 @@ class LoginFormFrame(ctk.CTkFrame):
         password = self.password_entry.get()
 
         if username == "":
+            self.username_entry.configure(border_color="red")
+            print("please give a username")
             return
+        else: 
+            self.username_entry.configure(border_color=("#979DA2", "#565B5E"))
         if username not in self.pwds.keys():
+            self.username_entry.configure(border_color="red")
             print("username doesn't exist")
             return
+        else: 
+            self.username_entry.configure(border_color=("#979DA2", "#565B5E"))
         if password == "":
+            self.password_entry.configure(border_color="red")
+            print("please give a password")
             return
-
+        else:
+            self.password_entry.configure(border_color=("#979DA2", "#565B5E"))
         if mcheck(password, self.pwds[username]):
             print("logged in")
         else:
+            self.password_entry.configure(border_color="red")
             print("password incorrect")
