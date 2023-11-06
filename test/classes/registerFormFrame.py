@@ -3,6 +3,7 @@ import customtkinter as ctk
 
 from json import dump
 from test.utils import mhash
+from test.classes.customWidgets.intSpinbox import IntSpinbox
 
 
 class RegisterFormFrame(ctk.CTkFrame):
@@ -32,10 +33,7 @@ class RegisterFormFrame(ctk.CTkFrame):
         self.dental_problem_combobox = ctk.CTkComboBox(
             self, width=self.input_width, values=self.dental_problem_types, variable=self.dental_problem_var, state="readonly")
 
-        self.teeth_count_entry = ctk.CTkEntry(self, width=self.input_width, textvariable=self.teeth_count_string, state="disabled")
-        self.teeth_count_slider = ctk.CTkSlider(
-            self, width=self.input_width, variable=self.teeth_count_var, from_=1, to=32, number_of_steps=31,
-            command=lambda count: self.teeth_count_string.set(f"{count:n}"))
+        self.teeth_count_spinbox = IntSpinbox(self, width=self.input_width)
         self.register_button = ctk.CTkButton(self, text="Registrieren", command=self.try_register)
 
         self.set_grid()
@@ -47,9 +45,8 @@ class RegisterFormFrame(ctk.CTkFrame):
         self.confirm_password_entry.grid(row=4, column=0, pady=(10, 0), padx=50, sticky="n")
         self.insurance_combobox.grid(row=5, column=0, pady=(15, 0), padx=50, sticky="n")
         self.dental_problem_combobox.grid(row=6, column=0, pady=(15, 0), padx=50, sticky="n")
-        self.teeth_count_entry.grid(row=7, column=0, pady=(15, 0), padx=50, sticky="n")
-        self.teeth_count_slider.grid(row=8, column=0, pady=(15, 0), padx=50, sticky="n")
-        self.register_button.grid(row=9, column=0, pady=(25, 30), padx=50, sticky="n")
+        self.teeth_count_spinbox.grid(row=7, column=0, pady=(15, 0), padx=50, sticky="n")
+        self.register_button.grid(row=8, column=0, pady=(25, 30), padx=50, sticky="n")
 
     def try_register(self, event=None) -> None:
         username = self.username_entry.get()
@@ -75,3 +72,4 @@ class RegisterFormFrame(ctk.CTkFrame):
 
         with open("test/pwd.json", mode="w") as filestream:
             dump(self.pwds, filestream, indent=4)
+            
