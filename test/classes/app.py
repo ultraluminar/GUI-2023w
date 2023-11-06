@@ -24,8 +24,9 @@ class App(ctk.CTk):
         self.title("login")
         self.geometry(f"{initial_width}x{initial_height}")
 
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
+        # redundant ?
+        # self.grid_rowconfigure(0, weight=1)
+        # self.grid_columnconfigure(0, weight=1)
 
         self.main_frame_login = MainLoginFrame(master=self, pwds=self.pwds)
         self.main_frame_register = MainRegisterFrame(master=self, pwds=self.pwds)
