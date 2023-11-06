@@ -1,8 +1,8 @@
 import customtkinter as ctk
+from json import load
 
-from test.classes.mainLoginFrame import MainLoginFrame
+from classes.mainLoginFrame import MainLoginFrame
 from test.classes.mainRegisterFrame import MainRegisterFrame
-
 
 ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("blue")
@@ -11,7 +11,10 @@ ctk.set_default_color_theme("blue")
 initial_width = 800
 initial_height = 500
 input_width = 160
+json_file_path = "test/pwd.json"
 
+with open(json_file_path, "r") as filestream:
+    logindata: dict = load(filestream)
 
 class App(ctk.CTk):
     def __init__(self, pwds: dict):
@@ -34,3 +37,5 @@ class App(ctk.CTk):
         # run
         self.bind("<Return>", self.main_frame_login.login_form_frame.try_login)
 
+app = App(logindata)
+app.mainloop()
