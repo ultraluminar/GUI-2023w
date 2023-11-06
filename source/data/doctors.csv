@@ -1,0 +1,6 @@
+Zahnarzt,ID/Passwort,behandelt,Behandlungszeiten
+Herr Dr. Huber,A111,nur privat,Mo-Fr: 8-12 Uhr und 14-16 Uhr
+Herr Dr.Kraft,A222,nur gesetzlich,Mo-Fr: 10-12 Uhr und 14-18 Uhr
+Frau Dr. Winkel,A333,privat und freiwillig gesetzlich,Mo-Fr: 8-14 Uhr
+Herr Dr. Hausmann,A444,gesetzlich und freiwillig gesetzlich,Mo: 9-12 Uhr und Fr 12-16 Uhr
+Frau Dr. Wurzel,A555,nur privat,Di: 8-12 und Do: 12-18

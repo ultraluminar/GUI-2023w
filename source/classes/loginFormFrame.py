@@ -1,10 +1,9 @@
 import customtkinter as ctk
-from source.utils import mcheck
+from source.utils import username_exists, check_login
 
 class LoginFormFrame(ctk.CTkFrame):
-    def __init__(self, master, pwds: dict):
+    def __init__(self, master):
         super().__init__(master=master)
-        self.pwds = pwds
         self.font15 = ctk.CTkFont(family="Segoe UI", size=15)
         # self.font13 = ctk.CTkFont(family="Segoe UI", size=13)
 
@@ -31,7 +30,7 @@ class LoginFormFrame(ctk.CTkFrame):
             return
         else: 
             self.username_entry.configure(border_color=("#979DA2", "#565B5E"))
-        if username not in self.pwds.keys():
+        if not username_exists(username):
             self.username_entry.configure(border_color="red")
             print("username doesn't exist")
             return
@@ -43,7 +42,7 @@ class LoginFormFrame(ctk.CTkFrame):
             return
         else:
             self.password_entry.configure(border_color=("#979DA2", "#565B5E"))
-        if mcheck(password, self.pwds[username]):
+        if check_login(username, password):
             print("logged in")
         else:
             self.password_entry.configure(border_color="red")

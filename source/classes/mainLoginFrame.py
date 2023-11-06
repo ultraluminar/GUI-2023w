@@ -7,14 +7,13 @@ initial_width = 800
 initial_height = 800
 
 class MainLoginFrame(ctk.CTkScrollableFrame):
-    def __init__(self, master: ctk.CTk, pwds):
+    def __init__(self, master: ctk.CTk):
         super().__init__(master=master, width=initial_width, height=initial_height, corner_radius=0, fg_color="transparent")
 
-        self.pwds = pwds
         self.font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
 
         # login widgets
-        self.login_form_frame = LoginFormFrame(master=self, pwds=self.pwds)
+        self.login_form_frame = LoginFormFrame(self)
 
         self.login_page_heading = ctk.CTkLabel(self, text="Anmelden oder Registrieren", font=self.font24)
         self.login_register_note = ctk.CTkLabel(self, text="Sie haben noch kein Konto?")

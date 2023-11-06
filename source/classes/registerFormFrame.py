@@ -1,16 +1,14 @@
 import tkinter as tk
 import customtkinter as ctk
 
-from json import dump
-from source.utils import mhash
+from source.utils import add_patient, username_exists
 from source.classes.customWidgets.intSpinbox import IntSpinbox
 
 
 class RegisterFormFrame(ctk.CTkFrame):
-    def __init__(self, master, pwds: dict):
+    def __init__(self, master):
         super().__init__(master=master)
-
-        self.pwds = pwds
+        
         self.input_width = 160
 
         self.font15 = ctk.CTkFont(family="Segoe UI", size=15)
@@ -54,6 +52,7 @@ class RegisterFormFrame(ctk.CTkFrame):
         confirm_password = self.confirm_password_entry.get()
         insurance = self.insurance_var.get()
         dental_problem = self.dental_problem_var.get()
+        problem_teeth_count = self.teeth_count_spinbox.get()
 
         if username == "":
             print("no username given")
@@ -90,16 +89,11 @@ class RegisterFormFrame(ctk.CTkFrame):
             return
         else:
             self.dental_problem_combobox.configure(border_color=("#979DA2", "#565B5E"))
-        if username in self.pwds.keys():
+        if username_exists(username):
             print("username already exists")
             self.username_entry.configure(border_color = "red")
             return
         else:
             self.username_entry.configure(border_color=("#979DA2", "#565B5E"))
-        
 
-        self.pwds[username] = mhash(password)
-
-        with open("test/pwd.json", mode="w") as filestream:
-            dump(self.pwds, filestream, indent=4)
-            
+        add_patient([username, password, insurance, dental_problem, problem_teeth_count])
