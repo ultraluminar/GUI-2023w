@@ -1,8 +1,8 @@
 import customtkinter as ctk
 from json import load
 
-from test.classes.mainLoginFrame import MainLoginFrame
-from test.classes.mainRegisterFrame import MainRegisterFrame
+from source.classes.mainLoginFrame import MainLoginFrame
+from source.classes.mainRegisterFrame import MainRegisterFrame
 
 ctk.set_appearance_mode("system")
 ctk.set_default_color_theme("blue")

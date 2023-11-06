@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-from test.classes.loginFormFrame import LoginFormFrame
+from source.classes.loginFormFrame import LoginFormFrame
 
 # variables
 initial_width = 800

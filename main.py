@@ -1,4 +1,4 @@
-from test.classes.app import App
+from source.classes.app import App
 from json import load
 
 # load json

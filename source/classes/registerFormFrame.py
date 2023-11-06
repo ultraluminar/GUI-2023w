@@ -2,8 +2,8 @@ import tkinter as tk
 import customtkinter as ctk
 
 from json import dump
-from test.utils import mhash
-from test.classes.customWidgets.intSpinbox import IntSpinbox
+from source.utils import mhash
+from source.classes.customWidgets.intSpinbox import IntSpinbox
 
 
 class RegisterFormFrame(ctk.CTkFrame):
