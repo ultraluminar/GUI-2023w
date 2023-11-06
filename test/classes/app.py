@@ -9,7 +9,7 @@ ctk.set_default_color_theme("blue")
 
 # variables
 initial_width = 800
-initial_height = 500
+initial_height = 600
 
 json_file_path = "test/pwd.json"
 
