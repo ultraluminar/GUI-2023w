@@ -18,11 +18,11 @@ def add_patient(patient_data: list):
     passwords: dict = load_passwords()
     
     passwords[patient_data[0]] = mhash(patient_data[1])
-    with open(password_file_path, mode="w") as filestream:
-        dump(passwords, filestream, indent=4)
+    with open(password_file_path, mode="w", encoding="utf-8") as filestream:
+        dump(passwords, filestream, indent=4, ensure_ascii=False)
     
     patient_data[1] = generate_unique_patient_id()
-    with open(patients_file_path, mode='a', newline='') as file:
+    with open(patients_file_path, mode='a', newline='', encoding="utf-8") as file:
         writing = writer(file)
         writing.writerow(patient_data)
 
@@ -54,5 +54,5 @@ def generate_unique_patient_id() -> str:
         
 def load_passwords():
     # loading password.json in as dict
-    with open(password_file_path, mode="r") as filestream:
+    with open(password_file_path, mode="r", encoding="utf-8") as filestream:
         return load(filestream)
