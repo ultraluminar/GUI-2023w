@@ -80,5 +80,11 @@ class RegisterFormFrame(ctk.CTkFrame):
         if error_entrys:  # not empty
             return
 
-        add_patient([username, password, insurance, dental_problem, problem_teeth_count])
+        add_patient({
+            "username": username,
+            "password": password,
+            "insurance": insurance,
+            "dental_problem": dental_problem,
+            "problem_teeth_count": problem_teeth_count
+        })
         print("patient added")
