@@ -4,6 +4,9 @@ from source.classes.mainLoginFrame import MainLoginFrame
 from source.classes.mainRegisterFrame import MainRegisterFrame
 from source.classes.login_sidebar import LoginSidebar
 
+from source.classes.main_sidebar import MainSidebar
+from source.classes.tmp_main import Main
+
 ctk.set_appearance_mode("system")
 ctk.set_default_color_theme("blue")
 
@@ -22,14 +25,24 @@ class App(ctk.CTk):
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
 
-        self.login_sidebar = LoginSidebar(master=self)
-        self.main_frame_login = MainLoginFrame(master=self)
-        self.main_frame_register = MainRegisterFrame(master=self)
+        # login
+        self.login_sidebar = LoginSidebar(self)
+        self.main_frame_login = MainLoginFrame(self)
+        self.main_frame_register = MainRegisterFrame(self)
 
+        # main
+        self.main_sidebar = MainSidebar(self)
+        self.main_main = Main(self)
 
-        # initial packing
-        self.login_sidebar.grid(row=0, column=0, sticky="nsew")
-        self.main_frame_login.grid(row=0, column=1, sticky="nsew")
+        self.initial_grid()
 
         # run
         self.bind("<Return>", self.main_frame_login.login_form_frame.try_login)
+
+    def initial_grid(self):
+        self.login_sidebar.grid(row=0, column=0, sticky="nsew")
+        self.main_frame_login.grid(row=0, column=1, sticky="nsew")
+        
+    def main_grid(self):
+        self.main_sidebar.grid(row=0, column=0, sticky="nsew")
+        self.main_main.grid(row=0, column=1, sticky="nsew")

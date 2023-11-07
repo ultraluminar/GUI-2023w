@@ -1,4 +1,3 @@
-from typing import Optional, Tuple, Union
 import customtkinter as ctk
 
 # variables
@@ -16,8 +15,5 @@ class LoginSidebar(ctk.CTkFrame):
         self.set_grid()
     
     def set_grid(self):
-        self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
-        self.exit_button.grid(row=1, column=0, padx=20, pady=(10, 20), sticky="s")
-        
-    def exit(self):
-        self.master.exit()
+        self.logo_label.grid(row=0, column=0, padx=15, pady=(20, 10))
+        self.exit_button.grid(row=2, column=0, padx=15, pady=(10, 20))

@@ -44,6 +44,9 @@ class LoginFormFrame(ctk.CTkFrame):
             self.password_entry.configure(border_color=("#979DA2", "#565B5E"))
         if check_login(username, password):
             print("logged in")
+            self.master.grid_forget()
+            self.nametowidget(".").login_sidebar.grid_forget()
+            self.nametowidget(".").main_grid()
         else:
             self.password_entry.configure(border_color="red")
             print("password incorrect")
