@@ -40,12 +40,8 @@ def generate_unique_patient_id() -> str:
     existing_ids = set()
     
     # Load the existing IDs from the CSV file
-    try:
-        df = pd.read_csv(patients_file_path)
-        existing_ids = set(df["ID/Passwort"])
-    except FileNotFoundError:
-        # Handle the case when the file doesn't exist
-        pass
+    df = pd.read_csv(patients_file_path)
+    existing_ids = set(df["ID/Passwort"])
     
     while True:
         new_id = f"P{randint(100, 999)}"
