@@ -54,46 +54,31 @@ class RegisterFormFrame(ctk.CTkFrame):
         dental_problem = self.dental_problem_var.get()
         problem_teeth_count = self.teeth_count_spinbox.get()
 
-        if username == "":
-            print("no username given")
-            self.username_entry.configure(border_color = "red")
+        default_color = ("#979DA2", "#565B5E")
+
+        entrys = [self.username_entry, self.password_entry, self.confirm_password_entry,
+                  self.insurance_combobox, self.dental_problem_combobox]
+
+        entry_map = [
+            [self.username_entry, username == "", "no username given"],
+            [self.password_entry, password == "", "no password given"],
+            [self.confirm_password_entry, confirm_password == "", "confirm your password"],
+            [self.confirm_password_entry, confirm_password != password, "your confirmation password does not match"],
+            [self.insurance_combobox, insurance == "Krankenkassenart", "choose your type of insurance"],
+            [self.dental_problem_combobox, dental_problem == "Dentale Problematik", "choose your dental problem"],
+            [self.username_entry, username_exists(username), "username already exists"]]
+
+        error_entrys: list = []
+        for entry, is_problem, error_string in entry_map:
+            if is_problem:
+                error_entrys.append(entry)
+                print(error_string)
+
+        for entry in entrys:
+            entry.configure(border_color=("red" if entry in error_entrys else default_color))
+
+        if error_entrys:  # not empty
             return
-        else:
-            self.username_entry.configure(border_color=("#979DA2", "#565B5E"))
-        if password == "":
-            print("no password given")
-            self.password_entry.configure(border_color = "red")
-            return
-        else:
-            self.password_entry.configure(border_color=("#979DA2", "#565B5E"))
-        if confirm_password == "":
-            print("confirm your password")
-            self.confirm_password_entry.configure(border_color = "red")
-            return
-        if not confirm_password == password:
-            print("your confirmation password does not match")
-            self.confirm_password_entry.configure(border_color = "red")
-            return
-        else:
-            self.confirm_password_entry.configure(border_color=("#979DA2", "#565B5E"))
-        if insurance == "Krankenkassenart":
-            print("choose your type of insurance")
-            print(self.insurance_combobox.cget("border_color"))
-            self.insurance_combobox.configure(border_color = "red")
-            return
-        else:
-            self.insurance_combobox.configure(border_color=("#979DA2", "#565B5E"))
-        if dental_problem == "Dentale Problematik":
-            print("choose your dental problem")
-            self.dental_problem_combobox.configure(border_color = "red")
-            return
-        else:
-            self.dental_problem_combobox.configure(border_color=("#979DA2", "#565B5E"))
-        if username_exists(username):
-            print("username already exists")
-            self.username_entry.configure(border_color = "red")
-            return
-        else:
-            self.username_entry.configure(border_color=("#979DA2", "#565B5E"))
 
         add_patient([username, password, insurance, dental_problem, problem_teeth_count])
+        print("patient added")
