@@ -14,17 +14,17 @@ def check_login(username: str, password: str) -> bool:
     passwords: dict = load_passwords()
     return mcheck(password, passwords[username])
 
-def add_patient(patient_data: list):
+def add_patient(patient_data: dict):
     passwords: dict = load_passwords()
     
-    passwords[patient_data[0]] = mhash(patient_data[1])
+    passwords[patient_data["username"]] = mhash(patient_data["password"])
     with open(password_file_path, mode="w", encoding="utf-8") as filestream:
         dump(passwords, filestream, indent=4, ensure_ascii=False)
     
-    patient_data[1] = generate_unique_patient_id()
+    patient_data["password"] = generate_unique_patient_id()
     with open(patients_file_path, mode='a', newline='', encoding="utf-8") as file:
         writing = writer(file)
-        writing.writerow(patient_data)
+        writing.writerow(patient_data.values())
 
 def username_exists(username: str) -> bool:
     passwords: dict = load_passwords()
