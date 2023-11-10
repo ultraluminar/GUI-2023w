@@ -5,8 +5,9 @@ from source.classes.settings import SettingsWindow
 sidebar_width = 140
 
 class MainSidebar(ctk.CTkFrame):
-    def __init__(self, master: ctk.CTk):
+    def __init__(self, master: ctk.CTk, username: str):
         super().__init__(master=master, width=sidebar_width, corner_radius=0)
+        self.username = username
         
         self.grid_rowconfigure(1, weight=1)
         
@@ -24,7 +25,7 @@ class MainSidebar(ctk.CTkFrame):
         
     def settings(self):
         if self.settings_window is None or not self.settings_window.winfo_exists():
-            self.settings_window = SettingsWindow(self)     # create window if its None or destroyed
+            self.settings_window = SettingsWindow(username=self.username)     # create window if its None or destroyed
         else:
             self.settings_window.focus()
     

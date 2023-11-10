@@ -23,30 +23,31 @@ class LoginFormFrame(ctk.CTkFrame):
     def try_login(self, event=None) -> None:
         username = self.username_entry.get()
         password = self.password_entry.get()
+        default_color = ("#979DA2", "#565B5E")
 
         if username == "":
             self.username_entry.configure(border_color="red")
             print("please give a username")
             return
         else: 
-            self.username_entry.configure(border_color=("#979DA2", "#565B5E"))
+            self.username_entry.configure(border_color=default_color)
         if not username_exists(username):
             self.username_entry.configure(border_color="red")
             print("username doesn't exist")
             return
         else: 
-            self.username_entry.configure(border_color=("#979DA2", "#565B5E"))
+            self.username_entry.configure(border_color=default_color)
         if password == "":
             self.password_entry.configure(border_color="red")
             print("please give a password")
             return
         else:
-            self.password_entry.configure(border_color=("#979DA2", "#565B5E"))
+            self.password_entry.configure(border_color=default_color)
         if check_login(username, password):
             print("logged in")
             self.master.grid_forget()
             self.nametowidget(".").login_sidebar.grid_forget()
-            self.nametowidget(".").main_grid()
+            self.nametowidget(".").main_grid(username)
         else:
             self.password_entry.configure(border_color="red")
             print("password incorrect")

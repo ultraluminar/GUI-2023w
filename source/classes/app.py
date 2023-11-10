@@ -30,9 +30,6 @@ class App(ctk.CTk):
         self.main_frame_login = MainLoginFrame(self)
         self.main_frame_register = MainRegisterFrame(self)
 
-        # main
-        self.main_sidebar = MainSidebar(self)
-        self.main_main = Main(self)
 
         self.initial_grid()
 
@@ -43,6 +40,9 @@ class App(ctk.CTk):
         self.login_sidebar.grid(row=0, column=0, sticky="nsew")
         self.main_frame_login.grid(row=0, column=1, sticky="nsew")
         
-    def main_grid(self):
+    def main_grid(self, username: str):
+        # main
+        self.main_sidebar = MainSidebar(self, username=username)
+        self.main_main = Main(self, username=username)
         self.main_sidebar.grid(row=0, column=0, sticky="nsew")
         self.main_main.grid(row=0, column=1, sticky="nsew")

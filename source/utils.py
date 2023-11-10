@@ -30,6 +30,13 @@ def username_exists(username: str) -> bool:
     passwords: dict = load_passwords()
     return username in passwords.keys()
 
+def update_password(username: str, password: str):
+    passwords: dict = load_passwords()
+    passwords[username] = mhash(password)
+    
+    with open(password_file_path, mode="w", encoding="utf-8") as filestream:
+        dump(passwords, filestream, indent=4, ensure_ascii=False)
+
 def mhash(plain: str) -> str:
     return hashpw(plain.encode(), gensalt()).decode()
 
