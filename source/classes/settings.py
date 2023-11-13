@@ -31,7 +31,7 @@ class SettingsWindow(ctk.CTkToplevel):
         self.change_password_label = ctk.CTkLabel(self.change_password_frame, text="Passwort ändern", font=self.font20)
         self.password_frame_placeholder = ctk.CTkLabel(self.change_password_frame, text="")
         self.old_password_entry = ctk.CTkEntry(self.change_password_frame, placeholder_text="Altes Passwort", show="•")
-        self.new_passwort_entry = ctk.CTkEntry(self.change_password_frame, placeholder_text="Neues Passwort", show="•")
+        self.new_password_entry = ctk.CTkEntry(self.change_password_frame, placeholder_text="Neues Passwort", show="•")
         self.change_password_button = ctk.CTkButton(self.change_password_frame, text="Passwort ändern", command=self.change_password)
         
         # design subframe grid       
@@ -43,7 +43,7 @@ class SettingsWindow(ctk.CTkToplevel):
         self.change_password_label.grid(row=0, column=0, padx=20, pady=(15, 20))
         self.password_frame_placeholder.grid(row=0, column=1, ipadx=154)
         self.old_password_entry.grid(row=1, column=0, columnspan=2, pady=(0, 10))
-        self.new_passwort_entry.grid(row=2, column=0, columnspan=2, pady=(0, 20))
+        self.new_password_entry.grid(row=2, column=0, columnspan=2, pady=(0, 20))
         self.change_password_button.grid(row=3, column=0, columnspan=2, pady=(0, 20))
         
         # main label and subframe packing on window
@@ -61,26 +61,34 @@ class SettingsWindow(ctk.CTkToplevel):
 
         
     def change_password(self, event=None):
-        default_color = ("#979DA2", "#565B5E")
         old_password = self.old_password_entry.get()
-        new_password = self.new_passwort_entry.get()
-        
-        if not self.auth_service.check_login(username=self.auth_service.username, password=old_password):
-            self.old_password_entry.configure(border_color="red")
-            print("Password is incorrect")
+        new_password = self.new_password_entry.get()
+
+        default_color = ("#979DA2", "#565B5E")
+
+        entrys = [self.old_password_entry, self.new_password_entry]
+
+        entry_map = [
+            [self.old_password_entry, old_password == "", "please enter ure old password"],
+            [self.old_password_entry, not self.auth_service.check_login(self.auth_service.username, old_password), "Password is incorrect"],
+            [self.new_password_entry, new_password == "", "please give a new password"],
+            [self.new_password_entry, old_password == new_password, "password has not changed"]
+        ]
+
+        error_entrys = []
+        for entry, is_problem, error_string in entry_map:
+            if is_problem:
+                error_entrys.append(entry)
+                print(error_string)
+                break
+
+        for entry in entrys:
+            entry.configure(border_color=("red" if entry in error_entrys else default_color))
+
+        if error_entrys:  # not empty:
             return
-        else:
-            self.old_password_entry.configure(border_color=default_color)
-        if new_password == "":
-            self.new_passwort_entry.configure(border_color="red")
-            print("please give a new password")
-            return
-        else:
-            self.new_passwort_entry.configure(border_color=default_color)
-        if old_password == new_password:
-            self.new_passwort_entry.configure(border_color="red")
-            print("password has not changed")
-        self.auth_service.update_password(new_password=self.new_passwort_entry.get())
+
+        self.auth_service.update_password(new_password=new_password)
         self.old_password_entry.configure(border_color="green")
-        self.new_passwort_entry.configure(border_color="green")
+        self.new_password_entry.configure(border_color="green")
         print("password changed")
