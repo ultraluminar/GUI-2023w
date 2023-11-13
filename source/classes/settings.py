@@ -62,20 +62,25 @@ class SettingsWindow(ctk.CTkToplevel):
         
     def change_password(self, event=None):
         default_color = ("#979DA2", "#565B5E")
+        old_password = self.old_password_entry.get()
+        new_password = self.new_passwort_entry.get()
         
-        if not self.auth_service.check_login(username=self.auth_service.username, password=self.old_password_entry.get()):
+        if not self.auth_service.check_login(username=self.auth_service.username, password=old_password):
             self.old_password_entry.configure(border_color="red")
             print("Password is incorrect")
             return
         else:
             self.old_password_entry.configure(border_color=default_color)
-        if self.new_passwort_entry.get() == "":
+        if new_password == "":
             self.new_passwort_entry.configure(border_color="red")
             print("please give a new password")
             return
         else:
             self.new_passwort_entry.configure(border_color=default_color)
-        self.auth_service.update_password(username=self.auth_service.username, password=self.new_passwort_entry.get())
+        if old_password == new_password:
+            self.new_passwort_entry.configure(border_color="red")
+            print("password has not changed")
+        self.auth_service.update_password(new_password=self.new_passwort_entry.get())
         self.old_password_entry.configure(border_color="green")
         self.new_passwort_entry.configure(border_color="green")
         print("password changed")
