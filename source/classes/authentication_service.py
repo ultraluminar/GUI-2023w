@@ -9,10 +9,6 @@ from json import load, dump
 patients_file_path = "source/data/patients.csv"
 password_file_path = "source/data/pwd.json"
 
-def username_exists(username: str) -> bool:
-    passwords: dict = load_passwords()
-    return username in passwords.keys()
-
 
 def mhash(plain: str) -> str:
     return hashpw(plain.encode(), gensalt()).decode()
@@ -20,19 +16,6 @@ def mhash(plain: str) -> str:
 
 def mcheck(user: str, pwd: str) -> bool:
     return checkpw(user.encode(), pwd.encode())
-
-
-def generate_unique_patient_id() -> str:
-    existing_ids = set()
-
-    # Load the existing IDs from the CSV file
-    df = pd.read_csv(patients_file_path)
-    existing_ids = set(df["ID/Passwort"])
-
-    while True:
-        new_id = f"P{randint(100, 999)}"
-        if new_id not in existing_ids:
-            return new_id
 
 
 def load_passwords():
@@ -64,16 +47,33 @@ class AuthenticationService:
         with open(password_file_path, mode="w", encoding="utf-8") as filestream:
             dump(passwords, filestream, indent=4, ensure_ascii=False)
 
-        patient_data["password"] = generate_unique_patient_id()
+        patient_data["password"] = self.generate_unique_patient_id()
         with open(patients_file_path, mode='a', newline='', encoding="utf-8") as file:
             writing = writer(file)
             writing.writerow(patient_data.values())
 
-    def update_password(self, password: str):
+    def update_password(self, new_password: str):
         passwords: dict = load_passwords()
-        passwords[self.username] = mhash(password)
+        passwords[self.username] = mhash(new_password)
 
         with open(password_file_path, mode="w", encoding="utf-8") as filestream:
             dump(passwords, filestream, indent=4, ensure_ascii=False)
 
+    @staticmethod
+    def generate_unique_patient_id() -> str:
+        existing_ids = set()
+
+        # Load the existing IDs from the CSV file
+        df = pd.read_csv(patients_file_path)
+        existing_ids = set(df["ID/Passwort"])
+
+        while True:
+            new_id = f"P{randint(100, 999)}"
+            if new_id not in existing_ids:
+                return new_id
+
+    @staticmethod
+    def username_exists(username: str) -> bool:
+        passwords: dict = load_passwords()
+        return username in passwords.keys()
 
