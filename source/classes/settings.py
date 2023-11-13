@@ -8,7 +8,6 @@ class SettingsWindow(ctk.CTkToplevel):
         self.geometry("480x400")
         self.title("Einstellungen")
         self.resizable(False, False)
-        #self.attributes("-topmost", 1)  # forces window to be on always on top
         
         self.username = username 
 
