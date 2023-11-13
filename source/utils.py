@@ -12,7 +12,7 @@ password_file_path = "source/data/pwd.json"
 
 def check_login(username: str, password: str) -> bool:
     passwords: dict = load_passwords()
-    return mcheck(password, passwords[username])
+    return mcheck(password, passwords[username]) if password else False
 
 def add_patient(patient_data: dict):
     passwords: dict = load_passwords()
