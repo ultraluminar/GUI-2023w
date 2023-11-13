@@ -1,7 +1,6 @@
 import customtkinter as ctk
 from source.classes.settings import SettingsWindow
 
-#variable
 sidebar_width = 140
 
 class MainSidebar(ctk.CTkFrame):
@@ -11,6 +10,7 @@ class MainSidebar(ctk.CTkFrame):
         
         self.grid_rowconfigure(1, weight=1)
         
+        # widgets
         self.logo_label = ctk.CTkLabel(self, text="Dental Manager", font=ctk.CTkFont(size=20, weight="bold"))
         self.settings_button = ctk.CTkButton(self, text="Einstellungen", command=self.settings)
         self.settings_window = None
@@ -26,9 +26,12 @@ class MainSidebar(ctk.CTkFrame):
     def settings(self):
         if self.settings_window is None or not self.settings_window.winfo_exists():
             self.settings_window = SettingsWindow(username=self.username)     # create window if its None or destroyed
+        elif self.settings_window.state() == "iconic":
+            self.settings_window.deiconify()    # bring back window if its minimized
         else:
             self.settings_window.focus()
     
+    # hides widgets from the main view and brings back login widgets
     def logout(self):
         self.grid_forget()
         self.nametowidget(".").main_main.grid_forget()
