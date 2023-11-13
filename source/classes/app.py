@@ -7,6 +7,8 @@ from source.classes.login_sidebar import LoginSidebar
 from source.classes.main_sidebar import MainSidebar
 from source.classes.tmp_main import Main
 
+from source.classes.authentication_service import AuthenticationService
+
 ctk.set_appearance_mode("system")
 ctk.set_default_color_theme("blue")
 
@@ -24,6 +26,8 @@ class App(ctk.CTk):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
+
+        self.auth_service = AuthenticationService()
 
         # login
         self.login_sidebar = LoginSidebar(self)
