@@ -1,7 +1,6 @@
 import tkinter as tk
 import customtkinter as ctk
 
-from source.utils import add_patient, username_exists
 from source.classes.customWidgets.intSpinbox import IntSpinbox
 
 
@@ -10,6 +9,7 @@ class RegisterFormFrame(ctk.CTkFrame):
         super().__init__(master=master)
         
         self.input_width = 160
+        self.auth_service = self.nametowidget(".").auth_service
 
         self.font15 = ctk.CTkFont(family="Segoe UI", size=15)
 
@@ -66,7 +66,7 @@ class RegisterFormFrame(ctk.CTkFrame):
             [self.confirm_password_entry, confirm_password != password, "your confirmation password does not match"],
             [self.insurance_combobox, insurance == "Krankenkassenart", "choose your type of insurance"],
             [self.dental_problem_combobox, dental_problem == "Dentale Problematik", "choose your dental problem"],
-            [self.username_entry, username_exists(username), "username already exists"]]
+            [self.username_entry, self.auth_service.username_exists(username), "username already exists"]]
 
         error_entrys = []
         for entry, is_problem, error_string in entry_map:
@@ -80,7 +80,7 @@ class RegisterFormFrame(ctk.CTkFrame):
         if error_entrys:  # not empty
             return
 
-        add_patient({
+        self.auth_service.add_patient({
             "username": username,
             "password": password,
             "insurance": insurance,
@@ -88,7 +88,7 @@ class RegisterFormFrame(ctk.CTkFrame):
             "problem_teeth_count": problem_teeth_count
         })
         print("patient added")
-        self.master.grid_forget()
+        self.nametowidget(".!ctkframe.!canvas.!mainregisterframe").grid_forget()
         self.nametowidget(".").login_sidebar.grid_forget()
         self.nametowidget(".").main_grid(username)
         

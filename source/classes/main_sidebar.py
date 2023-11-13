@@ -4,10 +4,10 @@ from source.classes.settings import SettingsWindow
 sidebar_width = 140
 
 class MainSidebar(ctk.CTkFrame):
-    def __init__(self, master: ctk.CTk, username: str):
+    def __init__(self, master: ctk.CTk):
         super().__init__(master=master, width=sidebar_width, corner_radius=0)
-        self.username = username
-        
+
+        self.auth_service = self.nametowidget(".").auth_service()
         self.grid_rowconfigure(1, weight=1)
         
         # widgets
@@ -25,7 +25,7 @@ class MainSidebar(ctk.CTkFrame):
         
     def settings(self):
         if self.settings_window is None or not self.settings_window.winfo_exists():
-            self.settings_window = SettingsWindow(username=self.username)     # create window if its None or destroyed
+            self.settings_window = SettingsWindow(username=self.auth_service.username)     # create window if its None or destroyed
         elif self.settings_window.state() == "iconic":
             self.settings_window.deiconify()    # bring back window if its minimized
         else:

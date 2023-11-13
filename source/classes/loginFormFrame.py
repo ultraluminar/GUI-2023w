@@ -1,11 +1,12 @@
 import customtkinter as ctk
-from source.utils import username_exists, check_login
 
 class LoginFormFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master=master)
         self.font15 = ctk.CTkFont(family="Segoe UI", size=15)
         # self.font13 = ctk.CTkFont(family="Segoe UI", size=13)
+
+        self.auth_service = self.nametowidget(".").auth_service
 
         self.heading = ctk.CTkLabel(master=self, font=self.font15, text="Bitte melden sie sich an")
         self.username_entry = ctk.CTkEntry(self, width=160, placeholder_text="Benutzername")
@@ -29,9 +30,9 @@ class LoginFormFrame(ctk.CTkFrame):
 
         entry_map = [
             [self.username_entry, username == "", "please give a username"],
-            [self.username_entry, not username_exists(username), "username doesn't exist"],
+            [self.username_entry, not self.auth_service.username_exists(username), "username doesn't exist"],
             [self.password_entry, password == "", "please give a password"],
-            [self.password_entry, not check_login(username, password), "password incorrect"]
+            [self.password_entry, not self.auth_service.check_login(username, password), "password incorrect"]
         ]
 
         error_entrys = []

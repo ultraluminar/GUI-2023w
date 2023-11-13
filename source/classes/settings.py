@@ -1,15 +1,15 @@
 import customtkinter as ctk
 
-from source.utils import username_exists, check_login, update_password
 
 class SettingsWindow(ctk.CTkToplevel):
-    def __init__(self, username: str):
+    def __init__(self):
         super().__init__()
         self.geometry("480x400")
         self.title("Einstellungen")
         self.resizable(False, False)
-        
-        self.username = username 
+
+
+        self.auth_service = self.nametowidget(".").auth_service
 
         # fonts
         self.font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
@@ -63,7 +63,7 @@ class SettingsWindow(ctk.CTkToplevel):
     def change_password(self, event=None):
         default_color = ("#979DA2", "#565B5E")
         
-        if not check_login(username=self.username, password=self.old_password_entry.get()):
+        if not self.auth_service.check_login(username=self.auth_service.username, password=self.old_password_entry.get()):
             self.old_password_entry.configure(border_color="red")
             print("Password is incorrect")
             return
@@ -75,7 +75,7 @@ class SettingsWindow(ctk.CTkToplevel):
             return
         else:
             self.new_passwort_entry.configure(border_color=default_color)
-        update_password(username=self.username, password=self.new_passwort_entry.get())
+        self.auth_service.update_password(username=self.auth_service.username, password=self.new_passwort_entry.get())
         self.old_password_entry.configure(border_color="green")
         self.new_passwort_entry.configure(border_color="green")
         print("password changed")
