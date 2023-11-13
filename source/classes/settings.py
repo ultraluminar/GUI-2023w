@@ -8,7 +8,7 @@ class SettingsWindow(ctk.CTkToplevel):
         self.geometry("480x400")
         self.title("Einstellungen")
         self.resizable(False, False)
-        self.attributes("-topmost", 1)  # forces window to be on always on top
+        #self.attributes("-topmost", 1)  # forces window to be on always on top
         
         self.username = username 
 
@@ -56,8 +56,10 @@ class SettingsWindow(ctk.CTkToplevel):
         self.bind("<Return>", self.change_password)
         
     def change_appearance_mode_event(self, new_appearance_mode: str):
-        if new_appearance_mode.lower() != ctk.get_appearance_mode():
+        if new_appearance_mode != ctk.get_appearance_mode():
             ctk.set_appearance_mode(new_appearance_mode)
+            self.after(1, self.lift)
+
         
     def change_password(self, event=None):
         default_color = ("#979DA2", "#565B5E")
