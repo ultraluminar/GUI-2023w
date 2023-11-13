@@ -88,3 +88,7 @@ class RegisterFormFrame(ctk.CTkFrame):
             "problem_teeth_count": problem_teeth_count
         })
         print("patient added")
+        self.master.grid_forget()
+        self.nametowidget(".").login_sidebar.grid_forget()
+        self.nametowidget(".").main_grid(username)
+        
