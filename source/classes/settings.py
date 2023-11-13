@@ -49,7 +49,9 @@ class SettingsWindow(ctk.CTkToplevel):
         self.bind("<Return>", self.change_password)
         
     def change_appearance_mode_event(self, new_appearance_mode: str):
-        ctk.set_appearance_mode(new_appearance_mode)
+        if new_appearance_mode.lower() != ctk.get_appearance_mode():
+            ctk.set_appearance_mode(new_appearance_mode)
+            #TODO add focus lose fix
         
     def change_password(self, event=None):
         default_color = ("#979DA2", "#565B5E")
