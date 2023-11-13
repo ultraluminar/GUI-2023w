@@ -25,29 +25,29 @@ class LoginFormFrame(ctk.CTkFrame):
         password = self.password_entry.get()
         default_color = ("#979DA2", "#565B5E")
 
-        if username == "":
-            self.username_entry.configure(border_color="red")
-            print("please give a username")
+        entrys = [self.username_entry, self.password_entry]
+
+        entry_map = [
+            [self.username_entry, username == "", "please give a username"],
+            [self.username_entry, not username_exists(username), "username doesn't exist"],
+            [self.password_entry, password == "", "please give a password"],
+            [self.password_entry, not check_login(username, password), "password incorrect"]
+        ]
+
+        error_entrys = []
+        for entry, is_problem, error_string in entry_map:
+            if is_problem:
+                error_entrys.append(entry)
+                print(error_string)
+                break  # to prevent seeing errors like "username doesn't exist" on empty username
+
+        for entry in entrys:
+            entry.configure(border_color=("red" if entry in error_entrys else default_color))
+
+        if error_entrys:  # not empty
             return
-        else: 
-            self.username_entry.configure(border_color=default_color)
-        if not username_exists(username):
-            self.username_entry.configure(border_color="red")
-            print("username doesn't exist")
-            return
-        else: 
-            self.username_entry.configure(border_color=default_color)
-        if password == "":
-            self.password_entry.configure(border_color="red")
-            print("please give a password")
-            return
-        else:
-            self.password_entry.configure(border_color=default_color)
-        if check_login(username, password):
-            print("logged in")
-            self.master.grid_forget()
-            self.nametowidget(".").login_sidebar.grid_forget()
-            self.nametowidget(".").main_grid(username)
-        else:
-            self.password_entry.configure(border_color="red")
-            print("password incorrect")
+
+        print("logged in")
+        self.master.grid_forget()
+        self.nametowidget(".").login_sidebar.grid_forget()
+        self.nametowidget(".").main_grid(username)

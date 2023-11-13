@@ -68,7 +68,7 @@ class RegisterFormFrame(ctk.CTkFrame):
             [self.dental_problem_combobox, dental_problem == "Dentale Problematik", "choose your dental problem"],
             [self.username_entry, username_exists(username), "username already exists"]]
 
-        error_entrys: list = []
+        error_entrys = []
         for entry, is_problem, error_string in entry_map:
             if is_problem:
                 error_entrys.append(entry)
