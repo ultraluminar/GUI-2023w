@@ -31,4 +31,4 @@ class MainRegisterFrame(ctk.CTkScrollableFrame):
         main_login_frame = self.nametowidget(".!ctkframe.!canvas.!mainloginframe")
         self.grid_forget()
         main_login_frame.grid(row=0, column=1, sticky="nsew")
-        self.nametowidget(".").bind("<Return>", main_login_frame.login_form_frame.try_login)
+        self.nametowidget(".").bind("<Return>", self.nametowidget(".!ctkframe.!canvas.!mainloginframe.!loginformframe").try_login)

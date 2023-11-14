@@ -47,7 +47,7 @@ class App(ctk.CTk):
         self.login_sidebar.grid(row=0, column=0, sticky="nsew")
         self.main_frame_login.grid(row=0, column=1, sticky="nsew")
         
-    def main_grid(self, username: str):
+    def main_grid(self):
         # main
         self.main_sidebar.grid(row=0, column=0, sticky="nsew")
         self.main_main.grid(row=0, column=1, sticky="nsew")

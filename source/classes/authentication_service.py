@@ -30,12 +30,12 @@ class AuthenticationService:
 
     def check_login(self, username: str, password: str) -> bool:
         passwords: dict = load_passwords()
-        if not password:
+        if not password or not mcheck(password, passwords[username]):
             return False
-        if mcheck(password, passwords[username]):
+        else:
             self.username = username
             return True
-        return False
+
 
 
     def add_patient(self, patient_data: dict):
@@ -49,6 +49,7 @@ class AuthenticationService:
         with open(patients_file_path, mode='a', newline='', encoding="utf-8") as file:
             writing = writer(file)
             writing.writerow(patient_data.values())
+            # TODO change csv_write to pandas to_csv
 
     def update_password(self, new_password: str):
         passwords: dict = load_passwords()
@@ -59,8 +60,6 @@ class AuthenticationService:
 
     @staticmethod
     def generate_unique_patient_id() -> str:
-        existing_ids = set()
-
         # Load the existing IDs from the CSV file
         df = pd.read_csv(patients_file_path)
         existing_ids = set(df["ID/Passwort"])
