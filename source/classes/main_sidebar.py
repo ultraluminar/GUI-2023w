@@ -32,6 +32,11 @@ class MainSidebar(ctk.CTkFrame):
     
     # hides widgets from the main view and brings back login widgets
     def logout(self):
+        if self.settings_window is None or not self.settings_window.winfo_exists():
+            pass
+        else:
+            print("test")
+            self.nametowidget(".!settingswindow").destroy()
         self.grid_forget()
         self.nametowidget(".").main_main.grid_forget()
         self.nametowidget(".").initial_grid()
