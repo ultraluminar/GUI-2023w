@@ -3,21 +3,12 @@ from bcrypt import hashpw, gensalt
 from json import dump
 
 def behandelt_analyse(df):
-    df['privat'] = False
-    df['gesetzlich'] = False
-    df['freiwillig_gesetzlich'] = False
 
     for index, row in df.iterrows():
-        behandelt = row['behandelt'].lower()
+        behandelt = row['behandelt'].lstrip("nur ").split(" und ")
 
-        if 'privat' in behandelt:
-            df.at[index, 'privat'] = True
-
-        if 'gesetzlich' in behandelt and 'freiwillig gesetzlich' not in behandelt:
-            df.at[index, 'gesetzlich'] = True
-
-        if 'freiwillig gesetzlich' in behandelt:
-            df.at[index, 'freiwillig_gesetzlich'] = True
+        for art in ["privat", "gesetzlich", "freiwillig gesetzlich"]:
+            df.at[index, art] = art in behandelt
 
     # df.drop('behandelt', axis=1, inplace=True)
     return df
