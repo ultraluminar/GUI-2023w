@@ -15,7 +15,6 @@ class RegisterFormFrame(ctk.CTkFrame):
 
         self.insurance_var = tk.StringVar(value="Krankenkassenart")
         self.dental_problem_var = tk.StringVar(value="Dentale Problematik")
-        self.teeth_count_string = tk.StringVar(value="Anzahl zu behandelnder Zähne")
         self.teeth_count_var = tk.IntVar()
 
         self.insurance_types = ["gesetzlich", "freiwillig gesetzlich", "privat"]
@@ -31,6 +30,7 @@ class RegisterFormFrame(ctk.CTkFrame):
         self.dental_problem_combobox = ctk.CTkComboBox(
             self, width=self.input_width, values=self.dental_problem_types, variable=self.dental_problem_var, state="readonly")
 
+        self.teeth_count_label = ctk.CTkLabel(self, text="Anzahl zu behandelnder Zähne")
         self.teeth_count_spinbox = IntSpinbox(self, width=self.input_width)
         self.register_button = ctk.CTkButton(self, text="Registrieren", command=self.try_register)
 
@@ -43,8 +43,9 @@ class RegisterFormFrame(ctk.CTkFrame):
         self.confirm_password_entry.grid(row=4, column=0, pady=(10, 0), padx=50, sticky="n")
         self.insurance_combobox.grid(row=5, column=0, pady=(15, 0), padx=50, sticky="n")
         self.dental_problem_combobox.grid(row=6, column=0, pady=(15, 0), padx=50, sticky="n")
-        self.teeth_count_spinbox.grid(row=7, column=0, pady=(15, 0), padx=50, sticky="n")
-        self.register_button.grid(row=8, column=0, pady=(25, 30), padx=50, sticky="n")
+        self.teeth_count_label.grid(row=7, column=0, pady=(10, 0), padx=50, sticky="n")
+        self.teeth_count_spinbox.grid(row=8, column=0, pady=(2, 0), padx=50, sticky="n")
+        self.register_button.grid(row=9, column=0, pady=(25, 30), padx=50, sticky="n")
 
     def try_register(self, event=None) -> None:
         username = self.username_entry.get()
@@ -88,7 +89,15 @@ class RegisterFormFrame(ctk.CTkFrame):
             "problem_teeth_count": problem_teeth_count
         })
         print("patient added")
-        self.nametowidget(".!ctkframe.!canvas.!mainregisterframe").grid_forget()
+        # delete entrys for privacy
+        self.username_entry.delete(0, "end")
+        self.password_entry.delete(0, "end")
+        self.confirm_password_entry.delete(0, "end")
+        self.insurance_var.set("Krankenkassenart")
+        self.dental_problem_combobox.set("Dentale Problematik")        
+        
+        # automatically log in
+        self.nametowidget(".!ctkframe2.!canvas.!mainregisterframe").grid_forget()
         self.nametowidget(".").login_sidebar.grid_forget()
         self.nametowidget(".").main_grid(username)
         

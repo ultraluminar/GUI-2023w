@@ -49,6 +49,7 @@ class LoginFormFrame(ctk.CTkFrame):
             return
 
         print("logged in")
+        self.password_entry.delete(0, "end")   # deletes the password entry for privacy
         self.nametowidget(".!ctkframe.!canvas.!mainloginframe").grid_forget()
         self.nametowidget(".").login_sidebar.grid_forget()
         self.nametowidget(".").main_grid(username)
