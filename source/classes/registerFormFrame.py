@@ -13,7 +13,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.add("als Zahnarzt")
         
         # variables
-        self.input_width = 160
+        self.input_width = 200
         self.auth_service = self.nametowidget(".").auth_service
 
         # font
@@ -28,13 +28,16 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.insurance_types = ["gesetzlich", "freiwillig gesetzlich", "privat"]
         self.dental_problem_types = ["Karies klein", "Karies groß", "Teilkrone", "Krone", "Wurzelbehandlung"]
         # doctor tab
-        
+        self.insurance_private = tk.BooleanVar(value=False)
+        self.insurance_by_law = tk.BooleanVar(value=False)
+        self.insurance_voluntarily = tk.BooleanVar(value=False)
 
         # widgets
-        self.heading = ctk.CTkLabel(self.tab("als Patient"), font=self.font15, text="Bitte hier registrieren")
-        self.username_entry = ctk.CTkEntry(self.tab("als Patient"), width=self.input_width, placeholder_text="Benutzername")
-        self.password_entry = ctk.CTkEntry(self.tab("als Patient"), width=self.input_width, placeholder_text="Passwort", show="•")
-        self.confirm_password_entry = ctk.CTkEntry(self.tab("als Patient"), width=self.input_width, placeholder_text="Passwort bestätigen", show="•")
+        # patient tab
+        self.patient_heading = ctk.CTkLabel(self.tab("als Patient"), font=self.font15, text="Bitte hier registrieren")
+        self.patient_username_entry = ctk.CTkEntry(self.tab("als Patient"), width=self.input_width, placeholder_text="Benutzername")
+        self.patient_password_entry = ctk.CTkEntry(self.tab("als Patient"), width=self.input_width, placeholder_text="Passwort", show="•")
+        self.patient_confirm_password_entry = ctk.CTkEntry(self.tab("als Patient"), width=self.input_width, placeholder_text="Passwort bestätigen", show="•")
 
         self.insurance_combobox = ctk.CTkComboBox(
             self.tab("als Patient"), width=self.input_width, values=self.insurance_types, variable=self.insurance_var, state="readonly")
@@ -43,22 +46,47 @@ class RegisterFormFrame(ctk.CTkTabview):
 
         self.teeth_count_label = ctk.CTkLabel(self.tab("als Patient"), text="Anzahl zu behandelnder Zähne")
         self.teeth_count_spinbox = IntSpinbox(self.tab("als Patient"), width=self.input_width)
-        self.register_button = ctk.CTkButton(self.tab("als Patient"), text="Registrieren", command=self.try_register)
+        self.patient_register_button = ctk.CTkButton(self.tab("als Patient"), text="Registrieren", command=self.try_patient_register)
+        # doctor tab
+        self.doctor_heading = ctk.CTkLabel(self.tab("als Zahnarzt"), font=self.font15, text="Bitte hier registrieren")
+        self.doctor_username_entry = ctk.CTkEntry(self.tab("als Zahnarzt"), width=self.input_width, placeholder_text="Benutzername")
+        self.doctor_password_entry = ctk.CTkEntry(self.tab("als Zahnarzt"), width=self.input_width, placeholder_text="Passwort", show="•")
+        self.doctor_confirm_password_entry = ctk.CTkEntry(self.tab("als Zahnarzt"), width=self.input_width, placeholder_text="Passwort bestätigen", show="•")
 
-        self.set_grid()
+        self.doctor_insurance_label = ctk.CTkLabel(self.tab("als Zahnarzt"), text="Welche Patienten behandeln Sie?")
+        self.doctor_insurance_checkbox_private = ctk.CTkCheckBox(self.tab("als Zahnarzt"), text="Privatversicherte", variable=self.insurance_private)
+        self.doctor_insurance_checkbox_by_law = ctk.CTkCheckBox(self.tab("als Zahnarzt"), text="Gesetzlichversicherte", variable=self.insurance_by_law)
+        self.doctor_insurance_checkbox_voluntarily = ctk.CTkCheckBox(self.tab("als Zahnarzt"), text="freiwillig Gesetzlichversicherte", variable=self.insurance_voluntarily)
+        
+        self.doctor_register_button = ctk.CTkButton(self.tab("als Zahnarzt"), text="Registrieren", command=self.try_patient_register)    # wrong command !patient!
+        
+        # gridding
+        self.set_patient_grid()
+        self.set_doctor_grid()
 
-    def set_grid(self):
-        self.heading.grid(row=1, column=0, pady=(10, 0), padx=0, sticky="n")
-        self.username_entry.grid(row=2, column=0, pady=(20, 0), padx=50, sticky="n")
-        self.password_entry.grid(row=3, column=0, pady=(15, 0), padx=50, sticky="n")
-        self.confirm_password_entry.grid(row=4, column=0, pady=(10, 0), padx=50, sticky="n")
+    def set_patient_grid(self):
+        self.patient_heading.grid(row=1, column=0, pady=(10, 0), padx=0, sticky="n")
+        self.patient_username_entry.grid(row=2, column=0, pady=(20, 0), padx=50, sticky="n")
+        self.patient_password_entry.grid(row=3, column=0, pady=(15, 0), padx=50, sticky="n")
+        self.patient_confirm_password_entry.grid(row=4, column=0, pady=(10, 0), padx=50, sticky="n")
         self.insurance_combobox.grid(row=5, column=0, pady=(15, 0), padx=50, sticky="n")
         self.dental_problem_combobox.grid(row=6, column=0, pady=(15, 0), padx=50, sticky="n")
         self.teeth_count_label.grid(row=7, column=0, pady=(10, 0), padx=50, sticky="n")
         self.teeth_count_spinbox.grid(row=8, column=0, pady=(2, 0), padx=50, sticky="n")
-        self.register_button.grid(row=9, column=0, pady=(25, 20), padx=50, sticky="n")
+        self.patient_register_button.grid(row=9, column=0, pady=(25, 20), padx=50, sticky="n")
+        
+    def set_doctor_grid(self):
+        self.doctor_heading.grid(row=1, column=0, pady=(10, 0), padx=0, sticky="n")
+        self.doctor_username_entry.grid(row=2, column=0, pady=(20, 0), padx=50, sticky="n")
+        self.doctor_password_entry.grid(row=3, column=0, pady=(15, 0), padx=50, sticky="n")
+        self.doctor_confirm_password_entry.grid(row=4, column=0, pady=(10, 0), padx=50, sticky="n")
+        self.doctor_insurance_label.grid(row=5, column=0, pady=(15, 0), sticky="n")
+        self.doctor_insurance_checkbox_private.grid(row=6, column=0, pady=(5, 0), padx=(50, 0), sticky="w")
+        self.doctor_insurance_checkbox_by_law.grid(row=7, column=0, pady=(8, 0), padx=(50, 0), sticky="w")
+        self.doctor_insurance_checkbox_voluntarily.grid(row=8, column=0, pady=(8, 0), padx=(50, 0), sticky="w")
+        self.doctor_register_button.grid(row=9, column=0, pady=(25, 20), padx=50, sticky="n")
 
-    def try_register(self, event=None) -> None:
+    def try_patient_register(self, event=None) -> None:
         username = self.username_entry.get()
         password = self.password_entry.get()
         confirm_password = self.confirm_password_entry.get()
