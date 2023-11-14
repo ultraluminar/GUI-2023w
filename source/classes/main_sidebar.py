@@ -14,9 +14,6 @@ class MainSidebar(ctk.CTkFrame):
         self.settings_button = ctk.CTkButton(self, text="Einstellungen", command=self.settings)
         self.settings_window = None
         self.logout_button = ctk.CTkButton(self, text="Abmelden", command=self.logout)
-        print(self.logout_button.winfo_name())
-        print(self.logout_button.master.winfo_name())
-        print(self.logout_button.master.master.winfo_name())
         
         self.set_grid()
         
