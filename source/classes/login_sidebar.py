@@ -10,7 +10,7 @@ class LoginSidebar(ctk.CTkFrame):
         self.grid_rowconfigure(1, weight=1)
         
         self.logo_label = ctk.CTkLabel(self, text="Dental Manager", font=ctk.CTkFont(size=20, weight="bold"))
-        self.exit_button = ctk.CTkButton(self, text="Beenden", command=exit)
+        self.exit_button = ctk.CTkButton(self, text="Beenden", command=self.tk.quit)
         
         self.set_grid()
     
