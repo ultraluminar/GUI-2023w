@@ -1,15 +1,3 @@
-tkinter UI:
-  login page:
-    login
-    sign up
-
-  home page:
-    calendar
-    next appointments (scroll list)
-
-
-program logic:
-  login system:
-    login validation
-    sign up encryption
-    logindata saving
+Parsing Excel Data:
+  also add Doctor Username password to pwd.json
+  parsing Behandlungszeiten to usable data 
