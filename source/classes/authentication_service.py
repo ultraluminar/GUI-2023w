@@ -39,8 +39,6 @@ class AuthenticationService:
 
 
     def add_patient(self, patient_data: dict):
-        if self.username != patient_data["username"]:
-            raise NotImplemented("Hab noch nicht gefixed")
         passwords: dict = load_passwords()
 
         passwords[patient_data["username"]] = mhash(patient_data["password"])
