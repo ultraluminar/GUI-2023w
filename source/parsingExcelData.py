@@ -1,6 +1,7 @@
-from pandas import read_excel, read_csv
-from bcrypt import hashpw, gensalt
+from pandas import read_excel
 from json import dump
+
+from classes.authentication_service import mhash
 
 def behandelt_analyse(df):
 
@@ -22,7 +23,7 @@ df_patients = read_excel(io=file_path, sheet_name="Stamm-Patienten", header=3, u
 df_patients.to_csv(path_or_buf=f"{new_file_directory_path}/patients.csv", index=False)
 
 # hashing passwords
-df_patients["Hash"] = df_patients["ID/Passwort"].map(lambda plain: hashpw(plain.encode(), gensalt()).decode())
+df_patients["Hash"] = df_patients["ID/Passwort"].map(mhash)
 df_passwords = df_patients[["Patient", "Hash"]]
 password_dict = df_passwords.to_dict(orient="records")
 json_data = {item["Patient"]: item["Hash"] for item in password_dict}
