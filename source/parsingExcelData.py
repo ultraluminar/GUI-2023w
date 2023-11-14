@@ -2,6 +2,26 @@ from pandas import read_excel, read_csv
 from bcrypt import hashpw, gensalt
 from json import dump
 
+def behandelt_analyse(df):
+    df['privat'] = False
+    df['gesetzlich'] = False
+    df['freiwillig_gesetzlich'] = False
+
+    for index, row in df.iterrows():
+        behandelt = row['behandelt'].lower()
+
+        if 'privat' in behandelt:
+            df.at[index, 'privat'] = True
+
+        if 'gesetzlich' in behandelt and 'freiwillig gesetzlich' not in behandelt:
+            df.at[index, 'gesetzlich'] = True
+
+        if 'freiwillig gesetzlich' in behandelt:
+            df.at[index, 'freiwillig_gesetzlich'] = True
+
+    # df.drop('behandelt', axis=1, inplace=True)
+    return df
+
 file_path = "source/data/data.xlsx"
 new_file_directory_path = "source/data"
 
@@ -20,6 +40,7 @@ with open(f"{new_file_directory_path}/pwd.json", "w", encoding="utf-8") as files
 
 # parsing the doctors table
 df_doctors = read_excel(io=file_path, sheet_name="Zahnärzte", header=2, usecols="B:E")
+df_doctors = behandelt_analyse(df_doctors)
 df_doctors.to_csv(path_or_buf=f"{new_file_directory_path}/doctors.csv", index=False)
 
 # parsing the costs table
