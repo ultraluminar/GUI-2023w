@@ -1,5 +1,4 @@
 import customtkinter as ctk
-import logging
 
 class LoginFormFrame(ctk.CTkFrame):
     def __init__(self, master):
@@ -40,7 +39,7 @@ class LoginFormFrame(ctk.CTkFrame):
         for entry, is_problem, error_string in entry_map:
             if is_problem:
                 error_entrys.append(entry)
-                logging.warning(error_string)
+                print(error_string)
                 break  # to prevent seeing errors like "username doesn't exist" on empty username
 
         for entry in entrys:
@@ -49,7 +48,7 @@ class LoginFormFrame(ctk.CTkFrame):
         if error_entrys:  # not empty
             return
 
-        logging.info("logged in")
+        print("logged in")
         self.nametowidget(".!ctkframe.!canvas.!mainloginframe").grid_forget()
         self.nametowidget(".").login_sidebar.grid_forget()
         self.nametowidget(".").main_grid(username)
