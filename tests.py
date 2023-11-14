@@ -35,7 +35,6 @@ class TestApp(unittest.TestCase):
         password_entry: ctk.CTkEntry = self.app.nametowidget(".!ctkframe.!canvas.!mainloginframe.!loginformframe.!ctkentry2")
         login_button: ctk.CTkButton = self.app.nametowidget(".!ctkframe.!canvas.!mainloginframe.!loginformframe.!ctkbutton")
 
-        username_entry["text"] = "balls"
         login_map = [
             ["", "", "please give a username"],
             ["a", "", "username doesn't exist"],
