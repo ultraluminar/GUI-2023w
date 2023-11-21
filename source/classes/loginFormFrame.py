@@ -4,14 +4,15 @@ import logging
 class LoginFormFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master=master)
+
+        self.input_width = 200
         self.font15 = ctk.CTkFont(family="Segoe UI", size=15)
-        # self.font13 = ctk.CTkFont(family="Segoe UI", size=13)
 
         self.auth_service = self.nametowidget(".").auth_service
 
         self.heading = ctk.CTkLabel(master=self, font=self.font15, text="Bitte melden sie sich an")
-        self.username_entry = ctk.CTkEntry(self, width=160, placeholder_text="Benutzername")
-        self.password_entry = ctk.CTkEntry(self, width=160, placeholder_text="Passwort", show="•")
+        self.username_entry = ctk.CTkEntry(self, width=self.input_width, placeholder_text="Benutzername")
+        self.password_entry = ctk.CTkEntry(self, width=self.input_width, placeholder_text="Passwort", show="•")
         self.login_button = ctk.CTkButton(self, text="Einloggen", command=self.try_login)
 
         self.set_grid()
