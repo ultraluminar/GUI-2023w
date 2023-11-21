@@ -12,16 +12,27 @@ from source.classes.authentication_service import AuthenticationService
 ctk.set_appearance_mode("system")
 ctk.set_default_color_theme("blue")
 
-# variables
-initial_width = 800
-initial_height = 600
+
 
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
 
+        # variables
+        self.initial_width = 800
+        self.initial_height = 600
+
         self.title("login")
-        self.geometry(f"{initial_width}x{initial_height}")
+        self.geometry(f"{self.initial_width}x{self.initial_height}")
+
+        self.screen_width = self.winfo_screenwidth()
+        self.screen_height = self.winfo_screenheight()
+
+        self.startpos_x = round((self.screen_width/2) - (self.initial_width/2))
+        self.startpos_y = round((self.screen_height/2) - (self.initial_height/2))
+
+
+        self.geometry(f"+{self.startpos_x}+{self.startpos_y}")
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=0)
