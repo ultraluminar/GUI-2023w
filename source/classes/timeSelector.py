@@ -34,7 +34,8 @@ class TimeSelector(ctk.CTkToplevel):
         
         # frame widgets
         self.main_label = ctk.CTkLabel(self.frame, text="Behandlungszeiten auswählen", font=self.font24)
-        self.selector_1 = DateAndTimeSelector(self.frame)
+        self.selectors = [DateAndTimeSelector(self.frame)]
+        self.add_button = ctk.CTkButton(self.frame, text="Zeitraum hinzufügen", command=self.add_selector)
         
         # main widgets
         self.cancel_button = ctk.CTkButton(self, text="Abbrechen", command=self.cancel)
@@ -42,7 +43,8 @@ class TimeSelector(ctk.CTkToplevel):
         
         # grid frame
         self.main_label.pack(pady=(20, 0))
-        self.selector_1.pack(pady=(20, 0))
+        self.selectors[0].pack(pady=(20, 0))
+        self.add_button.pack(pady=(10, 20))
 
         # grid main
         self.frame.grid(row=0, column=0, columnspan=3, sticky="nsw")
@@ -50,8 +52,17 @@ class TimeSelector(ctk.CTkToplevel):
         self.save_button.grid(row=1, column=2, pady=20, padx=(0, 20), sticky="es")
 
     def cancel(self):
-        pass
+        self.destroy()
     
     def save(self):
         pass
+    
+    def add_selector(self):
+        self.selectors.append(DateAndTimeSelector(self.frame))
+        self.add_button.pack_forget()
+        self.selectors[-1].pack(pady=(20, 0))
+        self.add_button.pack(pady=(10, 20))
         
+    def destroy_selector(self, selector):
+        selector.pack_forget()
+        self.selectors.remove(selector)

@@ -20,6 +20,9 @@ class DateAndTimeSelector(ctk.CTkFrame):
         self.weekdays = ["Mo", "Di", "Mi", "Do", "Fr"]
         self.hours = [f"{x}:00 Uhr" for x in range(8, 18+1)]
         
+        self.destroy_color = ("#C22741", "#CC455C")
+        self.destroy_hover_color = ("#911d30", "#872f3e")
+        
         # day subframe
         self.day_frame = ctk.CTkFrame(self)
         # labels
@@ -40,6 +43,8 @@ class DateAndTimeSelector(ctk.CTkFrame):
         self.time_from_combobox = ctk.CTkComboBox(self.time_frame, width=100, values=self.hours, variable=self.time_from, state="readonly")
         self.time_to_combobox = ctk.CTkComboBox(self.time_frame, width=100, values=self.hours, variable=self.time_to, state="readonly")
         
+        # main widgets
+        self.destroy_button = ctk.CTkButton(self, width=32, fg_color=self.destroy_color, hover_color=self.destroy_hover_color, text="x", command=lambda: self.nametowidget(".!timeselector").destroy_selector(self))
 
         # grid day subframe
         self.day_label.grid(row=0, column=0, columnspan=4, pady=(6, 0))
@@ -57,7 +62,8 @@ class DateAndTimeSelector(ctk.CTkFrame):
         
         # grid main
         self.day_frame.grid(row=0, column=0, pady=10, padx=10)
-        self.time_frame.grid(row=0, column=1, pady=10, padx=10)
+        self.time_frame.grid(row=0, column=1, pady=10, padx=(10, 0))
+        self.destroy_button.grid(row=0, column=2, pady=10, padx=10)
         
     def day_updater(self, *args):
         days_from = self.day_from.get()

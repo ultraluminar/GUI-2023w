@@ -69,7 +69,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.doctor_insurance_checkbox_voluntarily = ctk.CTkCheckBox(self.tab("als Zahnarzt"), text="freiwillig Gesetzlichversicherte", variable=self.insurance_voluntarily)
         
         self.time_selector_window = None
-        self.doctor_time_selector_button = ctk.CTkButton(self.tab("als Zahnarzt"), text="Behandlungszeit auswählen", command=self.time_selector)
+        self.doctor_time_selector_button = ctk.CTkButton(self.tab("als Zahnarzt"), width=self.input_width, text="Behandlungszeit auswählen", command=self.time_selector)
         self.doctor_register_button = ctk.CTkButton(self.tab("als Zahnarzt"), text="Registrieren", command=self.try_doctor_register)
         
         # gridding
