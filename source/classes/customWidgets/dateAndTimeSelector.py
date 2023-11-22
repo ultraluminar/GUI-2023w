@@ -13,6 +13,9 @@ class DateAndTimeSelector(ctk.CTkFrame):
         self.day_to = tk.StringVar()
         self.time_from = tk.StringVar()
         self.time_to = tk.StringVar()
+
+        self.day_from.trace_add("write", self.day_updater)
+        self.time_from.trace_add("write", self.time_updater)
         
         self.weekdays = ["Mo", "Di", "Mi", "Do", "Fr"]
         self.hours = [f"{x}:00 Uhr" for x in range(8, 18+1)]
@@ -56,7 +59,33 @@ class DateAndTimeSelector(ctk.CTkFrame):
         self.day_frame.grid(row=0, column=0, pady=10, padx=10)
         self.time_frame.grid(row=0, column=1, pady=10, padx=10)
         
-        
+    def day_updater(self, *args):
+        days_from = self.day_from.get()
+        days_to = self.day_to.get()
+
+        if not days_from:   # der callback wird warumauchimmer 2x aufgerufen mit 1x days_from = ""
+            return
+
+        index = self.weekdays.index(days_from)
+        new_values = self.weekdays[index:]
+        self.day_to_combobox.configure(values=new_values)
+        if days_to and days_to not in new_values:
+            self.day_to.set("")
+
+
+    def time_updater(self, *args):
+        time_from = self.time_from.get()
+        time_to = self.time_to.get()
+
+        if not time_from:   # der callback wird warumauchimmer 2x aufgerufen mit 1x time_from = ""
+            return
+
+        index = self.hours.index(time_from)
+        new_values = self.hours[index:]
+        self.time_to_combobox.configure(values=new_values)
+        if time_to and time_to not in new_values:
+            self.time_to.set("")
+
     def get(self):
         # TODO implement a get method, that returns the selected data in usable format
         pass
