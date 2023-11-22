@@ -1,14 +1,18 @@
 import customtkinter as ctk
 
-
 class SettingsWindow(ctk.CTkToplevel):
     def __init__(self):
         super().__init__()
-        self.geometry("480x400")
+        
+        #variables
+        settings_width = 480
+        settings_height = 400
+        
+        # initialize window
+        self.geometry(f"{settings_width}x{settings_height}")
         self.title("Einstellungen")
         self.resizable(False, False)
-
-
+        
         self.auth_service = self.nametowidget(".").auth_service
 
         # fonts

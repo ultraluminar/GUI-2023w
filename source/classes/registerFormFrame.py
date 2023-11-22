@@ -2,7 +2,7 @@ import tkinter as tk
 import customtkinter as ctk
 
 from source.classes.customWidgets.intSpinbox import IntSpinbox
-
+from source.classes.timeSelector import TimeSelector
 
 class RegisterFormFrame(ctk.CTkTabview):
     def __init__(self, master):
@@ -52,6 +52,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.teeth_count_label = ctk.CTkLabel(self.tab("als Patient"), text="Anzahl zu behandelnder Zähne")
         self.teeth_count_spinbox = IntSpinbox(self.tab("als Patient"), width=self.input_width)
         self.patient_register_button = ctk.CTkButton(self.tab("als Patient"), text="Registrieren", command=self.try_patient_register)
+        
         # doctor tab
         self.doctor_heading = ctk.CTkLabel(self.tab("als Zahnarzt"), font=self.font15, text="Bitte hier registrieren")
         self.doctor_username_entry = ctk.CTkEntry(self.tab("als Zahnarzt"), width=self.input_width, placeholder_text="Benutzername")
@@ -67,11 +68,14 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.doctor_insurance_checkbox_by_law = ctk.CTkCheckBox(self.tab("als Zahnarzt"), text="Gesetzlichversicherte", variable=self.insurance_by_law)
         self.doctor_insurance_checkbox_voluntarily = ctk.CTkCheckBox(self.tab("als Zahnarzt"), text="freiwillig Gesetzlichversicherte", variable=self.insurance_voluntarily)
         
+        self.time_selector_window = None
+        self.doctor_time_selector_button = ctk.CTkButton(self.tab("als Zahnarzt"), text="Behandlungszeit auswählen", command=self.time_selector)
         self.doctor_register_button = ctk.CTkButton(self.tab("als Zahnarzt"), text="Registrieren", command=self.try_doctor_register)
         
         # gridding
         self.set_patient_grid()
         self.set_doctor_grid()
+        
 
     def set_patient_grid(self):
         self.patient_heading.grid(row=1, column=0, columnspan=2, pady=(10, 0), padx=0, sticky="n")
@@ -99,7 +103,8 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.doctor_insurance_checkbox_private.grid(row=8, column=0, columnspan=2, pady=(5, 0), padx=(50, 0), sticky="w")
         self.doctor_insurance_checkbox_by_law.grid(row=9, column=0, columnspan=2, pady=(8, 0), padx=(50, 0), sticky="w")
         self.doctor_insurance_checkbox_voluntarily.grid(row=10, column=0, columnspan=2, pady=(8, 0), padx=(50, 0), sticky="w")
-        self.doctor_register_button.grid(row=11, column=0, columnspan=2, pady=(25, 20), padx=50, sticky="n")
+        self.doctor_time_selector_button.grid(row=11, column=0, columnspan=2, pady=(15, 0), padx=50, sticky="n")
+        self.doctor_register_button.grid(row=12, column=0, columnspan=2, pady=(25, 20), padx=50, sticky="n")
 
     def try_patient_register(self, event=None) -> None:
         username = self.patient_username_entry.get()
@@ -224,4 +229,12 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.nametowidget(".!ctkframe2.!canvas.!mainregisterframe").grid_forget()
         self.nametowidget(".").login_sidebar.grid_forget()
         self.nametowidget(".").main_grid()
+        
+    def time_selector(self):
+        if self.time_selector_window is None or not self.time_selector_window.winfo_exists():
+            self.time_selector_window = TimeSelector()     # create window if its None or destroyed
+        elif self.time_selector_window.state() == "iconic":
+            self.time_selector_window.deiconify()    # bring back window if its minimized
+        else:
+            self.time_selector_window.focus()
         
