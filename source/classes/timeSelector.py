@@ -5,13 +5,19 @@ from source.classes.customWidgets.dateAndTimeSelector import DateAndTimeSelector
 class TimeSelector(ctk.CTkToplevel):
     def __init__(self):
         super().__init__()
-        
-        #variables
-        window_width = 600
-        window_height = 500
-        
+
+        self.initial_width = 600
+        self.initial_height = 500
+
+        self.screen_width = self.winfo_screenwidth()
+        self.screen_height = self.winfo_screenheight()
+
+        self.startpos_x = round((self.screen_width / 2) - (self.initial_width / 2))
+        self.startpos_y = round((self.screen_height / 2) - (self.initial_height / 2))
+
         # initialize window
-        self.geometry(f"{window_width}x{window_height}")
+        self.geometry(f"{self.initial_width}x{self.initial_height}+{self.startpos_x}+{self.startpos_y}")
+
         self.title("Behandlungszeiten Selektor")
         self.resizable(False, True)
         self.attributes("-topmost", 1) # forces window to be on always on top
@@ -24,7 +30,7 @@ class TimeSelector(ctk.CTkToplevel):
         self.font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
         
         # time selector scrollable frame
-        self.frame = ctk.CTkScrollableFrame(self, width=window_width, corner_radius=0, fg_color="transparent")
+        self.frame = ctk.CTkScrollableFrame(self, width=self.initial_width, corner_radius=0, fg_color="transparent")
         
         # frame widgets
         self.main_label = ctk.CTkLabel(self.frame, text="Behandlungszeiten auswählen", font=self.font24)

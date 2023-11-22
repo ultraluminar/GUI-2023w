@@ -15,7 +15,7 @@ class DateAndTimeSelector(ctk.CTkFrame):
         self.time_to = tk.StringVar()
         
         self.weekdays = ["Mo", "Di", "Mi", "Do", "Fr"]
-        self.hours = ["6:00 Uhr", "7:00 Uhr", "8:00 Uhr", "9:00 Uhr", "10:00 Uhr", "11:00 Uhr", "12:00 Uhr", "13:00 Uhr", "14:00 Uhr", "15:00 Uhr", "16:00 Uhr", "17:00 Uhr", "18:00 Uhr", "19:00 Uhr", "20:00 Uhr"]
+        self.hours = [f"{x}:00 Uhr" for x in range(8, 18+1)]
         
         # day subframe
         self.day_frame = ctk.CTkFrame(self)
