@@ -18,21 +18,20 @@ class App(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        # variables
-        self.initial_width = 800
-        self.initial_height = 600
 
         self.title("login")
-        self.geometry(f"{self.initial_width}x{self.initial_height}")
 
         self.screen_width = self.winfo_screenwidth()
         self.screen_height = self.winfo_screenheight()
+
+        self.initial_width = round(self.screen_width * 0.75)
+        self.initial_height = round(self.screen_height * 0.75)
 
         self.startpos_x = round((self.screen_width/2) - (self.initial_width/2))
         self.startpos_y = round((self.screen_height/2) - (self.initial_height/2))
 
 
-        self.geometry(f"+{self.startpos_x}+{self.startpos_y}")
+        self.geometry(f"{self.initial_width}x{self.initial_height}+{self.startpos_x}+{self.startpos_y}")
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=0)
