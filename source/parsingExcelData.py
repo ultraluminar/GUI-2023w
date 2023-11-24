@@ -23,31 +23,45 @@ def behandelt_analyse(df):
 file_path = "source/data/data.xlsx"
 new_file_directory_path = "source/data"
 
+# parsing the inital data excel file to csv files
+
 # parsing the doctors table
+print("parsing doctors...")
 df_doctors = read_excel(io=file_path, sheet_name="Zahnärzte", header=2, usecols="B:E")
 df_doctors = behandelt_analyse(df_doctors)
+df_doctors["Name"] = df_doctors["Zahnarzt"]
+df_doctors = df_doctors[["Zahnarzt", "Name", "ID/Passwort", "behandelt", "Behandlungszeiten", "privat", "gesetzlich", "freiwillig gesetzlich"]]
 df_doctors.to_csv(path_or_buf=f"{new_file_directory_path}/doctors.csv", index=False)
+print("success")
 
-
-# parsing the inital data excel file to csv files
 # parsing the patients table
+print("parsing patients...")
 df_patients = read_excel(io=file_path, sheet_name="Stamm-Patienten", header=3, usecols="C:G")
+df_patients["Name"] = df_patients["Patient"]
+df_patients = df_patients[["Patient", "Name", "ID/Passwort", "Krankenkassenart", "Dentale Problematik", "Anzahl zu behandelnder Zähne"]]
 df_patients.to_csv(path_or_buf=f"{new_file_directory_path}/patients.csv", index=False)
+print("success")
 
 # hashing passwords
+print("hashing initial passwords...")
 df_patients["Hash"] = df_patients["ID/Passwort"].map(mhash)
 df_passwords = df_patients[["Patient", "Hash"]]
 password_dict = df_passwords.to_dict(orient="records")
 json_data = {item["Patient"]: item["Hash"] for item in password_dict}
+print("creating json file...")
 with open(f"{new_file_directory_path}/pwd.json", "w", encoding="utf-8") as filestream:
     dump(json_data, filestream, indent=4, ensure_ascii=False)
+print("success")
 
 # parsing the costs table
+print("parsing costs...")
 df_costs = read_excel(io=file_path, sheet_name="Kosten und Behandlungsdauer", header=3, usecols="B:G")
 # replacing column names that are missing in the excel file
+print("replacing missing fields...")
 df_costs.rename(columns={"Unnamed: 5": "gesetzlicher Anteil", "Unnamed: 6": "privater Anteil"}, inplace=True)
 
 # adding the "Dentale Problematik" column in every row instead of only the first
+print("adding missing dental problem column...")
 dental_problem = ""
 
 for index, row in df_costs.loc[df_costs["Dentale Problematik"].notna()].iterrows():
@@ -55,3 +69,4 @@ for index, row in df_costs.loc[df_costs["Dentale Problematik"].notna()].iterrows
 
 
 df_costs.to_csv(path_or_buf=f"{new_file_directory_path}/costs.csv", index=False)
+print("success")
