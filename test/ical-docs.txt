@@ -40,3 +40,37 @@ ATTENDEE;MEMBER="mailto:projectA@example.com","mailto:projectB@example.com":mail
 
 Example:
 ATTENDEE;ROLE=CHAIR:mailto:mrbig@example.com
+
+
+"TZID" "=" [tzidprefix] paramtext
+
+Example:
+DTSTART;TZID=America/New_York:19980119T020000
+DTEND;TZID=America/New_York:19980119T030000
+
+"VALUE" "=" ("BINARY"
+          / "BOOLEAN"        = "TRUE" / "FALSE"
+          / "CAL-ADDRESS"    = mailto:jane_doe@example.com
+          / "DATE"           = 19970714
+          / "DATE-TIME"
+          / "DURATION"
+          / "FLOAT"          = (["+"] / "-") 1*DIGIT ["." 1*DIGIT]
+          / "INTEGER"        = (["+"] / "-") 1*DIGIT
+          / "PERIOD"
+          / "RECUR"
+          / "TEXT"
+          / "TIME"
+          / "URI"
+          / "UTC-OFFSET"
+          / x-name           ; Some experimental iCalendar value type.
+          / iana-token)      ; Some other IANA-registered iCalendar value type.
+
+date-value         = date-fullyear date-month date-mday
+date-fullyear      = 4DIGIT
+date-month         = 2DIGIT        ;01-12
+date-mday          = 2DIGIT        ;01-28, 01-29, 01-30, 01-31 based on month/year
+
+DTSTART:19970714T133000                        ; Local time
+DTSTART:19970714T173000Z                       ; UTC time
+DTSTART;TZID=America/New_York:19970714T133000  ; Local time and time  zone reference
+
