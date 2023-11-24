@@ -1,0 +1,42 @@
+"CUTYPE" "="
+                    ("INDIVIDUAL"   ; An individual
+                   / "GROUP"        ; A group of individuals
+                   / "RESOURCE"     ; A physical resource
+                   / "ROOM"         ; A room resource
+                   / "UNKNOWN"      ; Otherwise not known
+                   / x-name         ; Experimental type
+                   / iana-token)    ; Other IANA-registered type
+ ; Default is INDIVIDUAL
+
+Example:
+ATTENDEE;CUTYPE=GROUP:mailto:ietf-calsch@example.org
+
+
+"FBTYPE" "=" ("FREE"
+              / "BUSY"
+              / "BUSY-UNAVAILABLE"
+              / "BUSY-TENTATIVE"
+              / x-name           ; Some experimental iCalendar free/busy type.
+              / iana-token)      ; Some other IANA-registered iCalendar free/busy type.
+
+Example:
+FREEBUSY;FBTYPE=BUSY:19980415T133000Z/19980415T170000Z
+
+
+"MEMBER" "=" DQUOTE cal-address DQUOTE *("," DQUOTE cal-address DQUOTE)
+
+Example:
+ATTENDEE;MEMBER="mailto:projectA@example.com","mailto:projectB@example.com":mailto:janedoe@example.com
+
+
+"ROLE" "="
+                   ("CHAIR"             ; Indicates chair of the calendar entity
+                  / "REQ-PARTICIPANT"   ; Indicates a participant whose participation is required
+                  / "OPT-PARTICIPANT"   ; Indicates a participant whose participation is optional
+                  / "NON-PARTICIPANT"   ; Indicates a participant who is copied for information purposes only
+                  / x-name              ; Experimental role
+                  / iana-token)         ; Other IANA role
+       ; Default is REQ-PARTICIPANT
+
+Example:
+ATTENDEE;ROLE=CHAIR:mailto:mrbig@example.com
