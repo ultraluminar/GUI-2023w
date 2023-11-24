@@ -65,12 +65,59 @@ DTEND;TZID=America/New_York:19980119T030000
           / x-name           ; Some experimental iCalendar value type.
           / iana-token)      ; Some other IANA-registered iCalendar value type.
 
+
 date-value         = date-fullyear date-month date-mday
 date-fullyear      = 4DIGIT
 date-month         = 2DIGIT        ;01-12
 date-mday          = 2DIGIT        ;01-28, 01-29, 01-30, 01-31 based on month/year
 
+Examples:
 DTSTART:19970714T133000                        ; Local time
 DTSTART:19970714T173000Z                       ; UTC time
-DTSTART;TZID=America/New_York:19970714T133000  ; Local time and time  zone reference
+DTSTART;TZID=America/New_York:19970714T133000  ; Local time and time zone reference
+
+
+time         = time-hour time-minute time-second [time-utc]
+time-hour    = 2DIGIT        ;00-23
+time-minute  = 2DIGIT        ;00-59
+time-second  = 2DIGIT        ;00-60   ;The "60" value is used to account for positive "leap" seconds.
+
+Examples:
+083000                          ; Local time
+133000Z                         ; UTC time
+TZID=America/New_York:083000    ; Local time and time zone reference
+
+ eventprop  = *(
+            ; The following are REQUIRED, but MUST NOT occur more than once.
+            dtstamp / uid /
+            ;
+            ; The following is REQUIRED if the component appears in an iCalendar object that doesn't
+            ; specify the "METHOD" property; otherwise, it is OPTIONAL; in any case, it MUST NOT occur more than once.
+            dtstart /
+            ;
+            ; The following are OPTIONAL, but MUST NOT occur more than once.
+            class / created / description / geo / last-mod / location / organizer / priority /
+            seq / status / summary / transp / url / recurid /
+            ;
+            ; The following is OPTIONAL, but SHOULD NOT occur more than once.
+            rrule /
+            ;
+            ; Either 'dtend' or 'duration' MAY appear in a 'eventprop', but 'dtend' and 'duration'
+            ; MUST NOT occur in the same 'eventprop'.
+            dtend / duration /
+            ;
+            ; The following are OPTIONAL, and MAY occur more than once.
+            attach / attendee / categories / comment / contact / exdate / rstatus / related /
+            resources / rdate / x-prop / iana-prop)
+
+Example:
+ BEGIN:VEVENT
+ UID:19970901T130000Z-123401@example.com
+ DTSTAMP:19970901T130000Z
+ DTSTART:19970903T163000Z
+ DTEND:19970903T190000Z
+ SUMMARY:Annual Employee Review
+ CLASS:PRIVATE
+ CATEGORIES:BUSINESS,HUMAN RESOURCES
+ END:VEVENT
 
