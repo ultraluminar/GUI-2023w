@@ -1,3 +1,4 @@
+# TODO this whole file
 Parsing Excel Data:
   also add Doctor Username password to pwd.json
   parsing Behandlungszeiten to usable data
@@ -10,4 +11,3 @@ Registration:
 
 AuthService:
   add function "addDoctor"
-  
