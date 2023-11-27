@@ -45,7 +45,14 @@ print("success")
 # hashing passwords
 print("hashing initial passwords...")
 df_patients["Hash"] = df_patients["ID/Passwort"].map(mhash)
+df_doctors["Hash"] = df_doctors["ID/Passwort"].map(mhash)
+df_doctors = df_doctors.rename(columns={'Zahnarzt': 'Patient'})
 df_passwords = df_patients[["Patient", "Hash"]]
+# TODO This already works but you get one warning somehow:
+for index, row in df_doctors.iterrows():
+    index = len(df_passwords)
+    df_passwords.loc[index, "Patient"] = row["Patient"]
+    df_passwords.loc[index, "Hash"] = row["Hash"]
 password_dict = df_passwords.to_dict(orient="records")
 json_data = {item["Patient"]: item["Hash"] for item in password_dict}
 print("creating json file...")
