@@ -48,7 +48,6 @@ class AuthenticationService:
         with open(patients_file_path, mode='a', newline='', encoding="utf-8") as file:
             writing = writer(file)
             writing.writerow(patient_data.values())
-            # TODO change csv_write to pandas to_csv
 
     def update_password(self, new_password: str):
         passwords: dict = load_passwords()
