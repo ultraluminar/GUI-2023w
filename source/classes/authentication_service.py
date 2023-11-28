@@ -63,11 +63,12 @@ class AuthenticationService:
         # Load the existing IDs from the CSV file
         ids = list(read_csv(patients_file_path)["ID/Passwort"])
         if len(set(ids)) != len(ids):
+            print(ids)
             raise ValueError("IDs not unique !")
 
         while True:
             new_id = f"P{randint(100, 999)}"
-            if new_id not in existing_ids:
+            if new_id not in ids:
                 return new_id
 
     @staticmethod
