@@ -1,4 +1,4 @@
-import pandas as pd
+from pandas import read_csv
 
 from random import randint
 from bcrypt import hashpw, checkpw, gensalt
@@ -61,7 +61,7 @@ class AuthenticationService:
     @staticmethod
     def generate_unique_patient_id() -> str:
         # Load the existing IDs from the CSV file
-        df = pd.read_csv(patients_file_path)
+        df = read_csv(patients_file_path)
         existing_ids = set(df["ID/Passwort"])
 
         while True:
