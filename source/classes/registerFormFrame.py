@@ -20,7 +20,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.font15 = ctk.CTkFont(family="Segoe UI", size=15)
 
         # tk variables
-        self.male = tk.BooleanVar(value=1)
+        self.sex = tk.StringVar(value="Herr")
         # patient tab
         self.insurance_var = tk.StringVar(value="Krankenkassenart")
         self.dental_problem_var = tk.StringVar(value="Dentale Problematik")
@@ -37,12 +37,12 @@ class RegisterFormFrame(ctk.CTkTabview):
         # patient tab
         self.patient_heading = ctk.CTkLabel(self.tab("als Patient"), font=self.font15, text="Bitte hier registrieren")
         self.patient_username_entry = ctk.CTkEntry(self.tab("als Patient"), width=self.input_width, placeholder_text="Benutzername")
-        self.patient_name_entry = ctk.CTkEntry(self.tab("als Patient"), width=self.input_width, placeholder_text="Name")
+        self.patient_name_entry = ctk.CTkEntry(self.tab("als Patient"), width=self.input_width, placeholder_text="Nachname")
         self.patient_password_entry = ctk.CTkEntry(self.tab("als Patient"), width=self.input_width, placeholder_text="Passwort", show="•")
         self.patient_confirm_password_entry = ctk.CTkEntry(self.tab("als Patient"), width=self.input_width, placeholder_text="Passwort bestätigen", show="•")
         
-        self.patient_adress_male = ctk.CTkRadioButton(self.tab("als Patient"), text="Herr", value=True, variable=self.male)
-        self.patient_adress_female = ctk.CTkRadioButton(self.tab("als Patient"), text="Frau", value=False, variable=self.male)
+        self.patient_adress_male = ctk.CTkRadioButton(self.tab("als Patient"), text="Herr", value="Herr", variable=self.sex)
+        self.patient_adress_female = ctk.CTkRadioButton(self.tab("als Patient"), text="Frau", value="Frau", variable=self.sex)
 
         self.insurance_combobox = ctk.CTkComboBox(
             self.tab("als Patient"), width=self.input_width, values=self.insurance_types, variable=self.insurance_var, state="readonly")
@@ -56,12 +56,12 @@ class RegisterFormFrame(ctk.CTkTabview):
         # doctor tab
         self.doctor_heading = ctk.CTkLabel(self.tab("als Zahnarzt"), font=self.font15, text="Bitte hier registrieren")
         self.doctor_username_entry = ctk.CTkEntry(self.tab("als Zahnarzt"), width=self.input_width, placeholder_text="Benutzername")
-        self.doctor_name_entry = ctk.CTkEntry(self.tab("als Zahnarzt"), width=self.input_width, placeholder_text="Name")
+        self.doctor_name_entry = ctk.CTkEntry(self.tab("als Zahnarzt"), width=self.input_width, placeholder_text="Nachname")
         self.doctor_password_entry = ctk.CTkEntry(self.tab("als Zahnarzt"), width=self.input_width, placeholder_text="Passwort", show="•")
         self.doctor_confirm_password_entry = ctk.CTkEntry(self.tab("als Zahnarzt"), width=self.input_width, placeholder_text="Passwort bestätigen", show="•")
         
-        self.doctor_adress_male = ctk.CTkRadioButton(self.tab("als Zahnarzt"), text="Herr", value=True, variable=self.male)
-        self.doctor_adress_female = ctk.CTkRadioButton(self.tab("als Zahnarzt"), text="Frau", value=False, variable=self.male)
+        self.doctor_adress_male = ctk.CTkRadioButton(self.tab("als Zahnarzt"), text="Herr", value="Herr", variable=self.sex)
+        self.doctor_adress_female = ctk.CTkRadioButton(self.tab("als Zahnarzt"), text="Frau", value="Frau", variable=self.sex)
 
         self.doctor_insurance_label = ctk.CTkLabel(self.tab("als Zahnarzt"), text="Welche Patienten behandeln Sie?")
         self.doctor_insurance_checkbox_private = ctk.CTkCheckBox(self.tab("als Zahnarzt"), text="Privatversicherte", variable=self.insurance_private)
@@ -111,7 +111,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         name = self.patient_name_entry.get()
         password = self.patient_password_entry.get()
         confirm_password = self.patient_confirm_password_entry.get()
-        address = self.male.get()
+        address = self.sex.get()
         insurance = self.insurance_var.get()
         dental_problem = self.dental_problem_var.get()
         problem_teeth_count = self.teeth_count_spinbox.get()
@@ -142,11 +142,13 @@ class RegisterFormFrame(ctk.CTkTabview):
 
         if error_entrys:  # not empty
             return
+        
+        # create name with adress word
+        name = f"{address} {name}"
 
         self.auth_service.add_patient({
             "username": username,
-            # "name": name,
-            # "adress": address,
+            "name": name,
             "password": password,
             "insurance": insurance,
             "dental_problem": dental_problem,
@@ -170,7 +172,7 @@ class RegisterFormFrame(ctk.CTkTabview):
     def try_doctor_register(self, event = None) -> None:
         username = self.doctor_username_entry.get()
         name = self.doctor_name_entry.get()
-        address = self.male.get()
+        address = self.sex.get()
         password = self.doctor_password_entry.get()
         confirm_password = self.doctor_confirm_password_entry.get()
         insurance_private = self.insurance_private.get()
@@ -205,15 +207,17 @@ class RegisterFormFrame(ctk.CTkTabview):
         if error_entrys:  # not empty
             return
         
-        # self.auth_service.add_doctor({
-        #     "username": username,
-        #     # "name": name,
-        #     # "address": address,
-        #     "password": password,
-        #     "insurance_private": insurance_private,
-        #     "insurance_by_law": insurance_by_law,
-        #     "insurance_voluntarily": insurance_voluntarily
-        # })
+        # create name with adress word
+        name = f"{address} Dr. {name}"
+        
+        self.auth_service.add_doctor({
+            "username": username,
+            "name": name,
+            "password": password,
+            "insurance_private": insurance_private,
+            "insurance_by_law": insurance_by_law,
+            "insurance_voluntarily": insurance_voluntarily
+        })
         print("doctor added")
         
         # delete entrys for privacy
