@@ -32,9 +32,8 @@ class AuthenticationService:
         passwords: dict = load_passwords()
         if not password or not mcheck(password, passwords[username]):
             return False
-        else:
-            self.username = username
-            return True
+        self.username = username
+        return True
 
 
 

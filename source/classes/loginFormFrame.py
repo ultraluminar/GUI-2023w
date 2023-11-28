@@ -53,4 +53,4 @@ class LoginFormFrame(ctk.CTkFrame):
         logging.info("logged in")
         self.nametowidget(".!ctkframe.!canvas.!mainloginframe").grid_forget()
         self.nametowidget(".!loginsidebar").grid_forget()
-        self.nametowidget(".").main_grid(username)
+        self.nametowidget(".").main_grid()
