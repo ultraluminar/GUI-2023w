@@ -5,8 +5,6 @@ from classes.authentication_service import mhash
 from warnings import catch_warnings, filterwarnings
 
 def behandelt_analyse(df):
-    week = ["Mo", "Di", "Mi", "Do", "Fr"]
-
     for index, row in df.iterrows():
         behandelt = row["behandelt"].lstrip("nur ").split(" und ")
 
@@ -60,16 +58,12 @@ print("success")
 print("parsing costs...")
 df_costs = read_excel(io=file_path, sheet_name="Kosten und Behandlungsdauer", header=3, usecols="B:G")
 # replacing column names that are missing in the excel file
-print("replacing missing fields...")
 df_costs.rename(columns={"Unnamed: 5": "gesetzlicher Anteil", "Unnamed: 6": "privater Anteil"}, inplace=True)
 
 # adding the "Dentale Problematik" column in every row instead of only the first
 print("adding missing dental problem column...")
-dental_problem = ""
-
 for index, row in df_costs.loc[df_costs["Dentale Problematik"].notna()].iterrows():
     df_costs.loc[[index+1, index+2], "Dentale Problematik"] = row["Dentale Problematik"]
-
 
 df_costs.to_csv(path_or_buf=f"{new_file_directory_path}/costs.csv", index=False)
 print("success")
