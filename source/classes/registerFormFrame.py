@@ -8,6 +8,8 @@ class RegisterFormFrame(ctk.CTkTabview):
     def __init__(self, master):
         super().__init__(master=master)
         
+        self.auth_service = self.nametowidget(".").auth_service
+        
         # tabs
         self.add("als Patient")
         self.add("als Zahnarzt")
@@ -165,9 +167,12 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.dental_problem_combobox.set("Dentale Problematik")        
         
         # automatically log in
-        self.nametowidget(".!ctkframe2.!canvas.!mainregisterframe").grid_forget()
-        self.nametowidget(".").login_sidebar.grid_forget()
-        self.nametowidget(".").main_grid()
+        if (self.auth_service.check_login(username=username, password=password)):
+            self.nametowidget(".!ctkframe2.!canvas.!mainregisterframe").grid_forget()
+            self.nametowidget(".").login_sidebar.grid_forget()
+            self.nametowidget(".").main_grid()
+        else: 
+            raise PermissionError
         
     def try_doctor_register(self, event = None) -> None:
         username = self.doctor_username_entry.get()
@@ -230,9 +235,12 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.insurance_voluntarily.set(False) 
         
         # automatically log in
-        self.nametowidget(".!ctkframe2.!canvas.!mainregisterframe").grid_forget()
-        self.nametowidget(".").login_sidebar.grid_forget()
-        self.nametowidget(".").main_grid()
+        if (self.auth_service.check_login(username=username, password=password)):
+            self.nametowidget(".!ctkframe2.!canvas.!mainregisterframe").grid_forget()
+            self.nametowidget(".").login_sidebar.grid_forget()
+            self.nametowidget(".").main_grid()
+        else:
+            raise PermissionError
         
     def time_selector(self):
         if self.time_selector_window is None or not self.time_selector_window.winfo_exists():
