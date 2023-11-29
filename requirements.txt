@@ -1,0 +1,4 @@
+bcrypt
+tkcalendar
+customtkinter
+pandas
