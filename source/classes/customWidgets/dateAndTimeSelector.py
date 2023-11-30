@@ -98,8 +98,9 @@ class DateAndTimeSelector(ctk.CTkFrame):
     def get(self) -> dict:
         # TODO implement a get method, that returns the selected data in usable format
         day_range = range(self.weekdays.index(self.day_from.get()), self.weekdays.index(self.day_to.get()) + 1)
+
         start_time = int(self.time_from.get().split(':')[0])
         stop_time = int(self.time_to.get().split(':')[0])
-        print({weekday(day): {"deltas": (start_time, stop_time)} for day in day_range})
-        return {weekday(day): {"deltas": (start_time, stop_time)} for day in day_range}
+
+        return {weekday(day): (start_time, stop_time) for day in day_range}
         

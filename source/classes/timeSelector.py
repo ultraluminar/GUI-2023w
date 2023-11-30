@@ -1,6 +1,9 @@
 import customtkinter as ctk
 
+from dateutil.relativedelta import weekday
+
 from source.classes.customWidgets.dateAndTimeSelector import DateAndTimeSelector
+
 
 class TimeSelector(ctk.CTkToplevel):
     def __init__(self):
@@ -55,16 +58,11 @@ class TimeSelector(ctk.CTkToplevel):
         self.destroy()
     
     def save(self):
-        dicts: list[dict] = [selector.get() for selector in self.selectors]
-        all_days = list(set(key for dic in dicts for key in dic.keys()))
-        print(all_days)
-        deltas: list[list[tuple]] = [[] for index in range(len(all_days))]
-        for day in all_days:
-            for dic in dicts:
-                if day in dic.keys():
-                    deltas[all_days.index(day)].append(dic[day]["deltas"])
-        availability_dict = {day: {"deltas": deltas[all_days.index(day)]} for day in all_days}
-        print(availability_dict)
+        dicts = [selector.get() for selector in self.selectors]
+        week = [weekday(x) for x in range(5)]
+
+        ranges_combined = {key: [dic[key] for dic in dicts if key in dic] for key in week}
+        print(ranges_combined)
     
     def add_selector(self):
         self.selectors.append(DateAndTimeSelector(self.frame))
