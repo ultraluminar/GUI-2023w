@@ -55,7 +55,16 @@ class TimeSelector(ctk.CTkToplevel):
         self.destroy()
     
     def save(self):
-        pass
+        dicts: list[dict] = [selector.get() for selector in self.selectors]
+        all_days = list(set(key for dic in dicts for key in dic.keys()))
+        print(all_days)
+        deltas: list[list[tuple]] = [[] for index in range(len(all_days))]
+        for day in all_days:
+            for dic in dicts:
+                if day in dic.keys():
+                    deltas[all_days.index(day)].append(dic[day]["deltas"])
+        availability_dict = {day: {"deltas": deltas[all_days.index(day)]} for day in all_days}
+        print(availability_dict)
     
     def add_selector(self):
         self.selectors.append(DateAndTimeSelector(self.frame))

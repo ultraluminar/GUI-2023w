@@ -1,6 +1,9 @@
 import tkinter as tk
 import customtkinter as ctk
 
+from datetime import time
+from dateutil.relativedelta import weekday
+
 class DateAndTimeSelector(ctk.CTkFrame):
     def __init__(self, master, width: int = 400, height: int = 150):
         super().__init__(master=master, width=width, height=height)
@@ -92,7 +95,11 @@ class DateAndTimeSelector(ctk.CTkFrame):
         if time_to and time_to not in new_values:
             self.time_to.set("")
 
-    def get(self):
+    def get(self) -> dict:
         # TODO implement a get method, that returns the selected data in usable format
-        pass
-    
+        day_range = range(self.weekdays.index(self.day_from.get()), self.weekdays.index(self.day_to.get()) + 1)
+        start_time = int(self.time_from.get().split(':')[0])
+        stop_time = int(self.time_to.get().split(':')[0])
+        print({weekday(day): {"deltas": (start_time, stop_time)} for day in day_range})
+        return {weekday(day): {"deltas": (start_time, stop_time)} for day in day_range}
+        

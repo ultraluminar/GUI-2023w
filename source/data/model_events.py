@@ -19,7 +19,7 @@ event_model = {
 availibility_model = {
     "arzt": {
         weekday: {
-            "deltas": [timedelta, timedelta]
+            "deltas": [(time, time), (time, time)]
         }
     }
 }
