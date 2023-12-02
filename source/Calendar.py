@@ -11,6 +11,9 @@ week = [str(weekday(x)) for x in range(5)]
 def getZeiten(zeiten_string: str) -> dict:
     dic = {day: [] for day in week}
 
+    for old in [":", " Uhr", " und"]:
+        zeiten_string = zeiten_string.replace(old, '')
+
     for sub in zeiten_string.split():
         if sub[0].isalpha():
             start, stop = (kuerzel.index(sub.split('-')[idx]) for idx in (0, -1))
