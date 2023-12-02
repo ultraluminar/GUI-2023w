@@ -1,8 +1,22 @@
-from pandas import read_excel
+from pandas import read_excel, DataFrame
 from json import dump
+from warnings import catch_warnings, filterwarnings
+
 from classes.authentication_service import mhash
 
-from warnings import catch_warnings, filterwarnings
+
+path_data = "source/data"
+path_excel = "source/data/data.xlsx"
+
+class ExcelToCSV:
+    def __init__(self, sheet: str, header: int, cols: str, csv_name: str):
+        self.df = read_excel(io=path_excel, sheet_name=sheet, header=header, usecols=cols)
+        self.csv_name = csv_name
+
+    def __enter__(self): return self.df
+    def __exit__(self, *args): self.df.to_csv(path_or_buf=f"{path_data}/{self.csv_name}.csv", index=False)
+
+
 
 def behandelt_analyse(df):
     for index, row in df.iterrows():
@@ -14,52 +28,34 @@ def behandelt_analyse(df):
                 df.at[index, art] = art in behandelt
 
 
-        text = row["Behandlungszeiten"].replace(":", '').replace(" Uhr", '').replace(" und", '')
-        df.at[index, "Behandlungszeiten"] = text
-    return df
-
-file_path = "source/data/data.xlsx"
-new_file_directory_path = "source/data"
+data_pwd = {}
 
 # parsing the inital data excel file to csv files
 
 # parsing the doctors table
 print("parsing doctors ...")
-df_doctors = read_excel(io=file_path, sheet_name="Zahnärzte", header=2, usecols="B:E")
-df_doctors = behandelt_analyse(df_doctors)
-df_doctors["Name"] = df_doctors["Zahnarzt"]
-df_doctors = df_doctors[["Zahnarzt", "Name", "ID/Passwort", "behandelt", "Behandlungszeiten", "privat", "gesetzlich", "freiwillig gesetzlich"]]
-df_doctors.to_csv(path_or_buf=f"{new_file_directory_path}/doctors.csv", index=False)
+with ExcelToCSV(sheet="Zahnärzte", header=2, cols="B:E", csv_name="doctors") as df_doctors:
+    behandelt_analyse(df_doctors)
+    df_doctors.rename(columns={"Zahnarzt": "Name"}, inplace=True)
+    data_pwd.update({row["Name"]: mhash(row["ID/Passwort"]) for _, row in df_doctors.iterrows()})
+    df_doctors = df_doctors[["Name", "ID/Passwort", "behandelt", "Behandlungszeiten", "privat", "gesetzlich", "freiwillig gesetzlich"]]
 
-# parsing the patients table
 print("parsing patients ... ")
-df_patients = read_excel(io=file_path, sheet_name="Stamm-Patienten", header=3, usecols="C:G")
-df_patients["Name"] = df_patients["Patient"]
-df_patients = df_patients[["Patient", "Name", "ID/Passwort", "Krankenkassenart", "Dentale Problematik", "Anzahl zu behandelnder Zähne"]]
-df_patients.to_csv(path_or_buf=f"{new_file_directory_path}/patients.csv", index=False)
-
-# hashing passwords
 print("hashing initial passwords ...")
-df_patients["Hash"] = df_patients["ID/Passwort"].map(mhash)
-df_doctors["Hash"] = df_doctors["ID/Passwort"].map(mhash)
-
-for _, row in df_doctors.iterrows():
-    df_patients.loc[len(df_patients), ["Patient", "Hash"]] = row["Zahnarzt"], row["Hash"]
+with ExcelToCSV(sheet="Stamm-Patienten", header=3, cols="C:G", csv_name="patiens") as df_patients:
+    df_patients.rename(columns={"Patient": "Name"}, inplace=True)
+    data_pwd.update({row["Name"]: mhash(row["ID/Passwort"]) for _, row in df_patients.iterrows()})
+    df_patients = df_patients[["Name", "ID/Passwort", "Krankenkassenart", "Dentale Problematik", "Anzahl zu behandelnder Zähne"]]
 
 print("creating json file ...")
-json_data = {item["Patient"]: item["Hash"] for item in df_patients.to_dict(orient="records")}
-with open(f"{new_file_directory_path}/pwd.json", "w", encoding="utf-8") as filestream:
-    dump(json_data, filestream, indent=4, ensure_ascii=False)
+with open(f"{path_data}/pwd.json", "w", encoding="utf-8") as filestream:
+    dump(data_pwd, filestream, indent=4, ensure_ascii=False)
 
 # parsing the costs table
 print("parsing costs ...")
-df_costs = read_excel(io=file_path, sheet_name="Kosten und Behandlungsdauer", header=3, usecols="B:G")
-# replacing column names that are missing in the excel file
-df_costs.rename(columns={"Unnamed: 5": "gesetzlicher Anteil", "Unnamed: 6": "privater Anteil"}, inplace=True)
-
-# adding the "Dentale Problematik" column in every row instead of only the first
-print("adding missing dental problem column ...")
-for index, row in df_costs.loc[df_costs["Dentale Problematik"].notna()].iterrows():
-    df_costs.loc[[index+1, index+2], "Dentale Problematik"] = row["Dentale Problematik"]
-
-df_costs.to_csv(path_or_buf=f"{new_file_directory_path}/costs.csv", index=False)
+with ExcelToCSV(sheet="Kosten und Behandlungsdauer", header=3, cols="B:G", csv_name="costs") as df_costs:
+    # replacing column names that are missing in the excel file
+    df_costs.rename(columns={"Unnamed: 5": "gesetzlicher Anteil", "Unnamed: 6": "privater Anteil"}, inplace=True)
+    # adding the "Dentale Problematik" column in every row instead of only the first
+    for index, row in df_costs.loc[df_costs["Dentale Problematik"].notna()].iterrows():
+        df_costs.loc[[index + 1, index + 2], "Dentale Problematik"] = row["Dentale Problematik"]
