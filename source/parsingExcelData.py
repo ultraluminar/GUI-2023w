@@ -1,7 +1,10 @@
 from pandas import read_excel, DataFrame
 from json import dump
 from warnings import catch_warnings, filterwarnings
-from dateutil.relativedelta import weekday
+
+from dateutil.rrule import weekday, rrule, WEEKLY, rruleset
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
 
 from classes.authentication_service import mhash
 
@@ -35,12 +38,12 @@ def parseKrankenKassenArt(inplace: bool) -> None:
 
 def parseBehandlungsZeiten() -> dict:
     kuerzel = ["Mo", "Di", "Mi", "Do", "Fr"]
-    week = [str(weekday(x)) for x in range(5)]
+    week = [weekday(x) for x in range(5)]
 
     data_doctors = {}
     for _, row in df_doctors.iterrows():
-        dic = {day: [] for day in week}
         zeiten_string = row["Behandlungszeiten"]
+        rules = []
 
         for old in [":", " Uhr", " und"]:
             zeiten_string = zeiten_string.replace(old, '')
@@ -48,14 +51,17 @@ def parseBehandlungsZeiten() -> dict:
         for sub in zeiten_string.split():
             if sub[0].isalpha():
                 start, stop = (kuerzel.index(sub.split('-')[idx]) for idx in (0, -1))
-                days = week[start: stop + 1]
+                days = range(start, stop+1)
             else:
-                hours = tuple(map(int, sub.split('-')))
-                for day in days:
-                    dic[day].append(hours)
+                start, stop = map(int, sub.split('-'))
+                hours = range(start, stop+1)
+                rule = rrule(freq=WEEKLY, byweekday=days, byhour=hours)
+                rules.append(str(rule).split("\n")[1])
 
-        data_doctors[row["Zahnarzt"]] = dic
+
+        data_doctors[row["Zahnarzt"]] = rules  # dic
     return data_doctors
+
 
 def parseDentaleProblematik(inplace: bool) -> None:
     for index, row in df_costs.loc[df_costs["Dentale Problematik"].notna()].iterrows():
