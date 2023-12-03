@@ -1,10 +1,7 @@
-from pandas import read_excel, DataFrame
+from pandas import read_excel
 from json import dump
-from warnings import catch_warnings, filterwarnings
-
-from dateutil.rrule import weekday, rrule, WEEKLY, rruleset
-from dateutil.relativedelta import relativedelta
-from datetime import datetime
+from dateutil.rrule import rrule, WEEKLY
+from warnings import catch_warnings
 
 from classes.authentication_service import mhash
 
@@ -31,35 +28,33 @@ def parseKrankenKassenArt(inplace: bool) -> None:
     for index, row in df_doctors.iterrows():
         behandelt = row["behandelt"]
 
-        for art in ["privat", "gesetzlich", "freiwillig gesetzlich"]:
-            with catch_warnings():
-                filterwarnings(action="ignore", category=FutureWarning)
+        with catch_warnings(category=FutureWarning, action="ignore"):
+            for art in ["privat", "gesetzlich", "freiwillig gesetzlich"]:
                 df_doctors.at[index, art] = art in behandelt
 
 def parseBehandlungsZeiten() -> dict:
     kuerzel = ["Mo", "Di", "Mi", "Do", "Fr"]
-    week = [weekday(x) for x in range(5)]
 
     data_doctors = {}
     for _, row in df_doctors.iterrows():
-        zeiten_string = row["Behandlungszeiten"]
+        zeiten_string: str = row["Behandlungszeiten"]
         rules = []
 
         for old in [":", " Uhr", " und"]:
             zeiten_string = zeiten_string.replace(old, '')
 
-        for sub in zeiten_string.split():
+        for sub in zeiten_string.split(' '):
             if sub[0].isalpha():
                 start, stop = (kuerzel.index(sub.split('-')[idx]) for idx in (0, -1))
                 days = range(start, stop+1)
             else:
-                start, stop = map(int, sub.split('-'))
-                hours = range(start, stop+1)
-                rule = rrule(freq=WEEKLY, byweekday=days, byhour=hours)
-                rules.append(str(rule).split("\n")[1])
+                start, stop = sub.split('-')
+                hours = range(int(start), int(stop)+1)
+                rule = rrule(freq=WEEKLY, byweekday=days, byhour=hours, byminute=0, bysecond=0)
+                rules += [str(rule).split("\n")[1]]
 
 
-        data_doctors[row["Zahnarzt"]] = rules  # dic
+        data_doctors[row["Zahnarzt"]] = rules
     return data_doctors
 
 
