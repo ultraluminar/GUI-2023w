@@ -1,0 +1,1 @@
+pip-chill --no-version --no-chill > requirements.txt

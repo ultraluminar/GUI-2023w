@@ -1,4 +1,6 @@
 bcrypt
-tkcalendar
 customtkinter
+openpyxl
+packaging
 pandas
+tkcalendar
