@@ -49,7 +49,7 @@ def parseBehandlungsZeiten() -> dict:
                 days = range(start, stop+1)
             else:
                 start, stop = sub.split('-')
-                hours = range(int(start), int(stop)+1)
+                hours = range(int(start), int(stop))  # exclusive
                 rule = rrule(freq=WEEKLY, byweekday=days, byhour=hours, byminute=0, bysecond=0)
                 rules += [str(rule).split("\n")[1]]
 
