@@ -197,7 +197,7 @@ class RegisterFormFrame(ctk.CTkTabview):
             [self.doctor_password_entry, password == "", "no password given"],
             [self.doctor_confirm_password_entry, confirm_password == "", "confirm your password"],
             [self.doctor_confirm_password_entry, confirm_password != password, "your confirmation password does not match"],
-            [self.doctor_insurance_checkbox_private, (insurance_voluntarily or insurance_by_law or insurance_private) == False , "choose at least one type of insurance"]]
+            [self.doctor_insurance_checkbox_private, not any((insurance_voluntarily, insurance_by_law, insurance_private)) , "choose at least one type of insurance"]]
         
         error_entrys = []
         for entry, is_problem, error_string in entry_map:
