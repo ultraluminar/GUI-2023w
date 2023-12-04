@@ -188,6 +188,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         insurance_private = self.insurance_private.get()
         insurance_by_law = self.insurance_by_law.get()
         insurance_voluntarily = self.insurance_voluntarily.get()
+        insurances = [insurance_voluntarily, insurance_by_law, insurance_private]
         
         default_color = ("#979DA2", "#565B5E")
         
@@ -197,7 +198,7 @@ class RegisterFormFrame(ctk.CTkTabview):
             [self.doctor_password_entry, password == "", "no password given"],
             [self.doctor_confirm_password_entry, confirm_password == "", "confirm your password"],
             [self.doctor_confirm_password_entry, confirm_password != password, "your confirmation password does not match"],
-            [self.doctor_insurance_checkbox_private, not any((insurance_voluntarily, insurance_by_law, insurance_private)) , "choose at least one type of insurance"]]
+            [self.doctor_insurance_checkbox_private, not any(insurances), "choose at least one type of insurance"]]
         
         error_entrys = []
         for entry, is_problem, error_string in entry_map:
