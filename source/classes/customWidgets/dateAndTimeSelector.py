@@ -1,8 +1,7 @@
 import tkinter as tk
 import customtkinter as ctk
 
-from datetime import time
-from dateutil.relativedelta import weekday
+from dateutil.rrule import rrule, WEEKLY
 
 class DateAndTimeSelector(ctk.CTkFrame):
     def __init__(self, master, width: int = 400, height: int = 150):
@@ -96,16 +95,17 @@ class DateAndTimeSelector(ctk.CTkFrame):
             self.time_to.set("")
 
     def get(self) -> dict:
-        tk_vars =      [self.day_from,          self.day_to,          self.time_from,          self.time_to]
+        default_color = ("#979DA2", "#565B5E")
+        values =      [self.day_from.get(),    self.day_to.get(),    self.time_from.get(),    self.time_to.get()]
         combos_boxes = [self.day_from_combobox, self.day_to_combobox, self.time_from_combobox, self.time_to_combobox]
-        if any(entry.get() == '' for entry in tk_vars):
-            for entry in tk_vars:
-                if entry.get() == '': combos_boxes[tk_vars.index(entry)].configure(border_color="red") 
+        
+        if any(var == '' for var in values):
+            for var in values:
+                if var == '': combos_boxes[values.index(var)].configure(border_color="red") 
             return None 
         day_range = range(self.weekdays.index(self.day_from.get()), self.weekdays.index(self.day_to.get()) + 1)
+        time_range = range(int(self.time_from.get().split(':')[0]), int(self.time_to.get().split(':')[0]))  # exclusive
 
-        start_time = int(self.time_from.get().split(':')[0])
-        stop_time = int(self.time_to.get().split(':')[0])
-
-        return {weekday(day): (start_time, stop_time) for day in day_range}
+        rule = rrule(freq=WEEKLY, byweekday=day_range, byhour=time_range, byminute=0, bysecond=0)
+        return str(rule).split("\n")[1]
         
