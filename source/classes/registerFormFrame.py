@@ -232,13 +232,12 @@ class RegisterFormFrame(ctk.CTkTabview):
         print("doctor added")
         
         # delete entrys for privacy
-        self.doctor_username_entry.delete(0, "end")
-        self.doctor_name_entry.delete(0, "end")
-        self.doctor_password_entry.delete(0, "end")
-        self.doctor_confirm_password_entry.delete(0, "end")
-        self.insurance_private.set(False)
-        self.insurance_by_law.set(False)
-        self.insurance_voluntarily.set(False) 
+        for entry in [self.doctor_username_entry, self.doctor_name_entry,
+                      self.patient_password_entry, self.doctor_confirm_password_entry]:
+            entry.delete(0, "end")
+
+        for insurance in [self.insurance_private, self.insurance_by_law, self.insurance_voluntarily]:
+            insurance.set(False)
         
         # automatically log in
         if (self.auth_service.check_login(username=username, password=password)):
