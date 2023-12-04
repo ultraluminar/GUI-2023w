@@ -176,7 +176,7 @@ class RegisterFormFrame(ctk.CTkTabview):
             raise PermissionError
         
         #destroy time selector window
-        if self.time_selector_window is not None or self.time_selector_window.winfo_exists():
+        if self.time_selector_window is not None:
             self.time_selector_window.destroy()
         
     def try_doctor_register(self, event = None) -> None:
@@ -217,7 +217,7 @@ class RegisterFormFrame(ctk.CTkTabview):
 
         if error_entrys:  # not empty
             return
-        
+
         # create name with adress word
         name = f"{address} Dr. {name}"
         
@@ -248,7 +248,7 @@ class RegisterFormFrame(ctk.CTkTabview):
             raise PermissionError
         
         #destroy time selector window
-        if self.time_selector_window is not None or self.time_selector_window.winfo_exists():
+        if self.time_selector_window is not None:
             self.time_selector_window.destroy()
         
         
