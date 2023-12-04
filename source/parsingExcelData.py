@@ -70,13 +70,15 @@ with ExcelToCSV(sheet="Zahnärzte", header=2, cols="B:E", csv_name="doctors") as
     parseKrankenKassenArt(inplace=True)
     behandlungszeiten = parseBehandlungsZeiten()
     df_doctors.rename(columns={"Zahnarzt": "Name"}, inplace=True)
+    df_doctors["Username"] = df_doctors["Name"]
     password_hashes |= parsePasswords(df_doctors)
-    df_doctors = df_doctors[["Name", "ID/Passwort", "behandelt", "Behandlungszeiten", "privat", "gesetzlich", "freiwillig gesetzlich"]]
+    df_doctors = df_doctors[["Username", "Name", "ID/Passwort", "behandelt", "Behandlungszeiten", "privat", "gesetzlich", "freiwillig gesetzlich"]]
 
 with ExcelToCSV(sheet="Stamm-Patienten", header=3, cols="C:G", csv_name="patiens") as df_patients:
     df_patients.rename(columns={"Patient": "Name"}, inplace=True)
+    df_doctors["Username"] = df_doctors["Name"]
     password_hashes |= parsePasswords(df_patients)
-    df_patients = df_patients[["Name", "ID/Passwort", "Krankenkassenart", "Dentale Problematik", "Anzahl zu behandelnder Zähne"]]
+    df_patients = df_patients[["Username", "Name", "ID/Passwort", "Krankenkassenart", "Dentale Problematik", "Anzahl zu behandelnder Zähne"]]
 
 with ExcelToCSV(sheet="Kosten und Behandlungsdauer", header=3, cols="B:G", csv_name="costs") as df_costs:
     parseDentaleProblematik(inplace=True)
