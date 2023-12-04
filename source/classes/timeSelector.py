@@ -59,10 +59,15 @@ class TimeSelector(ctk.CTkToplevel):
     
     def save(self):
         dicts = [selector.get() for selector in self.selectors]
+        # dont save when inputs faulty
+        if any(dic == None for dic in dicts): 
+            return
         week = [weekday(x) for x in range(5)]
 
         ranges_combined = {key: [dic[key] for dic in dicts if key in dic] for key in week}
         print(ranges_combined)
+        self.nametowidget(".!ctkframe2.!canvas.!mainregisterframe.!registerformframe").doctor_time_selector_saved(ranges_combined)
+        self.withdraw()
     
     def add_selector(self):
         self.selectors.append(DateAndTimeSelector(self.frame))

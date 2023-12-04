@@ -96,7 +96,12 @@ class DateAndTimeSelector(ctk.CTkFrame):
             self.time_to.set("")
 
     def get(self) -> dict:
-        # TODO implement a get method, that returns the selected data in usable format
+        tk_vars =      [self.day_from,          self.day_to,          self.time_from,          self.time_to]
+        combos_boxes = [self.day_from_combobox, self.day_to_combobox, self.time_from_combobox, self.time_to_combobox]
+        if any(entry.get() == '' for entry in tk_vars):
+            for entry in tk_vars:
+                if entry.get() == '': combos_boxes[tk_vars.index(entry)].configure(border_color="red") 
+            return None 
         day_range = range(self.weekdays.index(self.day_from.get()), self.weekdays.index(self.day_to.get()) + 1)
 
         start_time = int(self.time_from.get().split(':')[0])

@@ -34,6 +34,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.insurance_private = tk.BooleanVar(value=False)
         self.insurance_by_law = tk.BooleanVar(value=False)
         self.insurance_voluntarily = tk.BooleanVar(value=False)
+        self.availability: dict = {}
 
         # widgets
         # patient tab
@@ -174,6 +175,10 @@ class RegisterFormFrame(ctk.CTkTabview):
         else: 
             raise PermissionError
         
+        #destroy time selector window
+        if self.time_selector_window is not None or self.time_selector_window.winfo_exists():
+            self.time_selector_window.destroy()
+        
     def try_doctor_register(self, event = None) -> None:
         username = self.doctor_username_entry.get()
         name = self.doctor_name_entry.get()
@@ -242,11 +247,21 @@ class RegisterFormFrame(ctk.CTkTabview):
         else:
             raise PermissionError
         
+        #destroy time selector window
+        if self.time_selector_window is not None or self.time_selector_window.winfo_exists():
+            self.time_selector_window.destroy()
+        
+        
     def time_selector(self):
         if self.time_selector_window is None or not self.time_selector_window.winfo_exists():
             self.time_selector_window = TimeSelector()     # create window if its None or destroyed
-        elif self.time_selector_window.state() == "iconic":
+        elif self.time_selector_window.state() in ("iconic", "withdrawn"):
             self.time_selector_window.deiconify()    # bring back window if its minimized
         else:
             self.time_selector_window.focus()
         
+    def doctor_time_selector_saved(self, availability: dict):
+        self.availability = availability
+        
+        # visual feedback
+        self.doctor_time_selector_button.configure(fg_color=("#26a31d", "#369130"), hover_color=("#1d8017", "#2c7527"), text="Behandlungszeit ändern")
