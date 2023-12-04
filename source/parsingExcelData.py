@@ -26,13 +26,13 @@ class ExcelToCSV:
 
 def parseKrankenKassenArt(inplace: bool) -> None:
     for index, row in df_doctors.iterrows():
-        behandelt = row["behandelt"]
+        behandelt: str = row["behandelt"]
 
         with catch_warnings(category=FutureWarning, action="ignore"):
             for art in ["privat", "gesetzlich", "freiwillig gesetzlich"]:
                 df_doctors.at[index, art] = art in behandelt
 
-def parseBehandlungsZeiten() -> dict:
+def parseBehandlungsZeiten() -> dict[str, list[str]]:
     kuerzel = ["Mo", "Di", "Mi", "Do", "Fr"]
 
     data_doctors = {}
