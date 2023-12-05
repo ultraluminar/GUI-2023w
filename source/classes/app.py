@@ -62,6 +62,7 @@ class App(ctk.CTk):
     def initial_grid(self):
         self.login_sidebar.grid(row=0, column=0, sticky="nsew")
         self.main_frame_login.grid(row=0, column=1, sticky="nsew")
+        self.bind("<Return>", self.nametowidget(".!ctkframe.!canvas.!mainloginframe.!loginformframe").try_login)
         
     def main_grid(self):
         # main
