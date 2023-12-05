@@ -15,4 +15,4 @@ date_list: list[datetime] = rule.between(after=today, before=in_a_week)
 
 from source.classes.authentication_service import appendJson
 
-appendJson("data/data_doctors.json", {"balls":  3})
+appendJson("data/doctors_free.json", {"balls":  3})
