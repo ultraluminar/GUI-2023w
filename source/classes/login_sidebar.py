@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from PIL import Image
 
 # variables
 sidebar_width = 140
@@ -9,7 +10,14 @@ class LoginSidebar(ctk.CTkFrame):
 
         self.grid_rowconfigure(1, weight=1)
         
-        self.logo_label = ctk.CTkLabel(self, text="Dental Manager", font=ctk.CTkFont(size=20, weight="bold"))
+        
+        # load images (light and dark)
+        image_path = "assets/"
+        self.logo_image = ctk.CTkImage(light_image=Image.open(f"{image_path}zahn_logo_light.png"),
+                                       dark_image=Image.open(f"{image_path}zahn_logo_dark.png"), size=(26, 26))
+        
+        # widgets
+        self.logo_label = ctk.CTkLabel(self, text="  Dental Manager", image=self.logo_image, compound="left", font=ctk.CTkFont(size=20, weight="bold"))
         self.exit_button = ctk.CTkButton(self, text="Beenden", command=self.tk.quit)
         
         self.set_grid()
