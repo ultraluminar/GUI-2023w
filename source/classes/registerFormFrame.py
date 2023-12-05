@@ -3,6 +3,7 @@ import customtkinter as ctk
 
 from source.classes.customWidgets.intSpinbox import IntSpinbox
 from source.classes.timeSelector import TimeSelector
+from source.auth_util import username_exists
 
 class RegisterFormFrame(ctk.CTkTabview):
     def __init__(self, master):
@@ -129,7 +130,7 @@ class RegisterFormFrame(ctk.CTkTabview):
             [self.patient_confirm_password_entry, confirm_password != password, "your confirmation password does not match"],
             [self.insurance_combobox, insurance == "Krankenkassenart", "choose your type of insurance"],
             [self.dental_problem_combobox, dental_problem == "Dentale Problematik", "choose your dental problem"],
-            [self.patient_username_entry, self.auth_service.username_exists(username), "username already exists"]]
+            [self.patient_username_entry, username_exists(username), "username already exists"]]
 
         error_entrys = []
         for entry, is_problem, error_string in entry_map:
@@ -200,7 +201,7 @@ class RegisterFormFrame(ctk.CTkTabview):
             [self.doctor_confirm_password_entry,     confirm_password != password,  "your confirmation password does not match"],
             [self.doctor_insurance_checkbox_private, not any(insurances),           "choose at least one type of insurance"],
             [self.doctor_time_selector_button,       self.availability == [],       "select ure availability schedule"],
-            [self.doctor_username_entry, self.auth_service.username_exists(username), "username already exists"]]
+            [self.doctor_username_entry,             username_exists(username),     "username already exists"]]
         
         error_entrys = []
         for entry, is_problem, error_string in entry_map:

@@ -3,7 +3,7 @@ from json import dump
 from dateutil.rrule import rrule, WEEKLY
 from warnings import catch_warnings
 
-from classes.authentication_service import mhash
+from source.auth_util import mhash
 
 
 path_data = "data"
