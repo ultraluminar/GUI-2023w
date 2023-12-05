@@ -48,7 +48,7 @@ def gen_UID(path: Path, prefix: str) -> str:
             return new_id
 
 
-def add_doctor(self, doctor_data: dict):
+def add_doctor(doctor_data: dict):
     updateJson(paths["passwords"], {doctor_data["username"]: mhash(doctor_data["password"])})
     updateJson(paths["doctors"]["free"], {doctor_data["username"]: doctor_data["availability"]})
 
@@ -57,7 +57,7 @@ def add_doctor(self, doctor_data: dict):
     appendCSV(paths["doctors"]["csv"], doctor_data.values())
 
 
-def add_patient(self, patient_data: dict):
+def add_patient(patient_data: dict):
     updateJson(paths["passwords"], {patient_data["username"]: mhash(patient_data["password"])})
 
     patient_data["password"] = gen_UID(paths["patients"]["csv"], 'P')
