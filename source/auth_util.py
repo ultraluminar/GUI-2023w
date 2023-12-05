@@ -1,3 +1,4 @@
+from pathlib import Path
 from pandas import read_csv
 from random import randint
 from bcrypt import hashpw, checkpw, gensalt
@@ -6,10 +7,10 @@ from json import load, dump
 
 # variables
 paths = {
-    "passwords": "data/pwd.json",
-    "patients": {"csv": "data/patients.csv"},
-    "doctors": {"csv": "data/doctors.csv",
-                "free": "data/doctors_free.json"}}
+    "passwords": Path("data/pwd.json"),
+    "patients": {"csv": Path("data/patients.csv")},
+    "doctors": {"csv": Path("data/doctors.csv"),
+                "free": Path("data/doctors_free.json")}}
 
 def mhash(plain: str) -> str:
     # wenig rounds da wir nicht wirklich security brauchen
@@ -20,24 +21,26 @@ def mcheck(user: str, pwd: str) -> bool:
     return checkpw(user.encode(), pwd.encode())
 
 
-def appendCSV(path: str, row: iter):
+def appendCSV(path: Path, row: iter):
     with open(path, mode='a', newline='', encoding="utf-8") as file:
         writer(file).writerow(row)
 
-def loadJson(path: str) -> dict:
+def loadJson(path:Path) -> dict:
     with open(path, mode='r', encoding="utf-8") as file:
         return load(file)
 
-def updateJson(path: str, dic: dict):
+def updateJson(path: Path, dic: dict, replace=False):
     old = loadJson(path)
 
-    if any(key in old for key in dic.keys()):
-        raise ValueError("at least on key already in dict!")
+    if replace and any(key not in old for key in dic.keys()):
+        raise ValueError("key not in dict!")
+    elif not replace and any(key in old for key in dic.keys()):
+        raise ValueError("key already in dict!")
 
     with open(path, mode="w", encoding="utf-8") as file:
         dump(old | dic, file, indent=4, ensure_ascii=False)
 
-def gen_UID(path: str, prefix: str) -> str:
+def gen_UID(path: Path, prefix: str) -> str:
     ids = list(read_csv(path)["ID/Passwort"])
     while True:
         new_id = f"{prefix}{randint(100, 999)}"
@@ -69,6 +72,8 @@ class AuthenticationService:
     def __init__(self):
         self.username = None
 
+    def update_password(self, new_password: str):
+        updateJson(paths["passwords"], {self.username: new_password}, replace=True)
 
     def check_login(self, username: str, password: str) -> bool:
         if mcheck(password, loadJson(paths["passwords"])[username]):
