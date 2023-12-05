@@ -45,9 +45,24 @@ def gen_UID(path: str, prefix: str) -> str:
             return new_id
 
 
+def add_doctor(self, doctor_data: dict):
+    updateJson(paths["passwords"], {doctor_data["username"]: mhash(doctor_data["password"])})
+    updateJson(paths["doctors"]["free"], {doctor_data["username"]: doctor_data["availability"]})
+
+    doctor_data["password"] = gen_UID(paths["doctors"]["csv"], 'A')
+    doctor_data.pop("availability")
+    appendCSV(paths["doctors"]["csv"], doctor_data.values())
+
+
+def add_patient(self, patient_data: dict):
+    updateJson(paths["passwords"], {patient_data["username"]: mhash(patient_data["password"])})
+
+    patient_data["password"] = gen_UID(paths["patients"]["csv"], 'P')
+    appendCSV(paths["patients"]["csv"], patient_data.values())
+
+
 def username_exists(username: str) -> bool:
     return username in loadJson(paths["passwords"]).keys()
-
 
 
 class AuthenticationService:
@@ -60,19 +75,3 @@ class AuthenticationService:
             self.username = username
             return True
         return False
-
-
-    def add_doctor(self, doctor_data: dict):
-        updateJson(paths["passwords"], {doctor_data["username"]: mhash(doctor_data["password"])})
-        updateJson(paths["doctors"]["free"], {doctor_data["username"]: doctor_data["availability"]})
-
-        doctor_data["password"] = gen_UID(paths["doctors"]["csv"], 'A')
-        doctor_data.pop("availability")
-        appendCSV(paths["doctors"]["csv"], doctor_data.values())
-
-
-    def add_patient(self, patient_data: dict):
-        updateJson(paths["passwords"], {patient_data["username"]: mhash(patient_data["password"])})
-
-        patient_data["password"] = gen_UID(paths["patients"]["csv"], 'P')
-        appendCSV(paths["patients"]["csv"], patient_data.values())
