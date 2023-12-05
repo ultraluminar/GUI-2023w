@@ -3,7 +3,7 @@ import customtkinter as ctk
 
 from source.classes.customWidgets.intSpinbox import IntSpinbox
 from source.classes.timeSelector import TimeSelector
-from source.auth_util import username_exists
+from source.auth_util import username_exists, add_patient, add_doctor
 
 class RegisterFormFrame(ctk.CTkTabview):
     def __init__(self, master):
@@ -150,7 +150,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         # create name with adress word
         name = f"{address} {name}"
 
-        self.auth_service.add_patient({
+        add_patient({
             "username": username,
             "name": name,
             "password": password,
@@ -224,7 +224,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         # create name with adress word
         name = f"{address} Dr. {name}"
         
-        self.auth_service.add_doctor({
+        add_doctor({
             "username": username,
             "name": name,
             "password": password,
