@@ -3,8 +3,7 @@ from json import dump
 from dateutil.rrule import rrule, WEEKLY
 from warnings import catch_warnings
 
-from source.auth_util import mhash
-
+from auth_util import mhash
 
 path_data = "data"
 path_excel = "data/data.xlsx"
