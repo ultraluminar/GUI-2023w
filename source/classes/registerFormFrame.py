@@ -34,7 +34,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.insurance_private = tk.BooleanVar(value=False)
         self.insurance_by_law = tk.BooleanVar(value=False)
         self.insurance_voluntarily = tk.BooleanVar(value=False)
-        self.availability: dict = {}
+        self.availability: list = []
 
         # widgets
         # patient tab
@@ -62,7 +62,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.doctor_name_entry = ctk.CTkEntry(self.tab("als Zahnarzt"), width=self.input_width, placeholder_text="Nachname")
         self.doctor_password_entry = ctk.CTkEntry(self.tab("als Zahnarzt"), width=self.input_width, placeholder_text="Passwort", show="•")
         self.doctor_confirm_password_entry = ctk.CTkEntry(self.tab("als Zahnarzt"), width=self.input_width, placeholder_text="Passwort bestätigen", show="•")
-        
+
         self.doctor_adress_male = ctk.CTkRadioButton(self.tab("als Zahnarzt"), text="Herr", value="Herr", variable=self.sex)
         self.doctor_adress_female = ctk.CTkRadioButton(self.tab("als Zahnarzt"), text="Frau", value="Frau", variable=self.sex)
 
@@ -193,12 +193,13 @@ class RegisterFormFrame(ctk.CTkTabview):
         default_color = ("#979DA2", "#565B5E")
         
         entry_map = [
-            [self.doctor_username_entry, username == "", "no username given"],
-            [self.doctor_name_entry, name == "", "no name given"],
-            [self.doctor_password_entry, password == "", "no password given"],
-            [self.doctor_confirm_password_entry, confirm_password == "", "confirm your password"],
-            [self.doctor_confirm_password_entry, confirm_password != password, "your confirmation password does not match"],
-            [self.doctor_insurance_checkbox_private, not any(insurances), "choose at least one type of insurance"]]
+            [self.doctor_username_entry,             username == "",                "no username given"],
+            [self.doctor_name_entry,                 name == "",                    "no name given"],
+            [self.doctor_password_entry,             password == "",                "no password given"],
+            [self.doctor_confirm_password_entry,     confirm_password == "",        "confirm your password"],
+            [self.doctor_confirm_password_entry,     confirm_password != password,  "your confirmation password does not match"],
+            [self.doctor_insurance_checkbox_private, not any(insurances),           "choose at least one type of insurance"],
+            [self.doctor_time_selector_button,       self.availability == [],       "select ure availability schedule"]]
         
         error_entrys = []
         for entry, is_problem, error_string in entry_map:
@@ -227,7 +228,8 @@ class RegisterFormFrame(ctk.CTkTabview):
             "password": password,
             "insurance_private": insurance_private,
             "insurance_by_law": insurance_by_law,
-            "insurance_voluntarily": insurance_voluntarily
+            "insurance_voluntarily": insurance_voluntarily,
+            "availability": self.availability
         })
         print("doctor added")
         
@@ -260,7 +262,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         else:
             self.time_selector_window.focus()
         
-    def doctor_time_selector_saved(self, availability: dict):
+    def doctor_time_selector_saved(self, availability: list):
         self.availability = availability
         
         # visual feedback

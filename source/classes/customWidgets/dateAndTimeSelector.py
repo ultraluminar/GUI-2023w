@@ -9,7 +9,7 @@ class DateAndTimeSelector(ctk.CTkFrame):
         
         # fonts
         self.font20 = ctk.CTkFont(family="Segoe UI", size=20, weight="bold")
-        
+
         # variables
         self.day_from = tk.StringVar()
         self.day_to = tk.StringVar()
@@ -44,7 +44,7 @@ class DateAndTimeSelector(ctk.CTkFrame):
         # comboboxes
         self.time_from_combobox = ctk.CTkComboBox(self.time_frame, width=100, values=self.hours, variable=self.time_from, state="readonly")
         self.time_to_combobox = ctk.CTkComboBox(self.time_frame, width=100, values=self.hours, variable=self.time_to, state="readonly")
-        
+
         # main widgets
         self.destroy_button = ctk.CTkButton(self, width=32, fg_color=self.destroy_color, hover_color=self.destroy_hover_color, text="x", command=lambda: self.nametowidget(".!timeselector").destroy_selector(self))
 
@@ -94,7 +94,7 @@ class DateAndTimeSelector(ctk.CTkFrame):
         if time_to and time_to not in new_values:
             self.time_to.set("")
 
-    def get(self) -> dict:
+    def get(self) -> str:
         default_color = ("#979DA2", "#565B5E")
         values =      [self.day_from.get(),    self.day_to.get(),    self.time_from.get(),    self.time_to.get()]
         combos_boxes = [self.day_from_combobox, self.day_to_combobox, self.time_from_combobox, self.time_to_combobox]

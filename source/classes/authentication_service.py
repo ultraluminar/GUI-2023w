@@ -6,8 +6,8 @@ from csv import writer
 from json import load, dump
 
 # variables
-patients_file_path = "source/data/patients.csv"
-password_file_path = "source/data/pwd.json"
+patients_file_path = "data/patients.csv"
+password_file_path = "data/pwd.json"
 
 
 def mhash(plain: str) -> str:
@@ -18,10 +18,16 @@ def mcheck(user: str, pwd: str) -> bool:
     return checkpw(user.encode(), pwd.encode())
 
 
-def load_passwords():
+def load_passwords() -> dict[str, str]:
     # loading password.json in as dict
     with open(password_file_path, mode="r", encoding="utf-8") as filestream:
         return load(filestream)
+
+def add_password(username: str, password: str):
+    passwords: dict = load_passwords()
+    passwords[username] = mhash(password)
+    with open(password_file_path, mode="w", encoding="utf-8") as file:
+        dump(passwords, file, indent=4, ensure_ascii=False)
 
 class AuthenticationService:
     def __init__(self):
@@ -35,14 +41,14 @@ class AuthenticationService:
         self.username = username
         return True
 
+    def add_doctor(self, doctor_data: dict):
+        add_password(doctor_data["username"], doctor_data["password"])
+        df = read_csv(patients_file_path)
+        print(df.to_string())
 
 
     def add_patient(self, patient_data: dict):
-        passwords: dict = load_passwords()
-
-        passwords[patient_data["username"]] = mhash(patient_data["password"])
-        with open(password_file_path, mode="w", encoding="utf-8") as filestream:
-            dump(passwords, filestream, indent=4, ensure_ascii=False)
+        add_password(patient_data["username"], patient_data["password"])
 
         patient_data["password"] = self.generate_unique_patient_id()
         with open(patients_file_path, mode='a', newline='', encoding="utf-8") as file:

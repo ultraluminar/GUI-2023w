@@ -1,8 +1,8 @@
-from dateutil.rrule import rrule, rrulestr, weekday, WEEKLY, MO, TU, WE, TH, FR
+from dateutil.rrule import rrule, rrulestr, weekday, WEEKLY, MO, TU, WE, TH, FR, rul
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, time
 
-today = datetime.today()
+today = datetime.today() + relativedelta(weekday=MO(+1))
 in_a_week = today + relativedelta(weeks=1)
 woche = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"]
 

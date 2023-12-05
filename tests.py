@@ -18,6 +18,9 @@ class TestApp(unittest.TestCase):
     async def _start_app(self):
         self.app.mainloop()
 
+    def getname(self, string):
+        return self.app.nametowidget(string)
+
     def setUp(self):
         self.app = App()
         with self.assertWarns(RuntimeWarning) as warn:
@@ -29,6 +32,24 @@ class TestApp(unittest.TestCase):
     def tearDown(self):
         self.app.quit()
 
+
+    def test_register(self):
+        name_register = ".!ctkframe2.!canvas.!mainregisterframe.!registerformframe"
+        name_selector = ".!timeselector.!ctkframe.!canvas.!ctkscrollableframe.!dateandtimeselector"
+
+        for end, text in zip(["", 2, 3, 4], ["Benutzername", "Name", "Passwort", "Passwort"]):
+            self.getname(f"{name_register}.!ctkframe2.!ctkentry{end}").insert(0, text)
+
+        self.getname(f"{name_register}.!ctkframe2.!ctkbutton").invoke()
+        for frame, box, text in zip(["", "", 2, 2], ["", 2, "", 2], ["Mo", "Fr", "9:00 Uhr", "12:00 Uhr"]):
+            self.getname(f"{name_selector}.!ctkframe{frame}.!ctkcombobox{box}").set(text)
+
+        self.getname(f"{name_register}.!ctkframe2.!ctkcheckbox").select()
+        self.getname(f".!timeselector.!ctkbutton2").invoke()
+
+        self.getname(f"{name_register}.!ctkframe2.!ctkbutton2").invoke()
+
+        #self.app.mainloop()
 
     def test_login(self):
         username_entry: ctk.CTkEntry = self.app.nametowidget(".!ctkframe.!canvas.!mainloginframe.!loginformframe.!ctkentry")
