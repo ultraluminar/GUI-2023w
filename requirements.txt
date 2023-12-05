@@ -3,4 +3,6 @@ customtkinter
 openpyxl
 packaging
 pandas
+pillow
+pip-chill
 tkcalendar
