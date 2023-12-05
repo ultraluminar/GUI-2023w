@@ -76,7 +76,7 @@ with ExcelToCSV(sheet="Zahnärzte", header=2, cols="B:E", csv_name="doctors") as
 
 with ExcelToCSV(sheet="Stamm-Patienten", header=3, cols="C:G", csv_name="patiens") as df_patients:
     df_patients.rename(columns={"Patient": "Name"}, inplace=True)
-    df_doctors["Username"] = df_doctors["Name"]
+    df_patients["Username"] = df_patients["Name"]
     password_hashes |= parsePasswords(df_patients)
     df_patients = df_patients[["Username", "Name", "ID/Passwort", "Krankenkassenart", "Dentale Problematik", "Anzahl zu behandelnder Zähne"]]
 
