@@ -199,7 +199,8 @@ class RegisterFormFrame(ctk.CTkTabview):
             [self.doctor_confirm_password_entry,     confirm_password == "",        "confirm your password"],
             [self.doctor_confirm_password_entry,     confirm_password != password,  "your confirmation password does not match"],
             [self.doctor_insurance_checkbox_private, not any(insurances),           "choose at least one type of insurance"],
-            [self.doctor_time_selector_button,       self.availability == [],       "select ure availability schedule"]]
+            [self.doctor_time_selector_button,       self.availability == [],       "select ure availability schedule"],
+            [self.doctor_username_entry, self.auth_service.username_exists(username), "username already exists"]]
         
         error_entrys = []
         for entry, is_problem, error_string in entry_map:
