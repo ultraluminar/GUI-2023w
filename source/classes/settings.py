@@ -5,7 +5,7 @@ class SettingsWindow(ctk.CTkToplevel):
         super().__init__()
         
         #variables
-        settings_width = 480
+        settings_width = 440
         settings_height = 400
         
         # initialize window
@@ -40,7 +40,7 @@ class SettingsWindow(ctk.CTkToplevel):
         
         # design subframe grid       
         self.design_label.grid(row=0, column=0, padx=20, pady=(15, 20))
-        self.design_frame_placeholder.grid(row=0, column=1, ipadx=142)
+        self.design_frame_placeholder.grid(row=0, column=1, ipadx=138)
         self.appearance_mode_optionemenu.grid(row=1, column=0, columnspan=2, pady=(0, 20))
         
         # password change subframe grid
