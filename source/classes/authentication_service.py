@@ -7,7 +7,9 @@ from json import load, dump
 
 # variables
 patients_file_path = "data/patients.csv"
+doctors_file_path = "data/doctors.csv"
 password_file_path = "data/pwd.json"
+data_doctors_path = "data/data_doctors.json"
 
 
 def mhash(plain: str) -> str:
@@ -43,8 +45,19 @@ class AuthenticationService:
 
     def add_doctor(self, doctor_data: dict):
         add_password(doctor_data["username"], doctor_data["password"])
-        df = read_csv(patients_file_path)
-        print(df.to_string())
+
+        doctor_data["password"] = "balls"  # self.generate_unique_doctor_id()
+        with open(doctors_file_path, mode='a', newline='', encoding="utf-8") as file:
+            writing = writer(file)
+            writing.writerow(list(doctor_data.values())[:-1])
+
+        with open(data_doctors_path, mode="r", encoding="utf-8") as file:
+            dic: dict[str, list[str]] = load(file)
+
+        dic["username"] = doctor_data["availability"]
+
+        with open(data_doctors_path, mode="w", encoding="utf-8") as file:
+            dump(dic, file, indent=4, ensure_ascii=False)
 
 
     def add_patient(self, patient_data: dict):
