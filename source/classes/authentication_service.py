@@ -1,3 +1,4 @@
+from pathlib import Path
 from pandas import read_csv
 from random import randint
 from bcrypt import hashpw, checkpw, gensalt
