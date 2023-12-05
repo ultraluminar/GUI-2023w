@@ -73,7 +73,7 @@ class AuthenticationService:
         self.username = None
 
     def update_password(self, new_password: str):
-        updateJson(paths["passwords"], {self.username: new_password}, replace=True)
+        updateJson(paths["passwords"], {self.username: mhash(new_password)}, replace=True)
 
     def check_login(self, username: str, password: str) -> bool:
         if mcheck(password, loadJson(paths["passwords"])[username]):
