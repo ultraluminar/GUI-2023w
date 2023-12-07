@@ -21,7 +21,7 @@ class App(ctk.CTk):
         super().__init__()
 
 
-        self.title("login")
+        self.title("Zahn Planer")
 
         self.screen_width = self.winfo_screenwidth()
         self.screen_height = self.winfo_screenheight()
