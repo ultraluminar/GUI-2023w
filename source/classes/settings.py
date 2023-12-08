@@ -1,5 +1,7 @@
 import customtkinter as ctk
 
+from PIL import ImageTk, Image
+    
 class SettingsWindow(ctk.CTkToplevel):
     def __init__(self):
         super().__init__()
@@ -7,6 +9,11 @@ class SettingsWindow(ctk.CTkToplevel):
         #variables
         settings_width = 440
         settings_height = 400
+        
+        # window icon
+        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_logo_dark.png", "r"))
+        self.wm_iconbitmap()
+        self.after(300, lambda: self.iconphoto(False, self.iconpath))
         
         # initialize window
         self.geometry(f"{settings_width}x{settings_height}")

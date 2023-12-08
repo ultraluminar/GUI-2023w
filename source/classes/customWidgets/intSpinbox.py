@@ -1,13 +1,20 @@
 import tkinter as tk
 import customtkinter as ctk
 
+from PIL import Image
+
 class IntSpinbox(ctk.CTkFrame):
-    def __init__(self, master, width: int = 100, height: int = 32, step: int = 1, from_: int = 1, to: int = 32):
+    def __init__(self, master, width: int = 140, height: int = 32, step: int = 1, from_: int = 1, to: int = 32):
         super().__init__(master=master, width=width, height=height)
 
         self.step = step
         self.from_ = from_
         self.to = to
+        
+        # load icon images
+        image_path = "assets/"
+        self.plus_image = ctk.CTkImage(Image.open(f"{image_path}plus.png"), size=(10, 10))
+        self.minus_image = ctk.CTkImage(Image.open(f"{image_path}minus.png"), size=(10, 10))
 
         self.entryInt = tk.IntVar(value=1)
 
@@ -17,11 +24,11 @@ class IntSpinbox(ctk.CTkFrame):
         self.grid_columnconfigure(1, weight=1)  # entry expands
 
         self.subtract_button = ctk.CTkButton(
-            self, text="-", width=height-6, height=height-6, command=self.subtract)
+            self, image=self.minus_image, text="", width=height-6, height=height-6, command=self.subtract)
         self.entry = ctk.CTkEntry(
             self, width=width-(2*height), height=height-6, border_width=0, textvariable=self.entryInt, state="disabled")
         self.add_button = ctk.CTkButton(
-            self, text="+", width=height-6, height=height-6, command=self.add)
+            self, image=self.plus_image, text="", width=height-6, height=height-6, command=self.add)
 
         self.subtract_button.grid(row=0, column=0, padx=(3, 0), pady=3)
         self.entry.grid(row=0, column=1, columnspan=1, padx=3, pady=3, sticky="ew")
