@@ -24,15 +24,10 @@ class ChangeHeaderColor:
 
         self.HWND = detect(window)
 
-        if color == "transparent":
-            ChangeDWMAccent(self.HWND, 30, 2)
-            return
-        else:
-            ChangeDWMAccent(self.HWND, 30, 0)
+        ChangeDWMAccent(self.HWND, 30, (2 if color == "transparent" else 0))
 
         self.color = DWORD(int(convert_color(color), base=16))
-        self.attrib = 35
-        ChangeDWMAttrib(self.HWND, self.attrib, self.color)
+        ChangeDWMAttrib(self.HWND, 35, self.color)
 
 
 class ChangeBorderColor:
