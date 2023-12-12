@@ -1,16 +1,27 @@
 from pathlib import Path
 from pandas import read_csv
-from random import randint
+from random import randint, choices
 from bcrypt import hashpw, checkpw, gensalt
 from csv import writer
 from json import load, dump
+
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
 # variables
 paths = {
     "passwords": Path("data/pwd.json"),
     "patients": {"csv": Path("data/patients.csv")},
     "doctors": {"csv": Path("data/doctors.csv"),
-                "free": Path("data/doctors_free.json")}}
+                "free": Path("data/doctors_free.json"),
+                "otp": Path("data/otp_token.json")}
+}
+
+alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+
+
+def random_chars(n: int) -> str:
+    return "".join(choices(population=alphabet, k=n))
 
 def mhash(plain: str) -> str:
     # wenig rounds da wir nicht wirklich security brauchen
@@ -25,7 +36,7 @@ def appendCSV(path: Path, row: iter):
     with open(path, mode='a', newline='', encoding="utf-8") as file:
         writer(file).writerow(row)
 
-def loadJson(path:Path) -> dict:
+def loadJson(path: Path) -> dict:
     with open(path, mode='r', encoding="utf-8") as file:
         return load(file)
 
@@ -71,6 +82,9 @@ def username_exists(username: str) -> bool:
 class AuthenticationService:
     def __init__(self):
         self.username = None
+        self.used = True
+        self.code: str = ""
+        self.expires: datetime = datetime.now()
 
     def update_password(self, new_password: str):
         updateJson(paths["passwords"], {self.username: mhash(new_password)}, replace=True)
@@ -83,3 +97,11 @@ class AuthenticationService:
         else:
             self.username = username
             return True
+
+    def generate_code(self):
+        self.code = random_chars(8)
+        self.expires = datetime.now() + timedelta(minutes=10)
+        self.used = False
+
+    def check_code(self, code: str):
+        return not self.used and code == self.code and self.expires < datetime.now()
