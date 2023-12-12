@@ -17,9 +17,14 @@ class LoginSidebar(ctk.CTkFrame):
                                        dark_image=Image.open(f"{image_path}zahn_logo_dark.png"), size=(26, 26))
         self.exit_image = ctk.CTkImage(light_image=Image.open(f"{image_path}logout_light.png"),
                                        dark_image=Image.open(f"{image_path}logout_dark.png"))
+        self.key_image = ctk.CTkImage(light_image=Image.open(f"{image_path}key_light.png"),
+                                       dark_image=Image.open(f"{image_path}key_dark.png"))
         
         # widgets
         self.logo_label = ctk.CTkLabel(self, text="  Zahn Planer", image=self.logo_image, compound="left", font=ctk.CTkFont(size=20, weight="bold"))
+        self.key_button = ctk.CTkButton(self, corner_radius=0, height=40, border_spacing=10, text="Admin",
+                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
+                                       image=self.key_image, anchor="w", command=self.quit)
         self.exit_button = ctk.CTkButton(self, corner_radius=0, height=40, border_spacing=10, text="Beenden",
                                          fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                          image=self.exit_image, anchor="w", command=self.quit)
@@ -30,5 +35,6 @@ class LoginSidebar(ctk.CTkFrame):
     
     def set_grid(self):
         self.logo_label.grid(row=0, column=0, padx=15, pady=(20, 10))
-        self.exit_button.grid(row=2, column=0, sticky="ew")
-        self.copyright_label.grid(row=3, column=0, padx=0)
+        self.key_button.grid(row=2, column=0, sticky="ew")
+        self.exit_button.grid(row=3, column=0, sticky="ew")
+        self.copyright_label.grid(row=4, column=0, padx=0)
