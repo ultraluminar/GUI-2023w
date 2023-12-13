@@ -1,12 +1,19 @@
 import customtkinter as ctk
 
+from PIL import ImageTk, Image
+    
 class SettingsWindow(ctk.CTkToplevel):
     def __init__(self):
         super().__init__()
         
         #variables
-        settings_width = 480
+        settings_width = 440
         settings_height = 400
+        
+        # window icon
+        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_logo_dark.png", "r"))
+        self.wm_iconbitmap()
+        self.after(300, lambda: self.iconphoto(False, self.iconpath))
         
         # initialize window
         self.geometry(f"{settings_width}x{settings_height}")
@@ -40,7 +47,7 @@ class SettingsWindow(ctk.CTkToplevel):
         
         # design subframe grid       
         self.design_label.grid(row=0, column=0, padx=20, pady=(15, 20))
-        self.design_frame_placeholder.grid(row=0, column=1, ipadx=142)
+        self.design_frame_placeholder.grid(row=0, column=1, ipadx=138)
         self.appearance_mode_optionemenu.grid(row=1, column=0, columnspan=2, pady=(0, 20))
         
         # password change subframe grid

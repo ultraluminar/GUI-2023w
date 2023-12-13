@@ -1,6 +1,8 @@
 import customtkinter as ctk
 import logging
 
+from source.auth_util import username_exists
+
 class LoginFormFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master=master)
@@ -32,7 +34,7 @@ class LoginFormFrame(ctk.CTkFrame):
 
         entry_map = [
             [self.username_entry, username == "", "please give a username"],
-            [self.username_entry, not self.auth_service.username_exists(username), "username doesn't exist"],
+            [self.username_entry, not username_exists(username), "username doesn't exist"],
             [self.password_entry, password == "", "please give a password"],
             [self.password_entry, not self.auth_service.check_login(username, password), "password incorrect"]
         ]
@@ -54,3 +56,6 @@ class LoginFormFrame(ctk.CTkFrame):
         self.nametowidget(".!ctkframe.!canvas.!mainloginframe").grid_forget()
         self.nametowidget(".!loginsidebar").grid_forget()
         self.nametowidget(".").main_grid()
+        
+        # delete password entry for privacy
+        self.password_entry.delete(0, "end")

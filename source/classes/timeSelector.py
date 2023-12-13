@@ -1,7 +1,5 @@
 import customtkinter as ctk
 
-from dateutil.relativedelta import weekday
-
 from source.classes.customWidgets.dateAndTimeSelector import DateAndTimeSelector
 
 
@@ -58,11 +56,14 @@ class TimeSelector(ctk.CTkToplevel):
         self.destroy()
     
     def save(self):
-        dicts = [selector.get() for selector in self.selectors]
-        week = [weekday(x) for x in range(5)]
+        rules = [selector.get() for selector in self.selectors]
+        
+        # dont save when inputs faulty
+        if any(rule is None for rule in rules): 
+            return
 
-        ranges_combined = {key: [dic[key] for dic in dicts if key in dic] for key in week}
-        print(ranges_combined)
+        self.nametowidget(".!ctkframe2.!canvas.!mainregisterframe.!registerformframe").doctor_time_selector_saved(rules)
+        self.withdraw()
     
     def add_selector(self):
         self.selectors.append(DateAndTimeSelector(self.frame))

@@ -1,13 +1,6 @@
 # TODO this whole file
-Parsing Excel Data:
-  also add Doctor Username password to pwd.json
-  parsing Behandlungszeiten to usable data
-
 Registration:
   Users:
     choose multiple dental problems
   Doctors:
     implement master or one-time-password
-
-AuthService:
-  add function "addDoctor"

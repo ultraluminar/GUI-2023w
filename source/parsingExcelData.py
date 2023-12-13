@@ -3,8 +3,7 @@ from json import dump
 from dateutil.rrule import rrule, WEEKLY
 from warnings import catch_warnings
 
-from classes.authentication_service import mhash
-
+from auth_util import mhash
 
 path_data = "data"
 path_excel = "data/data.xlsx"
@@ -17,7 +16,7 @@ class ExcelToCSV:
         self.csv_name = csv_name
 
     def __enter__(self):
-        return self.df
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_type is None:
@@ -25,18 +24,18 @@ class ExcelToCSV:
 
 
 def parseKrankenKassenArt(inplace: bool) -> None:
-    for index, row in df_doctors.iterrows():
-        behandelt = row["behandelt"]
+    for index, row in doctors.df.iterrows():
+        behandelt: str = row["behandelt"]
 
         with catch_warnings(category=FutureWarning, action="ignore"):
             for art in ["privat", "gesetzlich", "freiwillig gesetzlich"]:
-                df_doctors.at[index, art] = art in behandelt
+                doctors.df.at[index, art] = art in behandelt
 
-def parseBehandlungsZeiten() -> dict:
+def parseBehandlungsZeiten() -> dict[str, list[str]]:
     kuerzel = ["Mo", "Di", "Mi", "Do", "Fr"]
 
     data_doctors = {}
-    for _, row in df_doctors.iterrows():
+    for _, row in doctors.df.iterrows():
         zeiten_string: str = row["Behandlungszeiten"]
         rules = []
 
@@ -49,7 +48,7 @@ def parseBehandlungsZeiten() -> dict:
                 days = range(start, stop+1)
             else:
                 start, stop = sub.split('-')
-                hours = range(int(start), int(stop)+1)
+                hours = range(int(start), int(stop))  # exclusive
                 rule = rrule(freq=WEEKLY, byweekday=days, byhour=hours, byminute=0, bysecond=0)
                 rules += [str(rule).split("\n")[1]]
 
@@ -59,28 +58,30 @@ def parseBehandlungsZeiten() -> dict:
 
 
 def parseDentaleProblematik(inplace: bool) -> None:
-    for index, row in df_costs.loc[df_costs["Dentale Problematik"].notna()].iterrows():
-        df_costs.loc[[index + 1, index + 2], "Dentale Problematik"] = row["Dentale Problematik"]
+    for index, row in costs.df.loc[costs.df["Dentale Problematik"].notna()].iterrows():
+        costs.df.loc[[index + 1, index + 2], "Dentale Problematik"] = row["Dentale Problematik"]
 
 def parsePasswords(df) -> dict:
     return {row["Name"]: mhash(row["ID/Passwort"]) for _, row in df.iterrows()}
 
 
-with ExcelToCSV(sheet="Zahnärzte", header=2, cols="B:E", csv_name="doctors") as df_doctors:
+with ExcelToCSV(sheet="Zahnärzte", header=2, cols="B:E", csv_name="doctors") as doctors:
     parseKrankenKassenArt(inplace=True)
     behandlungszeiten = parseBehandlungsZeiten()
-    df_doctors.rename(columns={"Zahnarzt": "Name"}, inplace=True)
-    password_hashes |= parsePasswords(df_doctors)
-    df_doctors = df_doctors[["Name", "ID/Passwort", "behandelt", "Behandlungszeiten", "privat", "gesetzlich", "freiwillig gesetzlich"]]
+    doctors.df.rename(columns={"Zahnarzt": "Name"}, inplace=True)
+    doctors.df["Username"] = doctors.df["Name"]
+    password_hashes |= parsePasswords(doctors.df)
+    doctors.df = doctors.df[["Username", "Name", "ID/Passwort", "privat", "gesetzlich", "freiwillig gesetzlich"]]
 
-with ExcelToCSV(sheet="Stamm-Patienten", header=3, cols="C:G", csv_name="patiens") as df_patients:
-    df_patients.rename(columns={"Patient": "Name"}, inplace=True)
-    password_hashes |= parsePasswords(df_patients)
-    df_patients = df_patients[["Name", "ID/Passwort", "Krankenkassenart", "Dentale Problematik", "Anzahl zu behandelnder Zähne"]]
+with ExcelToCSV(sheet="Stamm-Patienten", header=3, cols="C:G", csv_name="patients") as patients:
+    patients.df.rename(columns={"Patient": "Name"}, inplace=True)
+    patients.df["Username"] = patients.df["Name"]
+    password_hashes |= parsePasswords(patients.df)
+    patients.df = patients.df[["Username", "Name", "ID/Passwort", "Krankenkassenart", "Dentale Problematik", "Anzahl zu behandelnder Zähne"]]
 
-with ExcelToCSV(sheet="Kosten und Behandlungsdauer", header=3, cols="B:G", csv_name="costs") as df_costs:
+with ExcelToCSV(sheet="Kosten und Behandlungsdauer", header=3, cols="B:G", csv_name="costs") as costs:
     parseDentaleProblematik(inplace=True)
-    df_costs.rename(columns={"Unnamed: 5": "gesetzlicher Anteil", "Unnamed: 6": "privater Anteil"}, inplace=True)
+    costs.df.rename(columns={"Unnamed: 5": "gesetzlicher Anteil", "Unnamed: 6": "privater Anteil"}, inplace=True)
 
 with open(f"{path_data}/pwd.json", mode="w", encoding="utf-8") as file:
     dump(password_hashes, file, indent=4, ensure_ascii=False)

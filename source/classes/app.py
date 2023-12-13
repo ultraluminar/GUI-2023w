@@ -7,7 +7,9 @@ from source.classes.login_sidebar import LoginSidebar
 from source.classes.main_sidebar import MainSidebar
 from source.classes.tmp_main import Main
 
-from source.classes.authentication_service import AuthenticationService
+from source.auth_util import AuthenticationService
+
+from PIL import ImageTk, Image
 
 ctk.set_appearance_mode("system")
 ctk.set_default_color_theme("blue")
@@ -19,7 +21,7 @@ class App(ctk.CTk):
         super().__init__()
 
 
-        self.title("login")
+        self.title("Zahn Planer")
 
         self.screen_width = self.winfo_screenwidth()
         self.screen_height = self.winfo_screenheight()
@@ -30,6 +32,10 @@ class App(ctk.CTk):
         self.startpos_x = round((self.screen_width/2) - (self.initial_width/2))
         self.startpos_y = round((self.screen_height/2) - (self.initial_height/2))
 
+        # window icon
+        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_logo_dark.png", "r"))
+        self.wm_iconbitmap()
+        self.iconphoto(False, self.iconpath)
 
         self.geometry(f"{self.initial_width}x{self.initial_height}+{self.startpos_x}+{self.startpos_y}")
 
@@ -56,6 +62,7 @@ class App(ctk.CTk):
     def initial_grid(self):
         self.login_sidebar.grid(row=0, column=0, sticky="nsew")
         self.main_frame_login.grid(row=0, column=1, sticky="nsew")
+        self.bind("<Return>", self.nametowidget(".!ctkframe.!canvas.!mainloginframe.!loginformframe").try_login)
         
     def main_grid(self):
         # main
