@@ -54,4 +54,4 @@ def day1_part2():
     return all_of_em
 
 if __name__ == "__main__":
-    print(day1_part2())
+    print(f"day1: {day1_part1()}, {day1_part2()}")
