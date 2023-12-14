@@ -5,7 +5,7 @@ from source.classes.mainRegisterFrame import MainRegisterFrame
 from source.classes.login_sidebar import LoginSidebar
 
 from source.classes.main_sidebar import MainSidebar
-from source.classes.tmp_main import Main
+from source.classes.mainBookingFrame import MainBookingFrame
 
 from source.auth_util import AuthenticationService
 
@@ -51,7 +51,7 @@ class App(ctk.CTk):
         self.main_frame_register = MainRegisterFrame(self)
 
         self.main_sidebar = MainSidebar(self)
-        self.main_main = Main(self)
+        self.main_main = MainBookingFrame(self)
 
 
         self.initial_grid()
