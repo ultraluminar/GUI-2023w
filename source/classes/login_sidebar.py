@@ -38,7 +38,11 @@ class LoginSidebar(ctk.CTkFrame):
 
     def pop_up(self, event=None):
         if self.admin is None or not self.admin.winfo_exists():
-            self.admin = Admin(master=self)
+            self.admin = Admin(master=self)     # create window if its None or destroyed
+        elif self.admin.state() == "iconic":
+            self.admin.deiconify()    # bring back window if its minimized
+        else:
+            self.admin.focus()   
 
     def set_grid(self):
         self.logo_label.grid(row=0, column=0, padx=15, pady=(20, 10))
