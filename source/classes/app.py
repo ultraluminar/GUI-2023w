@@ -33,7 +33,7 @@ class App(ctk.CTk):
         self.startpos_y = round((self.screen_height/2) - (self.initial_height/2))
 
         # window icon
-        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_logo_dark.png", "r"))
+        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_logo_dark.png"))
         self.wm_iconbitmap()
         self.iconphoto(False, self.iconpath)
 

@@ -3,6 +3,7 @@ from pathlib import Path
 import customtkinter as ctk
 from tkinter import StringVar
 from datetime import datetime
+from PIL import Image, ImageTk
 
 from source.auth_util import loadJson
 
@@ -12,6 +13,15 @@ class Frame(ctk.CTkFrame):
         super().__init__(master=master)
         self.font = font
         self.auth_service = self.nametowidget(".").auth_service
+        
+        # window icon
+        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_logo_dark.png", "r"))
+        self.wm_iconbitmap()
+        self.after(300, lambda: self.iconphoto(False, self.iconpath))
+        
+        image_path = "assets/"
+        self.copy_image = ctk.CTkImage(light_image=Image.open(f"{image_path}copy_light.png"), size=(30, 30),
+                                       dark_image=Image.open(f"{image_path}copy_dark.png"))
 
         self.grid_rowconfigure((0, 1), weight=1)
         self.grid_columnconfigure((0, 1), weight=1)
@@ -21,7 +31,7 @@ class Frame(ctk.CTkFrame):
         self.label = ctk.CTkLabel(master=self, text="Current Code", font=self.font, width=250)
         self.entry = ctk.CTkEntry(master=self, textvariable=self.var, justify="center",
                                   state="readonly", font=self.font, width=250)
-        self.button = ctk.CTkButton(master=self, text="X", command=self.copy_code, width=50)
+        self.button = ctk.CTkButton(master=self, text="", image=self.copy_image, command=self.copy_code, width=50)
 
         self.label.grid(row=0, column=0, columnspan=2, sticky="nswe", pady=(10, 0), padx=10)
         self.entry.grid(row=1, column=0, sticky="nswe", pady=10, padx=(10, 0))
