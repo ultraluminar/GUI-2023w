@@ -48,7 +48,7 @@ if __name__ == "__main__":
     CTk = ctk.CTk()
     CTk.grid_columnconfigure(0, weight=1)
     CTk.grid_rowconfigure(0, weight=1)
-    rule = rrule(freq=WEEKLY, byweekday=(MO, TU, WE, FR), byhour=(8, 9, 11, 12, 18), byminute=0, bysecond=0)
+    rule = rrule(freq=WEEKLY, byweekday=(MO, TU, WE, TH, FR), byhour=(8, 9, 11, 12, 18), byminute=0, bysecond=0)
     view = WeekCalenderView(CTk, start_date=datetime.today(), rule=rule)
     view.grid(column=0, row=0, sticky="nsew")
     CTk.mainloop()
