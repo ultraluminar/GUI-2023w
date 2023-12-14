@@ -1,11 +1,7 @@
-from pathlib import Path
-
 import customtkinter as ctk
 from tkinter import StringVar
-from datetime import datetime
 
-from source.auth_util import loadJson
-
+from source.utils import center_window
 
 class Frame(ctk.CTkFrame):
     def __init__(self, master, font):
@@ -44,16 +40,7 @@ class Admin(ctk.CTkToplevel):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        self.screen_width = self.winfo_screenwidth()
-        self.screen_height = self.winfo_screenheight()
-
-        self.initial_width = 400
-        self.initial_height = 200
-
-        self.startpos_x = round((self.screen_width / 2) - (self.initial_width / 2))
-        self.startpos_y = round((self.screen_height / 2) - (self.initial_height / 2))
-
-        self.geometry(f"{self.initial_width}x{self.initial_height}+{self.startpos_x}+{self.startpos_y}")
+        center_window(self, 400, 200)
 
         self.font24 = ctk.CTkFont(family="Segoe UI", size=30, weight="bold")
 

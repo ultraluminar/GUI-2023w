@@ -8,6 +8,7 @@ from source.classes.main_sidebar import MainSidebar
 from source.classes.mainBookingFrame import MainBookingFrame
 
 from source.auth_util import AuthenticationService
+from source.utils import center_window
 
 from PIL import ImageTk, Image
 
@@ -23,21 +24,16 @@ class App(ctk.CTk):
 
         self.title("Zahn Planer")
 
-        self.screen_width = self.winfo_screenwidth()
-        self.screen_height = self.winfo_screenheight()
+        self.initial_width = round(self.winfo_screenwidth() * 0.75)
+        self.initial_height = round(self.winfo_screenheight() * 0.75)
 
-        self.initial_width = round(self.screen_width * 0.75)
-        self.initial_height = round(self.screen_height * 0.75)
-
-        self.startpos_x = round((self.screen_width/2) - (self.initial_width/2))
-        self.startpos_y = round((self.screen_height/2) - (self.initial_height/2))
+        center_window(self, self.initial_width, self.initial_height)
 
         # window icon
         self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_logo_dark.png", "r"))
         self.wm_iconbitmap()
         self.iconphoto(False, self.iconpath)
 
-        self.geometry(f"{self.initial_width}x{self.initial_height}+{self.startpos_x}+{self.startpos_y}")
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=0)
