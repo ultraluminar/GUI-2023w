@@ -10,11 +10,6 @@ class Frame(ctk.CTkFrame):
         self.font = font
         self.auth_service = self.nametowidget(".").auth_service
         
-        # window icon
-        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_logo_dark.png", "r"))
-        self.wm_iconbitmap()
-        self.after(300, lambda: self.iconphoto(False, self.iconpath))
-        
         image_path = "assets/"
         self.copy_image = ctk.CTkImage(light_image=Image.open(f"{image_path}copy_light.png"), size=(30, 30),
                                        dark_image=Image.open(f"{image_path}copy_dark.png"))
@@ -45,7 +40,12 @@ class Admin(ctk.CTkToplevel):
     def __init__(self, master):
         super().__init__(master=master)
 
-        self.title("")
+        self.title("Freischalt-code")
+        
+        # window icon
+        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_logo_dark.png", "r"))
+        self.wm_iconbitmap()
+        self.after(0, lambda: self.iconphoto(False, self.iconpath))
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)

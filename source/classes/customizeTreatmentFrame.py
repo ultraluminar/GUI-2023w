@@ -52,30 +52,37 @@ class TreatmentFrame(ctk.CTkFrame):
         self.high_filling_radio = ctk.CTkRadioButton(self.filling_selector_frame, text="an error occured", variable=self.filling, value="höchstwertig", command=self.update_bill)
         
         # billing subframe
+        # variables
+        cell_width = 200
+        # widgets
         self.bill_frame = ctk.CTkFrame(self)
         self.bill_frame.grid_columnconfigure((0, 2), weight=1)
         self.bill_heading_label = ctk.CTkLabel(self.bill_frame, text="Preis", font=self.font20)
         self.bill_sub_heading_label = ctk.CTkLabel(self.bill_frame, text="Hier können sie ihre Rechnung sehen.")
         
         self.bill_sub_frame = ctk.CTkFrame(self.bill_frame)
-        self.head_row_description_label = ctk.CTkLabel(self.bill_sub_frame, font=self.fat, text="Beschreibung")
-        self.head_row_single_cost_label = ctk.CTkLabel(self.bill_sub_frame, font=self.fat, text="Einzelpreis")
-        self.head_row_count_label = ctk.CTkLabel(self.bill_sub_frame, font=self.fat, text="Menge")
-        self.head_row_cost_label = ctk.CTkLabel(self.bill_sub_frame, font=self.fat, text="Betrag")
+        self.head_row_description_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat, text="Beschreibung")
+        self.head_row_single_cost_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat, text="Einzelpreis")
+        self.head_row_count_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat, text="Menge")
+        self.head_row_cost_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat, text="Betrag")
 
-        self.description_label = ctk.CTkLabel(self.bill_sub_frame)
-        self.single_cost_label = ctk.CTkLabel(self.bill_sub_frame)
-        self.count_label = ctk.CTkLabel(self.bill_sub_frame)
-        self.cost_label = ctk.CTkLabel(self.bill_sub_frame)
+        self.description_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width)
+        self.single_cost_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width)
+        self.count_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width)
+        self.cost_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat)
         
-        self.step_sum_label = ctk.CTkLabel(self.bill_sub_frame, text="Zwischensumme")
-        self.step_sum_value_label = ctk.CTkLabel(self.bill_sub_frame)
+        self.first_line = ctk.CTkFrame(self.bill_sub_frame, height=5, fg_color="gray50")
+        
+        self.step_sum_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, text="Zwischensumme")
+        self.step_sum_value_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat)
 
-        self.insurance_share_label = ctk.CTkLabel(self.bill_sub_frame)
-        self.insurance_share_value_label = ctk.CTkLabel(self.bill_sub_frame)
+        self.insurance_share_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width)
+        self.insurance_share_value_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat)
 
-        self.total_cost_label = ctk.CTkLabel(self.bill_sub_frame, text="Gesamtsumme")
-        self.total_cost_value_label = ctk.CTkLabel(self.bill_sub_frame)
+        self.second_line = ctk.CTkFrame(self.bill_sub_frame, height=5, fg_color="gray50")
+
+        self.total_cost_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, text="Gesamtsumme")
+        self.total_cost_value_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat)
         
         self.reset()
         
@@ -118,17 +125,21 @@ class TreatmentFrame(ctk.CTkFrame):
         
         self.description_label.grid(column=1, row=1, pady=(15,0), padx=(15, 0))
         self.single_cost_label.grid(column=2, row=1, pady=(15,0), padx=(5, 0))
-        self.count_label.grid(column=3, row=1, pady=(15,0), padx=(5, 0))
-        self.cost_label.grid(column=4, row=1, pady=(15,0), padx=(5, 15))
+        self.count_label.grid(column=3, row=1, pady=(15,10), padx=(5, 0))
+        self.cost_label.grid(column=4, row=1, pady=(15,10), padx=(5, 15))
+        
+        self.first_line.grid(column=3, row=2, columnspan=2, sticky="nsew", padx=5)
 
-        self.step_sum_label.grid(column=3, row=2, pady=(20, 0), padx=(5, 0))
-        self.step_sum_value_label.grid(column=4, row=2, pady=(20, 0), padx=(5, 15))
+        self.step_sum_label.grid(column=3, row=3, pady=(10, 0), padx=(5, 0))
+        self.step_sum_value_label.grid(column=4, row=3, pady=(10, 0), padx=(5, 15))
         
-        self.insurance_share_label.grid(column=3, row=3, pady=(10, 0), padx=(5, 0))
-        self.insurance_share_value_label.grid(column=4, row=3, pady=(10, 0), padx=(5, 15))
+        self.insurance_share_label.grid(column=3, row=4, pady=(10, 10), padx=(5, 0))
+        self.insurance_share_value_label.grid(column=4, row=4, pady=(10, 10), padx=(5, 15))
+
+        self.second_line.grid(column=3, row=5, columnspan=2, sticky="nsew", padx=5)
         
-        self.total_cost_label.grid(column=3, row=4, pady=(20, 15), padx=(5, 0))
-        self.total_cost_value_label.grid(column=4, row=4, pady=(20, 15), padx=(5, 15))
+        self.total_cost_label.grid(column=3, row=6, pady=(10, 15), padx=(5, 0))
+        self.total_cost_value_label.grid(column=4, row=6, pady=(10, 15), padx=(5, 15))
         
         self.bill_heading_label.grid(column=1, row=0, pady=(15, 0), sticky="nsew")
         self.bill_sub_heading_label.grid(column=1, row=1, pady=(0, 15), sticky="nsew")
