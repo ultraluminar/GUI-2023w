@@ -12,6 +12,8 @@ class TreatmentFrame(ctk.CTkFrame):
         self.total_teeth_count = None
         self.dental_problem = None
         self.insurance_share = None
+
+        self.fillings = ["normal", "hochwertig", "höchstwertig"]
         
         # fonts
         self.font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
@@ -25,7 +27,7 @@ class TreatmentFrame(ctk.CTkFrame):
 
         # teeth selector subframe
         # variables
-        self.teeth_count = tk.IntVar(value=0)
+        self.teeth_count = tk.IntVar(value=1)
         self.teeth_count_string = tk.StringVar(value="1")
         # widgets
         self.teeth_selector_frame = ctk.CTkFrame(self)
@@ -162,7 +164,7 @@ class TreatmentFrame(ctk.CTkFrame):
         
         # teeth selector frame
         self.teeth_selector_counter_label.configure(text="1")
-        self.teeth_count.set(1)
+        self.teeth_selector_slider.set(1)
         self.teeth_selector_to_label.configure(text=self.total_teeth_count)
         if self.total_teeth_count == 1:
             self.teeth_selector_slider.configure(from_=0, to=1, number_of_steps=1, state="disabled")
@@ -189,12 +191,7 @@ class TreatmentFrame(ctk.CTkFrame):
         
         
     def update_bill(self):
-        fillings = ["normal", "hochwertig", "höchstwertig"]
-        print(self.filling.get())
-        print(fillings.index(self.filling.get()))
-        print(self.cost[fillings.index(self.filling.get())])
-        
-        single_cost = self.cost[fillings.index(self.filling.get())]
+        single_cost = self.cost[self.fillings.index(self.filling.get())]
         
         self.description_label.configure(text=self.dental_problem)
         self.single_cost_label.configure(text=f"{single_cost}€")
