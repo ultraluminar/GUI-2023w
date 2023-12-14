@@ -1,6 +1,8 @@
-from dateutil.rrule import rrule, rrulestr, weekday, WEEKLY, MO, TU, WE, TH, FR
+from dateutil.rrule import rrule, WEEKLY, MO, TU, WE, TH, FR
 from dateutil.relativedelta import relativedelta
-from datetime import datetime, time
+from datetime import datetime
+from math import inf
+from pandas import DataFrame
 
 def test_rrule():
     today = datetime.today()
@@ -53,5 +55,39 @@ def day1_part2():
 
     return all_of_em
 
+beispiel_knoten = {
+    "a": {"c": 6},
+    "b": {"a": 4, "c": 1},
+    "c": {},
+    "d": {"a": 8, "c": 2},
+    "e": {"b": 7, "c": 5, "f": 1},
+    "f": {"e": 7, "d": 5, "h": 2},
+    "g": {"d": 5},
+    "h": {"e": 3}
+}
+
+def Dijkstras_Algorithm(map_knoten: dict[str, dict], current: str):
+    not_q = [current]
+    q = [*map_knoten.keys()]
+
+
+    df = DataFrame(columns=["q", "!q"] + q)
+    q.remove(current)
+    print(df)
+    exit()
+
+
+    idk = []
+    while len(q) > 0:
+        for knoten in not_q:
+            cur = map_knoten[knoten]
+            list_at_sub = [(value, sub) for sub in not_q if (value := cur.get(sub, 0))] + [(inf, '')]
+            idk.append((knoten, min(list_at_sub, key=lambda x: x[0])))
+
+        print(idk)
+
+        print(f"q: {"".join(sorted(q))}, not_q: {",".join(*sorted(not_q))}")
+        exit()
+
 if __name__ == "__main__":
-    print(f"day1: {day1_part1()}, {day1_part2()}")
+    Dijkstras_Algorithm(beispiel_knoten, "c")

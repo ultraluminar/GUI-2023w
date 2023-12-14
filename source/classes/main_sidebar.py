@@ -12,17 +12,17 @@ class MainSidebar(ctk.CTkFrame):
         self.grid_rowconfigure(3, weight=1)
         
         # load images (light and dark)
-        image_path = "assets/"
-        self.logo_image = ctk.CTkImage(light_image=Image.open(f"{image_path}zahn_logo_light.png"),
-                                       dark_image=Image.open(f"{image_path}zahn_logo_dark.png"), size=(26, 26))
-        self.home_image = ctk.CTkImage(light_image=Image.open(f"{image_path}home_light.png"),
-                                       dark_image=Image.open(f"{image_path}home_dark.png"))
-        self.event_image = ctk.CTkImage(light_image=Image.open(f"{image_path}event_light.png"),
-                                        dark_image=Image.open(f"{image_path}event_dark.png"))
-        self.settings_image = ctk.CTkImage(light_image=Image.open(f"{image_path}settings_light.png"),
-                                           dark_image=Image.open(f"{image_path}settings_dark.png"))
-        self.logout_image = ctk.CTkImage(light_image=Image.open(f"{image_path}logout_light.png"),
-                                         dark_image=Image.open(f"{image_path}logout_dark.png"))
+        image_path = "assets"
+        self.logo_image = ctk.CTkImage(light_image=Image.open(f"{image_path}/zahn_logo_light.png"),
+                                       dark_image=Image.open(f"{image_path}/zahn_logo_dark.png"), size=(26, 26))
+        self.home_image = ctk.CTkImage(light_image=Image.open(f"{image_path}/home_light.png"),
+                                       dark_image=Image.open(f"{image_path}/home_dark.png"))
+        self.event_image = ctk.CTkImage(light_image=Image.open(f"{image_path}/event_light.png"),
+                                        dark_image=Image.open(f"{image_path}/event_dark.png"))
+        self.settings_image = ctk.CTkImage(light_image=Image.open(f"{image_path}/settings_light.png"),
+                                           dark_image=Image.open(f"{image_path}/settings_dark.png"))
+        self.logout_image = ctk.CTkImage(light_image=Image.open(f"{image_path}/logout_light.png"),
+                                         dark_image=Image.open(f"{image_path}/logout_dark.png"))
         
         # widgets
         self.logo_label = ctk.CTkLabel(self, text="  Zahn Planer", image=self.logo_image, compound="left", font=ctk.CTkFont(size=20, weight="bold"))

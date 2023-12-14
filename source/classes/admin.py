@@ -13,37 +13,26 @@ class Frame(ctk.CTkFrame):
         self.font = font
         self.auth_service = self.nametowidget(".").auth_service
 
-        self.grid_rowconfigure((0, 1, 2), weight=1)
-        self.grid_columnconfigure((0, 1, 2), weight=1)
+        self.grid_rowconfigure((0, 1), weight=1)
+        self.grid_columnconfigure((0, 1), weight=1)
 
         self.var = StringVar(value="")
 
         self.label = ctk.CTkLabel(master=self, text="Current Code", font=self.font, width=250)
         self.entry = ctk.CTkEntry(master=self, textvariable=self.var, justify="center",
                                   state="readonly", font=self.font, width=250)
-        self.bar = ctk.CTkProgressBar(master=self, determinate_speed=0.1)
         self.button = ctk.CTkButton(master=self, text="X", command=self.copy_code, width=50)
 
         self.label.grid(row=0, column=0, columnspan=2, sticky="nswe", pady=(10, 0), padx=10)
-        self.entry.grid(row=1, column=0, sticky="nswe", pady=(10, 0), padx=(10, 0))
-        self.button.grid(row=1, column=1, sticky="nswe", pady=(10, 0), padx=(5, 10))
-        self.bar.grid(row=2, column=0, columnspan=2, sticky="nswe", pady=10, padx=10)
+        self.entry.grid(row=1, column=0, sticky="nswe", pady=10, padx=(10, 0))
+        self.button.grid(row=1, column=1, sticky="nswe", pady=10, padx=(5, 10))
 
-        self.updater()
+        self.auth_service.generate_code()
+        self.var.set(self.auth_service.code)
 
     def copy_code(self, event=None):
         self.clipboard_clear()
         self.clipboard_append(self.auth_service.code)
-
-    def updater(self):
-        self.auth_service.generate_code()
-        self.var.set(self.auth_service.code)
-
-        #second = datetime.now().second
-        #if second == 0:
-        #    self.var.set(self.otp.now())
-        #self.bar.set(second / 30)
-        #self.after(10_000, self.updater)
 
 
 class Admin(ctk.CTkToplevel):
