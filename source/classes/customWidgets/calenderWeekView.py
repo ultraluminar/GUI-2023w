@@ -29,8 +29,9 @@ class WeekCalenderView(ctk.CTkFrame):
         # widgets
         self.day_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, text=day) for day in self.day_shortnames]
         self.date_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, text=str(day)) for day in self.days]
-        self.event_buttons: list[list[ctk.CTkButton]] = [[ctk.CTkButton(self, text="", state="disabled") for _ in range(8, 18+1)] for _ in self.days]
-        
+        self.event_buttons: list[list[ctk.CTkButton]] = [[ctk.CTkButton(self, text="", state="disabled", fg_color="transparent") for _ in range(8, 18+1)] for _ in self.days]
+        for event in self.events:
+            self.event_buttons[event.weekday()][event.hour - 8].configure(state="normal", fg_color="lightblue")
         
         self.set_grid()
 
@@ -47,7 +48,7 @@ if __name__ == "__main__":
     CTk = ctk.CTk()
     CTk.grid_columnconfigure(0, weight=1)
     CTk.grid_rowconfigure(0, weight=1)
-    rule = rrule(freq=WEEKLY, byweekday=(MO, TU, WE, TH, FR), byhour=(8, 9, 10, 11, 12), byminute=0, bysecond=0)
+    rule = rrule(freq=WEEKLY, byweekday=(MO, TU, WE, FR), byhour=(8, 9, 11, 12, 18), byminute=0, bysecond=0)
     view = WeekCalenderView(CTk, start_date=datetime.today(), rule=rule)
     view.grid(column=0, row=0, sticky="nsew")
     CTk.mainloop()
