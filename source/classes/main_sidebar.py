@@ -68,7 +68,7 @@ class MainSidebar(ctk.CTkFrame):
             pass
         else:
             print("test")
-            self.nametowidget(".!settingswindow").destroy()
+            self.settings_window.destroy()
         self.grid_forget()
         self.nametowidget(".").main_main.grid_forget()
         self.nametowidget(".").initial_grid()
