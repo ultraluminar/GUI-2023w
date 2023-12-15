@@ -1,6 +1,6 @@
 from typing import Literal
-from datetime import time, date, timedelta
-from dateutil.relativedelta import weekday
+from datetime import time, date
+from dateutil.rrule import rrule
 
 event_model = {
     "arzt": {
@@ -17,7 +17,8 @@ event_model = {
 }
 
 availibility_model = {
-    "arzt": {
-        weekday: [(time, time), (time, time)]
-    }
+    "arzt": [
+        rrule, 
+        rrule
+    ]
 }
