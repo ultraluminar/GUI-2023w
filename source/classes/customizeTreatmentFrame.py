@@ -7,6 +7,8 @@ class TreatmentFrame(ctk.CTkFrame):
     def __init__(self, master: ctk.CTk):
         super().__init__(master=master)
         
+        # variables
+        self.auth_service = self.nametowidget(".").auth_service
         self.username = None
         self.cost = None
         self.total_teeth_count = None
@@ -25,6 +27,7 @@ class TreatmentFrame(ctk.CTkFrame):
         self.grid_rowconfigure(3, weight=1)
         self.main_heading_label = ctk.CTkLabel(self, text="Behandlung anpassen", font=self.font24)
         self.sub_heading_label = ctk.CTkLabel(self, text="Passen sie ihre nächste Behandlung auf ihre wünsche an!")
+        self.next_button = ctk.CTkButton(self, text="Weiter", command=self.next_page)
 
         # teeth selector subframe
         # variables
@@ -85,7 +88,7 @@ class TreatmentFrame(ctk.CTkFrame):
         self.second_line = ctk.CTkFrame(self.bill_sub_frame, height=5, fg_color="gray50")
 
         self.total_cost_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, text="Gesamtsumme")
-        self.total_cost_value_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat)
+        self.total_cost_value_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat, text_color="#00C957")
         
         self.reset()
         
@@ -100,7 +103,8 @@ class TreatmentFrame(ctk.CTkFrame):
         self.sub_heading_label.grid(column=0, row=1, columnspan=2, pady=(0, 20), sticky="new")
         self.teeth_selector_frame.grid(column=0, row=2, padx=(20, 10), sticky="nsew")
         self.filling_selector_frame.grid(column=1, row=2, padx=(0, 20), sticky="nsew")
-        self.bill_frame.grid(column=0, row=3, columnspan=2, padx=20, pady=(10, 20), sticky="nsew")
+        self.bill_frame.grid(column=0, row=3, columnspan=2, padx=20, pady=(10, 0), sticky="nsew")
+        self.next_button.grid(column=0, columnspan=3, row=4, pady=20, sticky="e", padx=(0, 20))
     
     def set_teeth_selector_grid(self):
         self.teeth_selector_counter_label.grid(column=2, row=0)
@@ -154,7 +158,6 @@ class TreatmentFrame(ctk.CTkFrame):
         self.update_bill()
         
     def reset(self):
-        self.auth_service = self.nametowidget(".").auth_service
         # self.username = self.auth_service.username
         self.username = "Frau Mertens"
         
@@ -207,5 +210,7 @@ class TreatmentFrame(ctk.CTkFrame):
         self.insurance_share_value_label.configure(text=f"-{single_cost * self.teeth_count.get() * self.insurance_share}")
         self.total_cost_value_label.configure(text=f"{(single_cost * self.teeth_count.get()) - (single_cost * self.teeth_count.get() * self.insurance_share)}")
         
-        
+    
+    def next_page(self):
+        self.master.next_page()
         

@@ -9,6 +9,7 @@ from source.classes.mainBookingFrame import MainBookingFrame
 
 from source.auth_util import AuthenticationService
 from source.utils import center_window
+from source.classes.tmp_main import Main
 
 from PIL import ImageTk, Image
 
@@ -46,8 +47,10 @@ class App(ctk.CTk):
         self.main_frame_login = MainLoginFrame(self)
         self.main_frame_register = MainRegisterFrame(self)
 
+        # logged in frames
         self.main_sidebar = MainSidebar(self)
-        self.main_main = MainBookingFrame(self)
+        self.home = Main(self)
+        self.booking = MainBookingFrame(self)
 
 
         self.initial_grid()
@@ -57,7 +60,13 @@ class App(ctk.CTk):
         self.main_frame_login.grid(row=0, column=1, sticky="nsew")
         self.bind("<Return>", self.main_frame_login.login_form_frame.try_login)
         
-    def main_grid(self):
-        # main
+    def home_grid(self):
+        # home page
         self.main_sidebar.grid(row=0, column=0, sticky="nsew")
-        self.main_main.grid(row=0, column=1, sticky="nsew")
+        self.home.grid(row=0, column=1, sticky="nsew")
+        
+    def booking_grid(self):
+        # booking page
+        self.home.grid_forget()
+        self.booking.grid(row=0, column=1, sticky="nsew")
+        self.booking.reset_progression_bar()
