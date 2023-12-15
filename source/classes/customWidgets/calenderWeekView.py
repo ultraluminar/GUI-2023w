@@ -1,4 +1,3 @@
-import tkinter as tk
 import customtkinter as ctk
 
 from dateutil.rrule import rrule, WEEKLY, MO, TU, WE, TH, FR, SA
@@ -44,7 +43,7 @@ class WeekCalenderView(ctk.CTkFrame):
         self.rule = rule
         self.day_shortnames: list[str] = ["MO", "DI", "MI", "DO", "FR"]
 
-        self.grid_columnconfigure(list(range(0, 4+1)), weight=1)
+        self.grid_columnconfigure(list(range(5)), weight=1)
         self.grid_rowconfigure(list(range(2, 12*4+1)), weight=1)
 
         self.hour_labels()
@@ -60,7 +59,7 @@ class WeekCalenderView(ctk.CTkFrame):
 
         e = Event(self, dt_start=start, dt_stop=stop)
         e.grid()
-        e2 = Event(self, d_start=start.date().replace(day=14), rule=rules[0])
+        e2 = Event(self, d_start=datetime.today().replace(day=14), rule=rules[0])
         e2.grid()
 
     def hour_labels(self):
