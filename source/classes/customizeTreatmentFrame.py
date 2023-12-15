@@ -205,8 +205,10 @@ class TreatmentFrame(ctk.CTkFrame):
         self.cost_label.configure(text=f"{single_cost * self.teeth_count.get()}€")
         
         self.step_sum_value_label.configure(text=f"{single_cost * self.teeth_count.get()}€")
-        self.insurance_share_value_label.configure(text=f"-{single_cost * self.teeth_count.get() * self.insurance_share}")
-        self.total_cost_value_label.configure(text=f"{(single_cost * self.teeth_count.get()) - (single_cost * self.teeth_count.get() * self.insurance_share)}")
+        insurance_share = single_cost * self.teeth_count.get() * self.insurance_share
+        self.insurance_share_value_label.configure(text=f"-{round(insurance_share, 2)}€")
+        total_cost_value = (single_cost * self.teeth_count.get()) - (single_cost * self.teeth_count.get() * self.insurance_share)
+        self.total_cost_value_label.configure(text=f"{round(total_cost_value, 2)}€")
         
     
     def next_page(self):
