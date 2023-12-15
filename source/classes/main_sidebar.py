@@ -70,12 +70,14 @@ class MainSidebar(ctk.CTkFrame):
             print("test")
             self.settings_window.destroy()
         self.grid_forget()
-        self.nametowidget(".").main_main.grid_forget()
+        self.nametowidget(".").home.grid_forget()
         self.nametowidget(".").initial_grid()
         
     def home(self):
-        pass
+        self.nametowidget(".").booking.grid_forget()
+        self.nametowidget(".").home_grid()
     
     def book_event(self):
-        pass
+        self.nametowidget(".").booking_grid()
+        
         
