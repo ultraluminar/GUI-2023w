@@ -53,8 +53,11 @@ class LoginFormFrame(ctk.CTkFrame):
             return
 
         logging.info("logged in")
+        # grid forget
         self.nametowidget(".!ctkframe.!canvas.!mainloginframe").grid_forget()
         self.nametowidget(".!loginsidebar").grid_forget()
+        # grid grid
+        self.nametowidget(".").main_sidebar_grid()
         self.nametowidget(".").home_grid()
         
         # delete password entry for privacy

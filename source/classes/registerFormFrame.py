@@ -190,9 +190,12 @@ class RegisterFormFrame(ctk.CTkTabview):
         
         # automatically log in
         if (self.auth_service.check_login(username=username, password=password)):
+            # grid forget
             self.nametowidget(".!ctkframe2.!canvas.!mainregisterframe").grid_forget()
             self.nametowidget(".").login_sidebar.grid_forget()
-            self.nametowidget(".").main_grid()
+            # grid
+            self.nametowidget(".").main_sidebar_grid()
+            self.nametowidget(".").home_grid()
         else: 
             raise PermissionError
         
@@ -270,9 +273,12 @@ class RegisterFormFrame(ctk.CTkTabview):
         
         # automatically log in
         if (self.auth_service.check_login(username=username, password=password)):
+            # grid forget
             self.nametowidget(".!ctkframe2.!canvas.!mainregisterframe").grid_forget()
             self.nametowidget(".").login_sidebar.grid_forget()
-            self.nametowidget(".").main_grid()
+            # grid
+            self.nametowidget(".").main_sidebar_grid()
+            self.nametowidget(".").home_grid()
         else:
             raise PermissionError
         

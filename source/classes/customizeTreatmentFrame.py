@@ -89,10 +89,9 @@ class TreatmentFrame(ctk.CTkFrame):
 
         self.total_cost_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, text="Gesamtsumme")
         self.total_cost_value_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat, text_color="#00C957")
+                
         
-        self.reset()
-        
-        
+        # grid
         self.set_teeth_selector_grid()
         self.set_filling_grid()
         self.set_bill_grid()
@@ -158,8 +157,7 @@ class TreatmentFrame(ctk.CTkFrame):
         self.update_bill()
         
     def reset(self):
-        # self.username = self.auth_service.username
-        self.username = "Frau Mertens"
+        self.username = self.auth_service.username
         
         df_patients = read_csv("data/patients.csv")
         df_costs = read_csv("data/costs.csv")

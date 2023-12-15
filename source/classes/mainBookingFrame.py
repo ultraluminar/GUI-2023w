@@ -24,7 +24,6 @@ class MainBookingFrame(ctk.CTkFrame):
             "hover_color": ("#2e4c63", "#243847")
         }
         self.progression: int = 0
-        self.current_state_old: int = 0
         self.current_state: int = 0
         
         self.columnconfigure(0, weight=1)
@@ -46,8 +45,7 @@ class MainBookingFrame(ctk.CTkFrame):
         self.main_frames: list[ctk.CTkFrame] = [TreatmentFrame(self), chooseDoctorsFrame(self)]
         self.set_progression_bar_grid()
         self.set_main_grid()
-        
-        self.reset_progression_bar()
+
         
     def set_main_grid(self):
         self.progression_bar_frame.grid(column=0, row=0, sticky="new", padx=20, pady=20)
@@ -59,30 +57,30 @@ class MainBookingFrame(ctk.CTkFrame):
         self.appointment_button.grid(column=3, row=0, sticky="w", pady=20, padx=5)
         self.finished_button.grid(column=4, row=0, sticky="w", pady=20, padx=5)
         
-    def reset_progression_bar(self):
+    def reset(self):
         self.progression = 0
         self.current_state = 0
-        self.current_state_old = 0
+        self.main_frames[0].reset()
         self.update_progression_bar()
         
     def update_progression_bar(self):
-        
+        # visual update buttons
         for index, button in enumerate(self.buttons):
             button.configure(**self.disabled_kwargs)
             if index <= self.progression:
                 button.configure(**self.enabled_kwargs)
             if index == self.current_state:
                 button.configure(**self.current_kwargs)
-        self.main_frames[self.current_state_old].grid_forget()
+        # ungrid frame
+        for frame in self.main_frames:
+            frame.grid_forget()
+        # grid new frame
         self.main_frames[self.current_state].grid(column=0, row=1, sticky="nsew", padx=20, pady=(0, 20))
-        self.current_state_old = self.current_state
-        print(self.progression, self.current_state, self.current_state_old)
         
     def next_page(self):
         if self.current_state == self.progression:
             self.progression = min(self.progression + 1, 3)
             self.main_frames[self.progression].reset()
-            print("reset")
         self.current_state = min(self.current_state + 1, 3)
         self.update_progression_bar()
         

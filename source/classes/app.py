@@ -56,17 +56,17 @@ class App(ctk.CTk):
         self.initial_grid()
 
     def initial_grid(self):
+        # login grid
         self.login_sidebar.grid(row=0, column=0, sticky="nsew")
         self.main_frame_login.grid(row=0, column=1, sticky="nsew")
         self.bind("<Return>", self.main_frame_login.login_form_frame.try_login)
         
-    def home_grid(self):
-        # home page
+    def main_sidebar_grid(self):
         self.main_sidebar.grid(row=0, column=0, sticky="nsew")
+        
+    def home_grid(self):
+        # home grid
         self.home.grid(row=0, column=1, sticky="nsew")
         
     def booking_grid(self):
-        # booking page
-        self.home.grid_forget()
         self.booking.grid(row=0, column=1, sticky="nsew")
-        self.booking.reset_progression_bar()

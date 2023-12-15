@@ -32,9 +32,9 @@ class chooseDoctorsFrame(ctk.CTkFrame):
         self.doctor_select_frames: list[ctk.CTkFrame] = []
         self.doctor_select_radio: list[ctk.CTkRadioButton] = []
         
-        self.reset()
         self.set_doctors_grid()
         self.set_main_grid()
+        
         
     def set_main_grid(self):
         self.main_heading_label.grid(column=3, row=0, pady=(20, 0), sticky="nsew")
@@ -48,10 +48,15 @@ class chooseDoctorsFrame(ctk.CTkFrame):
         for index, frame in enumerate(self.doctor_select_frames):
             frame.grid(column=1, row=index, sticky="nsew", pady=(15, 0))
             
+    def doctors_ungrid(self):
+        for radio in self.doctor_select_radio:
+            radio.grid_forget()
+        for frame in self.doctor_select_frames:
+            frame.grid_forget()            
 
     def reset(self):
-        # username = self.auth_service.username
-        username = "Frau Mertens"  # for debugging only
+        self.doctors_ungrid()
+        username = self.auth_service.username
         patient_insurance_type = self.df_patients.loc[self.df_patients["Username"] == username, "Krankenkassenart"].iloc[0]
         
         # find available doctors
@@ -63,6 +68,9 @@ class chooseDoctorsFrame(ctk.CTkFrame):
         self.doctor_select_frames = [ctk.CTkFrame(self.doctor_list_frame) for i in range(0, len(self.doctor_list))]
         for index, frame in enumerate(self.doctor_select_frames):
             self.doctor_select_radio.append(ctk.CTkRadioButton(frame, text=self.doctor_list[index][1], variable=self.var_cosen_doctor_username, value=self.doctor_list[index][0]))
+            
+        self.set_doctors_grid()
+        self.set_main_grid()
         
     def next_page(self):
         self.master.next_page()
