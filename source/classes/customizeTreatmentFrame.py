@@ -22,6 +22,7 @@ class TreatmentFrame(ctk.CTkFrame):
 
         # main widgets
         self.grid_columnconfigure((0, 1), weight=1)
+        self.grid_rowconfigure(3, weight=1)
         self.main_heading_label = ctk.CTkLabel(self, text="Behandlung anpassen", font=self.font24)
         self.sub_heading_label = ctk.CTkLabel(self, text="Passen sie ihre nächste Behandlung auf ihre wünsche an!")
 
@@ -57,7 +58,7 @@ class TreatmentFrame(ctk.CTkFrame):
         # variables
         cell_width = 200
         # widgets
-        self.bill_frame = ctk.CTkFrame(self)
+        self.bill_frame = ctk.CTkScrollableFrame(self)
         self.bill_frame.grid_columnconfigure((0, 2), weight=1)
         self.bill_heading_label = ctk.CTkLabel(self.bill_frame, text="Preis", font=self.font20)
         self.bill_sub_heading_label = ctk.CTkLabel(self.bill_frame, text="Hier können sie ihre Rechnung sehen.")
