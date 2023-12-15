@@ -11,7 +11,7 @@ class TreatmentFrame(ctk.CTkFrame):
         self.cost = None
         self.total_teeth_count = None
         self.dental_problem = None
-        self.insurance_share = None
+        self.insurance_shares = None
 
         self.fillings = ["normal", "hochwertig", "höchstwertig"]
         
@@ -184,15 +184,19 @@ class TreatmentFrame(ctk.CTkFrame):
         
         # billing frame        
         privat = df_patients.loc[df_patients["Username"] == self.username, "Krankenkassenart"].iat[0] == "privat"
-        self.insurance_share = float(df_costs.loc[df_costs["Dentale Problematik"] == self.dental_problem, "privater Anteil" if privat else "gesetzlicher Anteil"].iat[0])
+        self.insurance_shares = df_costs.loc[df_costs["Dentale Problematik"] == self.dental_problem, "privater Anteil" if privat else "gesetzlicher Anteil"]
+        self.insurance_shares = list(self.insurance_shares.values)
         
-        self.insurance_share_label.configure(text=f"Krankenkassenanteil ({round(100*self.insurance_share)}%)")
         self.update_bill()
         
         
         
     def update_bill(self):
-        single_cost = self.cost[self.fillings.index(self.filling.get())]
+        fillings_index = self.fillings.index(self.filling.get())
+        self.insurance_share = self.insurance_shares[fillings_index]
+        self.insurance_share_label.configure(text=f"Krankenkassenanteil ({round(100*self.insurance_share)}%)")
+        
+        single_cost = self.cost[fillings_index]
         
         self.description_label.configure(text=self.dental_problem)
         self.single_cost_label.configure(text=f"{single_cost}€")
