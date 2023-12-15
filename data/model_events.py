@@ -6,7 +6,7 @@ event_model = {
     "arzt": {
         "patient": {
             datetime: {
-                "t_stop": time,   # 8 bis 18 Uhr
+                "t_stop": datetime,   # 8 bis 18 Uhr
                 "dental_problem": Literal["Karies klein", "Karies groß", "Teilkrone", "Krone", "Wurzelbehandlung"],
                 "tooth_count": int,
                 "fill_type": Literal["normal", "höherwertig", "höchstwertig"]
