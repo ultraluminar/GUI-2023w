@@ -104,7 +104,7 @@ class DateAndTimeSelector(ctk.CTkFrame):
                 if var == '': combos_boxes[values.index(var)].configure(border_color="red") 
             return None 
         day_range = range(self.weekdays.index(self.day_from.get()), self.weekdays.index(self.day_to.get()) + 1)
-        time_range = range(int(self.time_from.get().split(':')[0]), int(self.time_to.get().split(':')[0]))  # exclusive
+        time_range = (int(self.time_from.get().split(':')[0]), int(self.time_to.get().split(':')[0]))  # exclusive
 
         rule = rrule(freq=WEEKLY, byweekday=day_range, byhour=time_range, byminute=0, bysecond=0)
         return str(rule).split("\n")[1]

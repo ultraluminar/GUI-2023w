@@ -13,7 +13,7 @@ paths = {
     "passwords": Path("data/pwd.json"),
     "patients": {"csv": Path("data/patients.csv")},
     "doctors": {"csv": Path("data/doctors.csv"),
-                "free": Path("data/doctors_free.json"),
+                "free": Path("data/data_doctors.json"),
                 "otp": Path("data/otp_token.json")}
 }
 
@@ -62,6 +62,7 @@ def gen_UID(path: Path, prefix: str) -> str:
 def add_doctor(doctor_data: dict):
     updateJson(paths["passwords"], {doctor_data["username"]: mhash(doctor_data["password"])})
     updateJson(paths["doctors"]["free"], {doctor_data["username"]: doctor_data["availability"]})
+    print("free")
 
     doctor_data["password"] = gen_UID(paths["doctors"]["csv"], 'A')
     doctor_data.pop("availability")
