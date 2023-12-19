@@ -51,9 +51,10 @@ class WeekCalenderView(ctk.CTkFrame):
         self.events.extend(events)
 
     def reset(self):
-        for event in self.events:
-            event.label.destroy()
-        self.events.clear()
+        if self.events:
+            for event in self.events:
+                event.label.destroy()
+            self.events.clear()
 
     def grid_events(self):
         for eventlabel in self.events:
