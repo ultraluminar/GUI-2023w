@@ -92,6 +92,8 @@ class WeekCalenderView(ctk.CTkFrame):
             for row, widget in enumerate(rows):
                 widget.grid(column=column, row=row * 4 + 2, sticky="nsew", padx=1, pady=1, rowspan=4)
 
+
+
     
 if __name__ == "__main__":
     CTk = ctk.CTk()
