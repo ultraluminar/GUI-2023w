@@ -9,7 +9,7 @@ class MainBookingFrame(ctk.CTkFrame):
         
         # variables
         self.disabled_kwargs = {
-            "text_color": ("gray5", "gray95"),
+            "text_color": ("gray8", "gray92"),
             "fg_color": ("gray75", "gray25"),
             "hover_color": ("gray75", "gray25")
         }
@@ -20,8 +20,8 @@ class MainBookingFrame(ctk.CTkFrame):
         }
         self.enabled_kwargs = {
             "text_color": ("black", "white"),
-            "fg_color": ("#3e6787", "#324e63"),
-            "hover_color": ("#2e4c63", "#243847")
+            "fg_color": ("#4b677c", "#3a4c5a"),
+            "hover_color": ("#364a59", "#2a3741")
         }
         self.progression: int = 0
         self.current_state: int = 0

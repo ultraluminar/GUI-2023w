@@ -83,7 +83,5 @@ class MainSidebar(ctk.CTkFrame):
         # ungrid home, grid booking
         self.nametowidget(".").home.grid_forget()
         self.nametowidget(".").booking_grid()
-        # reset booking
-        self.nametowidget(".").booking.reset()
         
         

@@ -9,7 +9,7 @@ from source.classes.mainBookingFrame import MainBookingFrame
 
 from source.auth_util import AuthenticationService
 from source.utils import center_window
-from source.classes.tmp_main import Main
+from source.classes.home import HomeFrame
 
 from PIL import ImageTk, Image
 
@@ -49,7 +49,7 @@ class App(ctk.CTk):
 
         # logged in frames
         self.main_sidebar = MainSidebar(self)
-        self.home = Main(self)
+        self.home = HomeFrame(self)
         self.booking = MainBookingFrame(self)
 
 
@@ -65,8 +65,11 @@ class App(ctk.CTk):
         self.main_sidebar.grid(row=0, column=0, sticky="nsew")
         
     def home_grid(self):
-        # home grid
+        # home grid and reset
         self.home.grid(row=0, column=1, sticky="nsew")
+        self.home.reset()
         
     def booking_grid(self):
+        # booking grid and reset
         self.booking.grid(row=0, column=1, sticky="nsew")
+        self.booking.reset()

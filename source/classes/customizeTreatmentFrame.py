@@ -26,7 +26,7 @@ class TreatmentFrame(ctk.CTkFrame):
         self.grid_columnconfigure((0, 1), weight=1)
         self.grid_rowconfigure(3, weight=1)
         self.main_heading_label = ctk.CTkLabel(self, text="Behandlung anpassen", font=self.font24)
-        self.sub_heading_label = ctk.CTkLabel(self, text="Passen sie ihre nächste Behandlung auf ihre wünsche an!")
+        self.sub_heading_label = ctk.CTkLabel(self, text="Passen sie ihre nächste Behandlung auf ihre Wünsche an!")
         self.next_button = ctk.CTkButton(self, text="Weiter", command=self.next_page)
 
         # teeth selector subframe
@@ -37,7 +37,7 @@ class TreatmentFrame(ctk.CTkFrame):
         self.teeth_selector_frame = ctk.CTkFrame(self)
         self.teeth_selector_frame.grid_columnconfigure((0, 2), weight=1)
         self.teeth_selector_heading_label = ctk.CTkLabel(self.teeth_selector_frame, text="Zähne", font=self.font20)
-        self.teeth_selector_sub_heading_label = ctk.CTkLabel(self.teeth_selector_frame, text="Wählen sie aus, wie viele Zähne sie bei ihrem nächsten Termin behandeln lassesn wollen.")
+        self.teeth_selector_sub_heading_label = ctk.CTkLabel(self.teeth_selector_frame, text="Wählen sie aus, wie viele Zähne sie bei ihrem nächsten Termin\nbehandeln lassen wollen.")
         self.slider_sub_frame = ctk.CTkFrame(self.teeth_selector_frame)
         self.slider_sub_frame.grid_columnconfigure((0, 4), weight=1)
         self.teeth_selector_counter_label = ctk.CTkLabel(self.slider_sub_frame, textvariable=self.teeth_count_string)
@@ -77,7 +77,7 @@ class TreatmentFrame(ctk.CTkFrame):
         self.count_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width)
         self.cost_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat)
         
-        self.first_line = ctk.CTkFrame(self.bill_sub_frame, height=5, fg_color="gray50")
+        self.first_line = ctk.CTkFrame(self.bill_sub_frame, height=3, fg_color="gray50")
         
         self.step_sum_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, text="Zwischensumme")
         self.step_sum_value_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat)
@@ -85,7 +85,7 @@ class TreatmentFrame(ctk.CTkFrame):
         self.insurance_share_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width)
         self.insurance_share_value_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat)
 
-        self.second_line = ctk.CTkFrame(self.bill_sub_frame, height=5, fg_color="gray50")
+        self.second_line = ctk.CTkFrame(self.bill_sub_frame, height=3, fg_color="gray50")
 
         self.total_cost_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, text="Gesamtsumme")
         self.total_cost_value_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat, text_color="#00C957")
@@ -134,7 +134,7 @@ class TreatmentFrame(ctk.CTkFrame):
         self.count_label.grid(column=3, row=1, pady=(15,10), padx=(5, 0))
         self.cost_label.grid(column=4, row=1, pady=(15,10), padx=(5, 15))
         
-        self.first_line.grid(column=3, row=2, columnspan=2, sticky="nsew", padx=5)
+        self.first_line.grid(column=3, row=2, columnspan=2, sticky="nsew", padx=15)
 
         self.step_sum_label.grid(column=3, row=3, pady=(10, 0), padx=(5, 0))
         self.step_sum_value_label.grid(column=4, row=3, pady=(10, 0), padx=(5, 15))
@@ -142,7 +142,7 @@ class TreatmentFrame(ctk.CTkFrame):
         self.insurance_share_label.grid(column=3, row=4, pady=(10, 10), padx=(5, 0))
         self.insurance_share_value_label.grid(column=4, row=4, pady=(10, 10), padx=(5, 15))
 
-        self.second_line.grid(column=3, row=5, columnspan=2, sticky="nsew", padx=5)
+        self.second_line.grid(column=3, row=5, columnspan=2, sticky="nsew", padx=15)
         
         self.total_cost_label.grid(column=3, row=6, pady=(10, 15), padx=(5, 0))
         self.total_cost_value_label.grid(column=4, row=6, pady=(10, 15), padx=(5, 15))
