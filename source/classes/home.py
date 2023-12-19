@@ -1,6 +1,7 @@
 import customtkinter as ctk
 
 from pandas import read_csv
+from source.classes.customWidgets.patientAppointmentOverview import PatientOverview
 
 class HomeFrame(ctk.CTkScrollableFrame):
     def __init__(self, master: ctk.CTk):
@@ -39,7 +40,7 @@ class HomeFrame(ctk.CTkScrollableFrame):
         self.appointments_frame.grid_columnconfigure((0, 2), weight=1)
         self.appointments_heading_label = ctk.CTkLabel(self.appointments_frame, text="Meine Termine", font=font24)
         self.appointments_sub_heading_label = ctk.CTkLabel(self.appointments_frame, text="Hier können sie ihre Termine einsehen.")
-        self.appointments_sub_frame = ctk.CTkFrame(self.appointments_frame, height=400, width=300)
+        self.appointments_sub_frame = PatientOverview(self.appointments_frame)
         self.book_appointment_button = ctk.CTkButton(self.appointments_frame, text="Termin buchen", command=self.book_appointment)
         
         self.set_profile_grid()
@@ -76,6 +77,7 @@ class HomeFrame(ctk.CTkScrollableFrame):
         self.insurance_value_label.configure(text=self.get_insurace_type())
         self.dental_problem_value_label.configure(text=self.get_dental_problem())
         self.tooth_number_value_label.configure(text=self.get_tooth_number())
+        self.appointments_sub_frame.reset()
         
     def get_patient_name(self):
         df = read_csv("data/patients.csv")
