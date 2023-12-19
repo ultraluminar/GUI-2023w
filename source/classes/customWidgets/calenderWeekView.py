@@ -1,8 +1,9 @@
 import customtkinter as ctk
 
-from dateutil.rrule import rrule, WEEKLY, MO, TU, WE, TH, FR, SA
+from dateutil.rrule import rrule, WEEKLY, MO, TU, WE, TH, FR, SA, rrulestr
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, time, timedelta, date
+from json import load
 
 from source.utils import center_window
 
@@ -25,6 +26,9 @@ class EventLabel:
     def grid(self):
         self.label.grid(row=self.row, column=self.column, rowspan=self.rowspan, sticky="nsew", padx=1, pady=1)
 
+    def destroy(self):
+        self.label.destroy()
+
 
 def eventlabels_from_availability(master, rules: list[rrule], dt_start: datetime) -> list[EventLabel]:
     events: list[EventLabel] = []
@@ -38,6 +42,8 @@ def eventlabels_from_availability(master, rules: list[rrule], dt_start: datetime
 class WeekCalenderView(ctk.CTkFrame):
     def __init__(self, master, width: int = 140, height: int = 32):
         super().__init__(master=master, width=width, height=height)
+
+        self.events: list[EventLabel] = []
 
         self.day_shortnames: list[str] = ["MO", "DI", "MI", "DO", "FR"]
 
@@ -58,6 +64,15 @@ class WeekCalenderView(ctk.CTkFrame):
             ctk.CTkLabel(self, text=f"{hour} - {hour+1} Uhr", corner_radius=5, fg_color="gray20"
                 ) for hour in range(8, 18)] for _ in self.dates]
 
+        self.set_grid()
+
+    def add_availabilities(self, rules: list[rrule], dt_start: datetime):
+        self.events.extend(eventlabels_from_availability(master=self, rules=rules, dt_start=dt_start))
+
+    def grid_events(self):
+        for eventlabel in self.events:
+            eventlabel.grid()
+
     def set_grid(self):
         for column, widget in enumerate(self.day_labels):
             widget.grid(column=column, row=0, sticky="nsew")
@@ -68,21 +83,28 @@ class WeekCalenderView(ctk.CTkFrame):
                 widget.grid(column=column, row=row * 4 + 2, sticky="nsew", padx=1, pady=1, rowspan=4)
 
 
+
+
 if __name__ == "__main__":
-    CTk = ctk.CTk()
-
-    center_window(CTk, 750, 500)
-
-    CTk.grid_columnconfigure(0, weight=1)
-    CTk.grid_rowconfigure(0, weight=1)
-
-    view = WeekCalenderView(CTk)
-    view.grid(column=0, row=0, sticky="nsew")
+    with open("data/doctors_free.json") as file:
+        data = load(file)
 
     dt_start = datetime.now() + relativedelta(weekday=MO(-1), hour=0)
-    rule = rrule(freq=WEEKLY, byweekday=(MO, TU, WE, TH, FR), byhour=(10, 12), byminute=0, bysecond=0, dtstart=dt_start)
-    eventlabels = eventlabels_from_availability(view, rules=[rule], dt_start=dt_start)
-    for eventlabel in eventlabels:
-        eventlabel.grid()
 
-    CTk.mainloop()
+    for doctor, rule_strings in data.items():
+        CTk = ctk.CTk()
+        CTk.title(doctor)
+        center_window(CTk, 750, 500)
+
+        CTk.grid_columnconfigure(0, weight=1)
+        CTk.grid_rowconfigure(0, weight=1)
+
+        view = WeekCalenderView(CTk)
+        view.grid(column=0, row=0, sticky="nsew")
+
+        rules = [rrulestr(rule).replace(dtstart=dt_start) for rule in rule_strings]
+        view.add_availabilities(rules=rules, dt_start=dt_start)
+        view.grid_events()
+
+        CTk.mainloop()
+
