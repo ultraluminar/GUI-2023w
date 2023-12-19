@@ -22,6 +22,8 @@ class RegisterFormFrame(ctk.CTkTabview):
 
         # tk variables
         self.sex = tk.StringVar(value="Herr")
+        self.patient_error_string = tk.StringVar(value="")
+        self.doctor_error_string = tk.StringVar(value="")
         # patient tab
         self.insurance_var = tk.StringVar(value="Krankenkassenart")
         self.dental_problem_var = tk.StringVar(value="Dentale Problematik")
@@ -53,6 +55,7 @@ class RegisterFormFrame(ctk.CTkTabview):
 
         self.teeth_count_label = ctk.CTkLabel(self.tab("als Patient"), text="Anzahl zu behandelnder Zähne")
         self.teeth_count_spinbox = IntSpinbox(self.tab("als Patient"), width=self.input_width)
+        self.patient_error_label = ctk.CTkLabel(self.tab("als Patient"), text_color="red", textvariable=self.patient_error_string)
         self.patient_register_button = ctk.CTkButton(self.tab("als Patient"), text="Registrieren", command=self.try_patient_register)
         
         # doctor tab
@@ -78,6 +81,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         
         self.time_selector_window = None
         self.doctor_time_selector_button = ctk.CTkButton(self.tab("als Zahnarzt"), width=self.input_width, text="Behandlungszeit auswählen", command=self.time_selector)
+        self.doctor_error_label = ctk.CTkLabel(self.tab("als Zahnarzt"), text_color="red", textvariable=self.doctor_error_string)
         self.doctor_register_button = ctk.CTkButton(self.tab("als Zahnarzt"), text="Registrieren", command=self.try_doctor_register)
         
         # gridding
@@ -112,7 +116,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.dental_problem_combobox.grid(row=8, column=0, columnspan=2, pady=(5, 0), padx=50, sticky="n")
         self.teeth_count_label.grid(row=9, column=0, columnspan=2, pady=(10, 0), padx=50, sticky="n")
         self.teeth_count_spinbox.grid(row=10, column=0, columnspan=2, pady=(2, 0), padx=50, sticky="n")
-        self.patient_register_button.grid(row=11, column=0, columnspan=2, pady=(25, 20), padx=50, sticky="n")
+        self.patient_register_button.grid(row=12, column=0, columnspan=2, pady=(25, 20), padx=50, sticky="n")
         
     def set_doctor_grid(self):
         self.doctor_heading.grid(row=1, column=0, columnspan=2, pady=(10, 0), padx=0, sticky="n")
@@ -128,7 +132,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.doctor_insurance_checkbox_by_law.grid(row=10, column=0, columnspan=2, pady=(8, 0), padx=(50, 0), sticky="w")
         self.doctor_insurance_checkbox_voluntarily.grid(row=11, column=0, columnspan=2, pady=(8, 0), padx=(50, 0), sticky="w")
         self.doctor_time_selector_button.grid(row=12, column=0, columnspan=2, pady=(15, 0), padx=50, sticky="n")
-        self.doctor_register_button.grid(row=13, column=0, columnspan=2, pady=(25, 20), padx=50, sticky="n")
+        self.doctor_register_button.grid(row=14, column=0, columnspan=2, pady=(25, 20), padx=50, sticky="n")
 
     def try_patient_register(self, event=None) -> None:
         username = self.patient_username_entry.get()
@@ -153,16 +157,25 @@ class RegisterFormFrame(ctk.CTkTabview):
             [self.patient_username_entry, username_exists(username), "username already exists"]]
 
         error_entrys = []
+        error_messages = []
         for entry, is_problem, error_string in entry_map:
             if is_problem:
                 error_entrys.append(entry)
                 print(error_string)
+                error_messages.append(error_string)
+                
 
         entrys = [self.patient_username_entry, self.patient_name_entry, self.patient_password_entry, self.patient_confirm_password_entry,
                   self.insurance_combobox, self.dental_problem_combobox]
         
-        for entry in entrys:
+        # visual error feedback
+        for entry in entrys:    # handling all entrys
             entry.configure(border_color=("red" if entry in error_entrys else default_color))
+        if error_messages:  # not empty
+            self.patient_error_string.set("\n".join(error_messages))
+            self.patient_error_label.grid(row=11, column=0, columnspan=2, pady=(10, 0), padx=50, sticky="n")
+        else:
+            self.patient_error_label.grid_forget()
 
         if error_entrys:  # not empty
             return
@@ -218,6 +231,8 @@ class RegisterFormFrame(ctk.CTkTabview):
 
         
         default_color = ("#979DA2", "#565B5E")
+        button_default_color = ("#26a31d", "#369130")
+        button_default_hover_color = ("#36719F", "#144870")
         
         entry_map = [
             [self.doctor_username_entry,             username == "",                "no username given"],
@@ -232,20 +247,30 @@ class RegisterFormFrame(ctk.CTkTabview):
             [self.doctor_code, not otp_verified, "wrong authorization code"]]
         
         error_entrys = []
+        error_messages = []
         for entry, is_problem, error_string in entry_map:
             if is_problem:
                 error_entrys.append(entry)
                 print(error_string)
+                error_messages.append(error_string)
                 
         entrys = [self.doctor_username_entry, self.doctor_name_entry, self.doctor_password_entry, self.doctor_confirm_password_entry,
-                  self.doctor_insurance_checkbox_private]
+                  self.doctor_insurance_checkbox_private, self.doctor_code]
         
+        # visual error feedback
         for entry in entrys:
-            if entry is self.doctor_insurance_checkbox_private:
+            if entry is self.doctor_insurance_checkbox_private: # handling all checkboxes if none are ticked
                 self.doctor_insurance_checkbox_by_law.configure(border_color=("red" if entry in error_entrys else default_color))
                 self.doctor_insurance_checkbox_voluntarily.configure(border_color=("red" if entry in error_entrys else default_color))
             entry.configure(border_color=("red" if entry in error_entrys else default_color))
+        self.doctor_time_selector_button.configure(fg_color="red" if self.doctor_time_selector_button in error_entrys else button_default_color)
+        if error_messages:  # not empty
+            self.doctor_error_string.set("\n".join(error_messages))
+            self.doctor_error_label.grid(row=13, column=0, columnspan=2, pady=(10, 0), padx=50, sticky="n")
+        else:
+            self.doctor_error_label.grid_forget()
 
+        print(error_entrys)
         if error_entrys:  # not empty
             return
 
@@ -265,11 +290,16 @@ class RegisterFormFrame(ctk.CTkTabview):
         
         # delete entrys for privacy
         for entry in [self.doctor_username_entry, self.doctor_name_entry,
-                      self.patient_password_entry, self.doctor_confirm_password_entry]:
+                      self.doctor_password_entry, self.doctor_confirm_password_entry,
+                      self.doctor_code]:
             entry.delete(0, "end")
 
         for insurance in [self.insurance_private, self.insurance_by_law, self.insurance_voluntarily]:
             insurance.set(False)
+            
+        self.time_selector_window.destroy()
+        self.time_selector_window = None
+        self.doctor_time_selector_button.configure(fg_color=button_default_color, hover_color=button_default_hover_color, text="Behandlungszeit auswählen")
         
         # automatically log in
         if (self.auth_service.check_login(username=username, password=password)):
@@ -300,3 +330,4 @@ class RegisterFormFrame(ctk.CTkTabview):
         
         # visual feedback
         self.doctor_time_selector_button.configure(fg_color=("#26a31d", "#369130"), hover_color=("#1d8017", "#2c7527"), text="Behandlungszeit ändern")
+    
