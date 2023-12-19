@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import customtkinter as ctk
 
 from dateutil.rrule import rrule, WEEKLY, MO, SA, rrulestr
@@ -7,7 +9,9 @@ from json import load
 
 from source.utils import center_window
 from source.classes.customWidgets.event_label import EventLabel
+from source.auth_util import loadJson
 
+path_docotrs_free = Path("data/doctors_free.json")
 
 class WeekCalenderView(ctk.CTkFrame):
     def __init__(self, master, width: int = 140, height: int = 32):
@@ -36,7 +40,9 @@ class WeekCalenderView(ctk.CTkFrame):
 
         self.set_grid()
 
-    def add_availabilities(self, rules: list[rrule], dt_start: datetime):
+    def add_availabilities(self, doctor_name: str, dt_start: datetime):
+        rule_strings = loadJson(path_docotrs_free)[doctor_name]
+        rules = [rrulestr(rule).replace(dtstart=dt_start) for rule in rule_strings]
         events: list[EventLabel] = []
         dt_stop = dt_start + relativedelta(weekday=SA)
         for rule in rules:
@@ -58,14 +64,13 @@ class WeekCalenderView(ctk.CTkFrame):
 
 
 if __name__ == "__main__":
-    with open("data/doctors_free.json") as file:
-        data = load(file)
+    names = loadJson(path_docotrs_free)
 
     dt_start = datetime.now() + relativedelta(weekday=MO(-1), hour=0)
 
-    for doctor, rule_strings in data.items():
+    for name in names:
         CTk = ctk.CTk()
-        CTk.title(doctor)
+        CTk.title(name)
         center_window(CTk, 750, 500)
 
         CTk.grid_columnconfigure(0, weight=1)
@@ -74,8 +79,7 @@ if __name__ == "__main__":
         view = WeekCalenderView(CTk)
         view.grid(column=0, row=0, sticky="nsew")
 
-        rules = [rrulestr(rule).replace(dtstart=dt_start) for rule in rule_strings]
-        view.add_availabilities(rules=rules, dt_start=dt_start)
+        view.add_availabilities(doctor_name=name, dt_start=dt_start)
         view.grid_events()
 
         CTk.mainloop()
