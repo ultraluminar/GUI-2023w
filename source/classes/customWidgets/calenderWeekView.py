@@ -48,7 +48,9 @@ class WeekCalenderView(ctk.CTkFrame):
         for rule in rules:
             days: list[datetime] = rule.replace(byhour=8, dtstart=dt_start).between(after=dt_start, before=dt_stop)
             events.extend([EventLabel(master=self, dt_start=day, rule=rule) for day in days])
+
         self.events.extend(events)
+        self.grid_events()
 
     def reset(self):
         if self.events:
