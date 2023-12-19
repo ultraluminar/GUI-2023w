@@ -13,7 +13,7 @@ paths = {
     "passwords": Path("data/pwd.json"),
     "patients": {"csv": Path("data/patients.csv")},
     "doctors": {"csv": Path("data/doctors.csv"),
-                "free": Path("data/data_doctors.json"),
+                "free": Path("data/doctors_free.json"),
                 "otp": Path("data/otp_token.json")}
 }
 
@@ -43,6 +43,7 @@ def loadJson(path: Path) -> dict:
 def updateJson(path: Path, dic: dict, replace=False):
     old = loadJson(path)
 
+    print(dic.keys(), old.keys(), "update JSON")
     if replace and any(key not in old for key in dic.keys()):
         raise ValueError("key not in dict!")
     elif not replace and any(key in old for key in dic.keys()):

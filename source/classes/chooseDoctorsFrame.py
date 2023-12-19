@@ -11,8 +11,8 @@ class chooseDoctorsFrame(ctk.CTkFrame):
         self.auth_service = self.nametowidget(".").auth_service
         self.doctor_csv_path = "data/doctors.csv"
         self.patients_csv_path = "data/patients.csv"
-        self.df_doctors = read_csv(self.doctor_csv_path)
-        self.df_patients = read_csv(self.patients_csv_path)
+        self.df_doctors = None
+        self.df_patients = None
         self.doctor_list: list[tuple] = []
         
         # fonts
@@ -55,9 +55,10 @@ class chooseDoctorsFrame(ctk.CTkFrame):
             frame.grid_forget()            
 
     def reset(self):
+        self.df_doctors = read_csv(self.doctor_csv_path)
+        self.df_patients = read_csv(self.patients_csv_path)
         self.doctors_ungrid()
         username = self.auth_service.username
-        print(username)
         patient_insurance_type = self.df_patients.loc[self.df_patients["Username"] == username, "Krankenkassenart"].iloc[0]
         
         # find available doctors
