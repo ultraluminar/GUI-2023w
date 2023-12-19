@@ -10,6 +10,7 @@ class MainSidebar(ctk.CTkFrame):
         super().__init__(master=master, width=sidebar_width, corner_radius=0)
 
         self.grid_rowconfigure(3, weight=1)
+        self.current_state = 0
         
         # load images (light and dark)
         image_path = "assets"
@@ -43,6 +44,17 @@ class MainSidebar(ctk.CTkFrame):
                                             font=ctk.CTkFont(size=9, weight="normal"), text_color="gray50", fg_color=("gray80", "gray20"))
         self.set_grid()
         
+    def reset(self):
+        self.current_state = 0
+        self.update()
+        
+    def update(self):
+        if self.current_state == 0:
+            self.home_button.configure(fg_color=("gray75", "gray25"))
+            self.book_event_button.configure(fg_color="transparent")
+        elif self.current_state == 1:
+            self.home_button.configure(fg_color="transparent")
+            self.book_event_button.configure(fg_color=("gray75", "gray25"))
         
     def set_grid(self):
         self.logo_label.grid(row=0, column=0, padx=15, pady=(20, 20))
@@ -64,6 +76,7 @@ class MainSidebar(ctk.CTkFrame):
     
     # hides widgets from the main view and brings back login widgets
     def logout(self):
+        self.reset()
         if self.settings_window is None or not self.settings_window.winfo_exists():
             pass
         else:
@@ -75,11 +88,15 @@ class MainSidebar(ctk.CTkFrame):
         self.nametowidget(".").initial_grid()
         
     def home(self):
+        self.current_state = 0
+        self.update()
         # ungrid booking, grid home
         self.nametowidget(".").booking.grid_forget()
         self.nametowidget(".").home_grid()
     
     def book_event(self):
+        self.current_state = 1
+        self.update()
         # ungrid home, grid booking
         self.nametowidget(".").home.grid_forget()
         self.nametowidget(".").booking_grid()
