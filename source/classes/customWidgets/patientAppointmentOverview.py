@@ -52,12 +52,12 @@ class PatientOverview(ctk.CTkFrame):
             
     def table_grid(self):
         for index, label in enumerate(self.header_labels):
-            label.grid(column=index, row=0, sticky="nsew", padx=(10 if index == 0 else 5, 10 if index == 6 else 0), pady=(10, 5))
+            label.grid(column=index, row=0, sticky="nsew", padx=(10 if index == 0 else 5, 10 if index == 6 else 0), pady=(10, 15))
         if (self.df_appointments.empty):
-            self.empty_label.grid(column=0, row=1, columnspan=7, sticky="nsew", padx=10, pady=5)
+            self.empty_label.grid(column=0, row=1, columnspan=7, sticky="nsew", padx=10, pady=(0, 10))
         for index, labels in enumerate(self.labels):
             for label in labels:
-                label.grid(column=index, row=labels.index(label) + 1, sticky="nsew", padx=(), pady=5)
+                label.grid(column=index, row=labels.index(label) + 1, sticky="nsew", padx=(10 if index == 0 else 5, 10 if index == 6 else 0), pady=(0, 10))
         
     def get_doctor_name(self, username: str) -> str:
         df_doctors = read_csv("data/doctors.csv")
