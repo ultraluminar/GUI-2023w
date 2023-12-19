@@ -2,18 +2,11 @@ from typing import Literal
 from datetime import time, datetime
 from dateutil.rrule import rrule
 
-event_model = {
-    "arzt": {
-        "patient": {
-            datetime: {
-                "t_stop": datetime,   # 8 bis 18 Uhr
-                "dental_problem": Literal["Karies klein", "Karies groß", "Teilkrone", "Krone", "Wurzelbehandlung"],
-                "tooth_count": int,
-                "fill_type": Literal["normal", "höherwertig", "höchstwertig"]
-            }
-        }
-    }
-}
+date: datetime = None
+t_stop: datetime = None
+
+# event_model
+header = ["doctor", "patient", date, t_stop, "dental_problema", "tooth_count", "fill_type"]
 
 availibility_model = {
     "arzt": [
