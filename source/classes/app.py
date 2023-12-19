@@ -63,6 +63,7 @@ class App(ctk.CTk):
         
     def main_sidebar_grid(self):
         self.main_sidebar.grid(row=0, column=0, sticky="nsew")
+        self.main_sidebar.reset()
         
     def home_grid(self):
         # home grid and reset

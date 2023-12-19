@@ -167,6 +167,7 @@ class TreatmentFrame(ctk.CTkFrame):
         # teeth selector frame
         self.teeth_selector_counter_label.configure(text="1")
         self.teeth_selector_slider.set(1)
+        self.teeth_count.set(1)
         self.teeth_selector_to_label.configure(text=self.total_teeth_count)
         if self.total_teeth_count == 1:
             self.teeth_selector_slider.configure(from_=0, to=1, number_of_steps=1, state="disabled")
