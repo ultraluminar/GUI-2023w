@@ -3,7 +3,7 @@ import tkinter as tk
 
 from source.classes.customWidgets.calenderWeekView import WeekCalenderView
 
-class (ctk.CTkFrame):
+class CalenderViewFrame(ctk.CTkFrame):
     def __init__(self, master: ctk.CTk):
         super().__init__(master=master)
         
@@ -13,6 +13,7 @@ class (ctk.CTkFrame):
         # variables
         
         # fonts
+        self.font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
         
         # main widgets
         self.heading_label = ctk.CTkLabel(self, text="Termin auswählen", font=self.font24)
