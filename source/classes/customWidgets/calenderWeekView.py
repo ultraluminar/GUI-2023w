@@ -47,20 +47,23 @@ class WeekCalenderView(ctk.CTkFrame):
         dt_stop = dt_start + relativedelta(weekday=SA)
         for rule in rules:
             days: list[datetime] = rule.replace(byhour=8, dtstart=dt_start).between(after=dt_start, before=dt_stop)
-            events.extend([EventLabel(master=self, dt_start=day, rule=rule) for day in days])
+            labels = [EventLabel(master=self, dt_start=day, rule=rule) for day in days]
+            for label in labels:
+                label.grid()
+            events.extend(labels)
 
         self.events.extend(events)
-        self.grid_events()
+
+    def add_ex_date(self, dt_start: datetime, dt_stop: datetime):
+        label = EventLabel(master=self, dt_start=dt_start, dt_stop=dt_stop, fg_color="darkred")
+        label.grid()
+        self.events.append(label)
 
     def reset(self):
         if self.events:
             for event in self.events:
                 event.label.destroy()
             self.events.clear()
-
-    def grid_events(self):
-        for eventlabel in self.events:
-            eventlabel.grid()
 
     def set_grid(self):
         for row, labels in enumerate([self.day_labels, self.date_labels]):
@@ -88,5 +91,6 @@ if __name__ == "__main__":
         view.grid(column=0, row=0, sticky="nsew")
 
         view.add_availabilities(doctor_name=name, dt_start=dt_start)
+        view.add_ex_date(dt_start=dt_start.replace(hour=9), dt_stop=dt_start.replace(hour=11))
         CTk.mainloop()
 
