@@ -88,3 +88,7 @@ with open(f"{path_data}/pwd.json", mode="w", encoding="utf-8") as file:
 
 with open(f"{path_data}/data_doctors.json", mode="w", encoding="utf-8") as file:
     dump(behandlungszeiten, file, indent=4)
+    
+# create new csv file for appointments with header ["doctor", "patient", date, t_stop, "dental_problem", "tooth_count", "fill_type"]
+with open(f"{path_data}/appointments.csv", mode="w", encoding="utf-8") as file:
+    file.write("Doctor,Patient,date,t_stop,dental_problem,tooth_count,fill_type\n")
