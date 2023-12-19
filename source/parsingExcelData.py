@@ -86,7 +86,7 @@ with ExcelToCSV(sheet="Kosten und Behandlungsdauer", header=3, cols="B:G", csv_n
 with open(f"{path_data}/pwd.json", mode="w", encoding="utf-8") as file:
     dump(password_hashes, file, indent=4, ensure_ascii=False)
 
-with open(f"{path_data}/data_doctors.json", mode="w", encoding="utf-8") as file:
+with open(f"{path_data}/doctors_free.json", mode="w", encoding="utf-8") as file:
     dump(behandlungszeiten, file, indent=4)
     
 # create new csv file for appointments with header ["doctor", "patient", date, t_stop, "dental_problem", "tooth_count", "fill_type"]
