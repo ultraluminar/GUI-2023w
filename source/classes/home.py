@@ -26,13 +26,13 @@ class HomeFrame(ctk.CTkScrollableFrame):
         self.profil_frame.grid_columnconfigure((0, 3), weight=1)
         self.profil_heading_label = ctk.CTkLabel(self.profil_frame, text="Mein Profil", font=font24)
         self.profil_sub_heading_label = ctk.CTkLabel(self.profil_frame, text="Hier können sie ihre Daten einsehen.")
-        self.insurance_type_label = ctk.CTkLabel(self.profil_frame, text="Ihre Versicherungsart:", anchor="w", width=265)
+        self.insurance_type_label = ctk.CTkLabel(self.profil_frame, text="Ihre Versicherungsart:", anchor="w", width=280)
         self.insurance_value_label = ctk.CTkLabel(self.profil_frame, width=110, anchor="w", font=fat)
-        self.dental_problem_type_label = ctk.CTkLabel(self.profil_frame, text="Ihr Zahnproblem:", anchor="w", width=265)
+        self.dental_problem_type_label = ctk.CTkLabel(self.profil_frame, text="Ihr Zahnproblem:", anchor="w", width=280)
         self.dental_problem_value_label = ctk.CTkLabel(self.profil_frame, width=110, anchor="w", font=fat)
-        self.tooth_number_label = ctk.CTkLabel(self.profil_frame, text="Ihre Anzahl noch zu behandelnder Zähne:", anchor="w", width=265)
+        self.tooth_number_label = ctk.CTkLabel(self.profil_frame, text="Ihre Anzahl noch zu behandelnder Zähne:", anchor="w", width=280)
         self.tooth_number_value_label = ctk.CTkLabel(self.profil_frame, width=110, anchor="w", font=fat)
-        self.tooth_number_with_appointment_label = ctk.CTkLabel(self.profil_frame, text="Davon in den nächsten 3 Monaten behandelt:", anchor="w", width=265)
+        self.tooth_number_with_appointment_label = ctk.CTkLabel(self.profil_frame, text="Davon in den nächsten 3 Monaten behandelt:", anchor="w", width=280)
         self.tooth_number_with_appointment_value_label = ctk.CTkLabel(self.profil_frame, width=110, anchor="w", font=fat)
         
         # appointments sub Frame
@@ -96,6 +96,6 @@ class HomeFrame(ctk.CTkScrollableFrame):
         return df.loc[df["Username"] == self.username, "Anzahl zu behandelnder Zähne"].iloc[0]
         
     def book_appointment(self):
-        pass
+        self.nametowidget(".!mainsidebar").book_event()
     
         
