@@ -88,7 +88,5 @@ if __name__ == "__main__":
         view.grid(column=0, row=0, sticky="nsew")
 
         view.add_availabilities(doctor_name=name, dt_start=dt_start)
-        view.grid_events()
-
         CTk.mainloop()
 
