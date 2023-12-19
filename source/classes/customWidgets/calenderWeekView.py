@@ -1,42 +1,12 @@
 import customtkinter as ctk
 
-from dateutil.rrule import rrule, WEEKLY, MO, TU, WE, TH, FR, SA, rrulestr
+from dateutil.rrule import rrule, WEEKLY, MO, SA, rrulestr
 from dateutil.relativedelta import relativedelta
-from datetime import datetime, time, timedelta, date
+from datetime import datetime
 from json import load
 
 from source.utils import center_window
-
-
-class EventLabel:
-    def __init__(self, master, dt_start: datetime, dt_stop: datetime = None, rule: rrule = None):
-        self.dt_start = dt_start
-        self.dt_stop = dt_stop
-
-        if rule is not None:
-            self.dt_start, self.dt_stop = [self.dt_start.replace(hour=hour) for hour in rule._byhour]
-
-
-        self.column = self.dt_start.weekday()
-        self.row = (self.dt_start - self.dt_start.replace(hour=8)) // timedelta(minutes=15) + 2
-        self.rowspan = (self.dt_stop - self.dt_start) // timedelta(minutes=15)
-
-        self.label = ctk.CTkLabel(master=master, text="text", corner_radius=5, fg_color="gray")
-
-    def grid(self):
-        self.label.grid(row=self.row, column=self.column, rowspan=self.rowspan, sticky="nsew", padx=1, pady=1)
-
-    def destroy(self):
-        self.label.destroy()
-
-
-def eventlabels_from_availability(master, rules: list[rrule], dt_start: datetime) -> list[EventLabel]:
-    events: list[EventLabel] = []
-    dt_stop = dt_start + relativedelta(weekday=SA)
-    for rule in rules:
-        days: list[datetime] = rule.replace(byhour=8, dtstart=dt_start).between(after=dt_start, before=dt_stop)
-        events.extend([EventLabel(master=master, dt_start=day, rule=rule) for day in days])
-    return events
+from source.classes.customWidgets.event_label import EventLabel
 
 
 class WeekCalenderView(ctk.CTkFrame):
@@ -67,22 +37,24 @@ class WeekCalenderView(ctk.CTkFrame):
         self.set_grid()
 
     def add_availabilities(self, rules: list[rrule], dt_start: datetime):
-        self.events.extend(eventlabels_from_availability(master=self, rules=rules, dt_start=dt_start))
+        events: list[EventLabel] = []
+        dt_stop = dt_start + relativedelta(weekday=SA)
+        for rule in rules:
+            days: list[datetime] = rule.replace(byhour=8, dtstart=dt_start).between(after=dt_start, before=dt_stop)
+            events.extend([EventLabel(master=self, dt_start=day, rule=rule) for day in days])
+        self.events.extend(events)
 
     def grid_events(self):
         for eventlabel in self.events:
             eventlabel.grid()
 
     def set_grid(self):
-        for column, widget in enumerate(self.day_labels):
-            widget.grid(column=column, row=0, sticky="nsew")
-        for column, widget in enumerate(self.date_labels):
-            widget.grid(column=column, row=1, sticky="nsew")
+        for row, labels in enumerate([self.day_labels, self.date_labels]):
+            for column, widget in enumerate(labels):
+                widget.grid(column=column, row=row, sticky="nsew")
         for column, rows in enumerate(self.hour_buttons):
             for row, widget in enumerate(rows):
                 widget.grid(column=column, row=row * 4 + 2, sticky="nsew", padx=1, pady=1, rowspan=4)
-
-
 
 
 if __name__ == "__main__":
