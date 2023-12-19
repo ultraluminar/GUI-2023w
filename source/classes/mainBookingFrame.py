@@ -1,7 +1,10 @@
 import customtkinter as ctk
 
+from datetime import datetime
+from dateutil.relativedelta import relativedelta, MO
 from source.classes.customizeTreatmentFrame import TreatmentFrame
 from source.classes.chooseDoctorsFrame import chooseDoctorsFrame
+from source.classes.customWidgets.calenderWeekView import WeekCalenderView
 
 class MainBookingFrame(ctk.CTkFrame):
     def __init__(self, master: ctk.CTk):
@@ -42,7 +45,7 @@ class MainBookingFrame(ctk.CTkFrame):
         
         
         # main frames
-        self.main_frames: list[ctk.CTkFrame] = [TreatmentFrame(self), chooseDoctorsFrame(self)]
+        self.main_frames: list[ctk.CTkFrame] = [TreatmentFrame(self), chooseDoctorsFrame(self), WeekCalenderView(self)]
         self.set_progression_bar_grid()
         self.set_main_grid()
 
@@ -74,6 +77,11 @@ class MainBookingFrame(ctk.CTkFrame):
         # ungrid frame
         for frame in self.main_frames:
             frame.grid_forget()
+        # show calendar for chosen doctor
+        if self.current_state == 2 and self.progression == 2:
+            dt_start = datetime.now() + relativedelta(weekday=MO(-1), hour=0)
+            doctor_name = self.main_frames[1].get_doctor()
+            self.main_frames[2].add_availabilities(doctor_name, dt_start)
         # grid new frame
         self.main_frames[self.current_state].grid(column=0, row=1, sticky="nsew", padx=20, pady=(0, 20))
         
@@ -107,4 +115,8 @@ class MainBookingFrame(ctk.CTkFrame):
         index = 3
         if index <= self.progression:
             self.current_state = index
+        self.update_progression_bar()
+        
+    def changed(self):
+        self.progression = self.current_state
         self.update_progression_bar()

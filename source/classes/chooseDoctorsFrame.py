@@ -26,7 +26,7 @@ class chooseDoctorsFrame(ctk.CTkFrame):
         self.next_button = ctk.CTkButton(self, text="Weiter", command=self.next_page)
 
         # doctors sub Frame
-        self.var_cosen_doctor_username = tk.StringVar()
+        self.var_chosen_doctor_username = tk.StringVar()
         self.doctor_list_frame = ctk.CTkScrollableFrame(self)
         self.doctor_list_frame.grid_columnconfigure((0, 2), weight=1)
         self.doctor_select_frames: list[ctk.CTkFrame] = []
@@ -57,21 +57,26 @@ class chooseDoctorsFrame(ctk.CTkFrame):
     def reset(self):
         self.doctors_ungrid()
         username = self.auth_service.username
+        print(username)
         patient_insurance_type = self.df_patients.loc[self.df_patients["Username"] == username, "Krankenkassenart"].iloc[0]
         
         # find available doctors
-        df_available_doctors = self.df_doctors.loc[self.df_doctors[patient_insurance_type] == True, ["Username", "Name"]]
-        self.doctor_list = [tuple(x) for x in df_available_doctors.to_records(index=False)]
-        self.var_cosen_doctor_username.set(self.doctor_list[0][0])  # prechoose the first doctor in list
+        df_available_doctors = self.df_doctors.loc[self.df_doctors[patient_insurance_type] == True, ["Username", "Name"]]   
+        self.doctor_list = [tuple(x) for x in df_available_doctors.to_records(index=False)] # convert to list of tuples(Username, Name)
+        self.var_chosen_doctor_username.set(self.doctor_list[0][0])  # prechoose the first doctor in list
         
         # fill doctor select frames
-        self.doctor_select_frames = [ctk.CTkFrame(self.doctor_list_frame) for i in range(0, len(self.doctor_list))]
-        for index, frame in enumerate(self.doctor_select_frames):
-            self.doctor_select_radio.append(ctk.CTkRadioButton(frame, text=self.doctor_list[index][1], variable=self.var_cosen_doctor_username, value=self.doctor_list[index][0]))
+        self.doctor_select_frames = [ctk.CTkFrame(self.doctor_list_frame) for i in range(0, len(self.doctor_list))] # create frames 
+        # create radio buttons
+        for index, frame in enumerate(self.doctor_select_frames): 
+            self.doctor_select_radio.append(ctk.CTkRadioButton(frame, text=self.doctor_list[index][1], variable=self.var_chosen_doctor_username, value=self.doctor_list[index][0], command=self.master.changed))
             
         self.set_doctors_grid()
         self.set_main_grid()
         
     def next_page(self):
         self.master.next_page()
+        
+    def get_doctor(self):
+        return self.var_chosen_doctor_username.get()
         
