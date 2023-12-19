@@ -22,7 +22,7 @@ class WeekCalenderView(ctk.CTkFrame):
         self.day_shortnames: list[str] = ["MO", "DI", "MI", "DO", "FR"]
 
         self.grid_columnconfigure(list(range(5)), weight=1)
-        self.grid_rowconfigure(list(range(2, 10*4+3)), weight=1)
+        self.grid_rowconfigure(list(range(2, 10*4+2)), weight=1)
 
 
         self.start_date: datetime = datetime.now() + relativedelta(weekday=MO(-1), hour=0)
