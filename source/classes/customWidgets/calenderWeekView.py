@@ -50,7 +50,7 @@ class WeekCalenderView(ctk.CTkFrame):
         self.start_week = day_of_week + relativedelta(weekday=MO(-1), hour=0)
         self.stop_week = self.start_week + relativedelta(weekday=SA)
 
-    def set_week(self, day_of_week: datetime, doctor_name=None, ex_dates: list[tuple[datetime, datetime]] = None):
+    def set_week(self, day_of_week: datetime, doctor_name=None):
         if doctor_name is not None:
             self.doctor_name = doctor_name
 

@@ -38,10 +38,17 @@ class MainBookingFrame(ctk.CTkFrame):
         self.progression_bar_frame = ctk.CTkFrame(self, corner_radius=14)
         self.progression_bar_frame.columnconfigure((0, 5), weight=1)
 
-        self.buttons = [
-            ctk.CTkButton(self.progression_bar_frame, corner_radius=14, text=text, command=lambda: self.switch_to(index))
-            for index, text in enumerate(["Behandlung", "Zahnarzt", "Termin", "Fertig"])
+        button_create_kwargs = [
+            {"text": "Behandlung", "command": lambda: self.switch_to(0)},
+            {"text": "Zahnarzt", "command": lambda: self.switch_to(1)},
+            {"text": "Termin", "command": lambda: self.switch_to(2)},
+            {"text": "Fertig", "command": lambda: self.switch_to(3)}
         ]
+
+        self.buttons = [
+            ctk.CTkButton(self.progression_bar_frame, corner_radius=14, **kwargs)
+            for kwargs in button_create_kwargs]
+
 
         # main frames
         self.treatment_frame = TreatmentFrame(self)
