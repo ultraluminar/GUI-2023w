@@ -223,7 +223,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         insurance_by_law = self.insurance_by_law.get()
         insurance_voluntarily = self.insurance_voluntarily.get()
         insurances = [insurance_voluntarily, insurance_by_law, insurance_private]
-        otp_verified = code != "" and not self.auth_service.check_code(code)
+        otp_verified = code != "" and self.auth_service.check_code(code)
         
         entry_map = [
             [self.doctor_username_entry,             username == "",                "no username given"],
