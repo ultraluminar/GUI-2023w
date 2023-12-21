@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta, MO
 from dateutil.rrule import rrule, WEEKLY
 
 from source.classes.customWidgets.calenderWeekView import WeekCalenderView
+from source.classes.booking import Booking
 
 class CalenderViewFrame(ctk.CTkFrame):
     def __init__(self, master: ctk.CTk):
@@ -27,6 +28,7 @@ class CalenderViewFrame(ctk.CTkFrame):
         self.last_week_button = ctk.CTkButton(self, text="last", command=lambda: self.update_current(weeks=-1))
         self.next_week_button = ctk.CTkButton(self, text="next", command=lambda: self.update_current(weeks=1))
         self.week_calender_view = WeekCalenderView(self)
+        self.booking = None
         self.book_button = ctk.CTkButton(self, text="Buchen", command=self.booking_view)
         self.buttons = [self.last_week_button, self.next_week_button]
 
@@ -76,4 +78,9 @@ class CalenderViewFrame(ctk.CTkFrame):
         self.week_calender_view.set_week(day_of_week=self.current)
     
     def booking_view(self):
-        pass
+        if self.booking is None or not self.booking.winfo_exists():
+            self.booking = Booking()    # create window if its None or destroyed
+        elif self.booking.state() == "iconic":
+            self.booking.deiconify()    # bring back window if its minimized
+        else:
+            self.booking.focus()
