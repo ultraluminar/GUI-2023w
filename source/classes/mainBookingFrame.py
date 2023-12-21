@@ -19,8 +19,8 @@ button_configure_kwargs = {
             "hover_color": ("#36719F", "#144870")}
 }
 
-frame_grid_kwargs = {"column": 0, "row": 1, "sticky": "nsew", "padx": 20, "pady": (0, 20)}
-button_grid_kwargs = {"row": 0, "sticky": "nsew", "pady": 20, "padx": 5}
+frame_grid_kwargs = {"row": 1, "sticky": "nsew", "padx": 20, "pady": (0, 20), "column": 0}
+button_grid_kwargs = {"row": 0, "sticky": "nsew", "padx": 5, "pady": 20}
 
 class MainBookingFrame(ctk.CTkFrame):
     def __init__(self, master):
@@ -68,10 +68,9 @@ class MainBookingFrame(ctk.CTkFrame):
 
         
     def reset(self):
-        self.progression = 0
-        self.current_state = 0
-        self.treatment_frame.reset()
-        self.update_progression_bar()
+        self.progression = -1
+        self.current_state = -1
+        self.next_page()
 
         
     def update_progression_bar(self):
