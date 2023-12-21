@@ -13,7 +13,8 @@ class CalenderViewFrame(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)
         
         # variables
-        self.current: datetime = datetime.now() + relativedelta(weekday=MO(-1))
+        self.current = None
+        self.reset_current()
         
         # fonts
         self.font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
@@ -36,23 +37,23 @@ class CalenderViewFrame(ctk.CTkFrame):
         self.week_calender_view.grid(column=0, columnspan=3, row=2, pady=20, sticky="nsew")
         self.book_button.grid(column=0, columnspan=3, row=3, pady=20, sticky="e", padx=(0, 20))
 
-    def set_doctor(self, name: str):
+    def reset_current(self):
+        self.current: datetime = datetime.now() + relativedelta(weekday=MO(-1))
+
+    def set_doctor(self, name: str = None):
+        self.reset_current()
         self.week_calender_view.set_week(doctor_name=name, day_of_week=self.current)
 
     def reset(self):
-        self.week_calender_view.reset()
+        ...
         
     def last_week(self):
-        self.reset()
         self.current += relativedelta(weeks=-1)
         self.week_calender_view.set_week(day_of_week=self.current)
-        pass
         
     def next_week(self):
-        self.reset()
         self.current += relativedelta(weeks=1)
         self.week_calender_view.set_week(day_of_week=self.current)
-        pass
     
     def booking_view(self):
         pass
