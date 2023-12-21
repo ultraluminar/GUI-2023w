@@ -1,5 +1,6 @@
 import tkinter as tk
 import customtkinter as ctk
+import logging
 
 from source.classes.customWidgets.intSpinbox import IntSpinbox
 from source.classes.timeSelector import TimeSelector
@@ -27,8 +28,6 @@ class RegisterFormFrame(ctk.CTkTabview):
 
         # tk variables
         self.sex = tk.StringVar(value="Herr")
-        self.patient_error_string = tk.StringVar(value="")
-        self.doctor_error_string = tk.StringVar(value="")
         # patient tab
         self.insurance_var = tk.StringVar(value="Krankenkassenart")
         self.dental_problem_var = tk.StringVar(value="Dentale Problematik")
@@ -36,11 +35,13 @@ class RegisterFormFrame(ctk.CTkTabview):
 
         self.insurance_types = ["gesetzlich", "freiwillig gesetzlich", "privat"]
         self.dental_problem_types = ["Karies klein", "Karies groß", "Teilkrone", "Krone", "Wurzelbehandlung"]
+        self.patient_error_string = tk.StringVar(value="")
         # doctor tab
         self.insurance_private = tk.BooleanVar(value=False)
         self.insurance_by_law = tk.BooleanVar(value=False)
         self.insurance_voluntarily = tk.BooleanVar(value=False)
         self.availability: list = []
+        self.doctor_error_string = tk.StringVar(value="")
 
         # widgets
         # patient tab
@@ -166,6 +167,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         for entry, is_problem, error_string in entry_map:
             if is_problem:
                 error_entrys.append(entry)
+                logging.warning(error_string)
                 error_messages.append(error_string)
                 
 
@@ -195,7 +197,7 @@ class RegisterFormFrame(ctk.CTkTabview):
             "dental_problem": dental_problem,
             "problem_teeth_count": problem_teeth_count
         })
-        print(f"patient added to database ({username})")
+        logging.info(f"patient added to database ({username})")
         
         self.reset()     
         
@@ -240,6 +242,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         for entry, is_problem, error_string in entry_map:
             if is_problem:
                 error_entrys.append(entry)
+                logging.warning(error_string)
                 error_messages.append(error_string)
                 
         entrys = [self.doctor_username_entry, self.doctor_name_entry, self.doctor_password_entry, self.doctor_confirm_password_entry,
@@ -273,7 +276,7 @@ class RegisterFormFrame(ctk.CTkTabview):
             "insurance_voluntarily": insurance_voluntarily,
             "availability": self.availability
         })
-        print(f"doctor added to database ({username})")
+        logging.info(f"doctor added to database ({username})")
         
         self.reset()
         
