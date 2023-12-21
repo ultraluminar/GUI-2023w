@@ -34,6 +34,7 @@ class Frame(ctk.CTkFrame):
     def copy_code(self, event=None):
         self.clipboard_clear()
         self.clipboard_append(self.auth_service.code)
+        self.button.configure(fg_color=("#26a31d", "#369130"), hover_color=("#1d8017", "#2c7527"))
 
 
 class Admin(ctk.CTkToplevel):
