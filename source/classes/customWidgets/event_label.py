@@ -12,8 +12,8 @@ class EventLabel:
         if rule is not None:
             self.dt_start, self.dt_stop = [self.dt_start.replace(hour=hour) for hour in rule._byhour]
 
-        self.column = self.dt_start.weekday()
-        self.row = (self.dt_start - self.dt_start.replace(hour=8)) // timedelta(minutes=15) + 2
+        self.column = self.dt_start.weekday() + 1
+        self.row = (self.dt_start - self.dt_start.replace(hour=8)) // timedelta(minutes=15) + 4
         self.rowspan = (self.dt_stop - self.dt_start) // timedelta(minutes=15)
 
         self.label = ctk.CTkLabel(master=master, text="text", corner_radius=5, fg_color=fg_color)

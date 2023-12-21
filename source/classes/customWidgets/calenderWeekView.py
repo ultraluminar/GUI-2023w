@@ -29,21 +29,25 @@ class WeekCalenderView(ctk.CTkFrame):
 
         self.day_shortnames: list[str] = ["MO", "DI", "MI", "DO", "FR"]
 
-        self.grid_columnconfigure(list(range(5)), weight=1)
-        self.grid_rowconfigure(list(range(2, 10*4+2)), weight=1)
+        self.grid_columnconfigure(list(range(1, 6)), weight=1)
+        self.grid_rowconfigure(list(range(2, 11*4+2)), weight=1)
 
         self.set_week_limits(datetime.now())
 
         self.date_rule = rrule(freq=WEEKLY, byweekday=range(5), byhour=8, byminute=0, bysecond=0, dtstart=self.start_week)
 
         # widgets
-        self.day_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, text=day) for day in self.day_shortnames]
-        self.date_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self) for _ in workdays]
+        self.month_label = ctk.CTkLabel(self, fg_color="gray30", width=100)
+        self.week_label = ctk.CTkLabel(self, fg_color="gray30")
+        self.time_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, fg_color="gray20", text=f"{time}:00") for time in range(8, 18+1)]
+        self.day_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, fg_color="gray30", text=day) for day in self.day_shortnames]
+        self.date_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, fg_color="gray30") for _ in workdays]
         self.hour_buttons: list[list[ctk.CTkLabel]] = [[
-            ctk.CTkLabel(self, text=f"{hour} - {hour+1} Uhr", corner_radius=5, fg_color="gray20"
+            ctk.CTkLabel(self, text="", corner_radius=5, fg_color="gray25"
                 ) for hour in range(8, 18)] for _ in workdays]
 
         self.update_date_labels()
+        self.update_month_week_label()
         self.set_grid()
 
     def set_week_limits(self, day_of_week: datetime):
@@ -57,6 +61,7 @@ class WeekCalenderView(ctk.CTkFrame):
         self.set_week_limits(day_of_week)
         self.update_date_labels()
         self.update_event_labels()
+        self.update_month_week_label()
 
     def update_event_labels(self):
         self.reset()
@@ -77,6 +82,10 @@ class WeekCalenderView(ctk.CTkFrame):
         self.dates = [str(dt.day) for dt in self.date_rule.between(after=self.start_week, before=self.stop_week)]
         for date, label in zip(self.dates, self.date_labels):
             label.configure(text=date)
+            
+    def update_month_week_label(self):
+        self.month_label.configure(text=self.start_week.strftime("%b %Y"))
+        self.week_label.configure(text=f"KW {self.start_week.isocalendar()[1]}")
 
     def labels_from_rules(self, rules: list[rrule]):
         labels: list[EventLabel] = []
@@ -108,9 +117,15 @@ class WeekCalenderView(ctk.CTkFrame):
             self.events.clear()
 
     def set_grid(self):
+        self.month_label.grid(column=0, row=0, sticky="nsew")
+        self.week_label.grid(column=0, row=1, sticky="nsew")
+        self.time_labels[0].grid(column=0, row=2, sticky="nsew", padx=1, pady=1, rowspan=4)
+        self.time_labels[-1].grid(column=0, row=9 * 4 + 6, sticky="nsew", padx=1, pady=1, rowspan=4)
+        for row, label in enumerate(self.time_labels[1:-1]):
+            label.grid(column=0, row=row * 4 + 6, sticky="nsew", rowspan=4, padx=1, pady=1)
         for row, labels in enumerate([self.day_labels, self.date_labels]):
-            for column, widget in enumerate(labels):
+            for column, widget in enumerate(labels, start=1):
                 widget.grid(column=column, row=row, sticky="nsew")
-        for column, rows in enumerate(self.hour_buttons):
+        for column, rows in enumerate(self.hour_buttons, start=1):
             for row, widget in enumerate(rows):
-                widget.grid(column=column, row=row * 4 + 2, sticky="nsew", padx=1, pady=1, rowspan=4)
+                widget.grid(column=column, row=row * 4 + 4, sticky="nsew", padx=1, pady=1, rowspan=4)
