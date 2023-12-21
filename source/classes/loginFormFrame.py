@@ -59,7 +59,7 @@ class LoginFormFrame(ctk.CTkFrame):
         for entry in entrys:
             entry.configure(border_color=("red" if entry in error_entrys else default_color))
         if error_messages:  # not empty
-            self.error_string.set("\n".join(error_messages))
+            self.error_string.set("\n".join(error_messages))    # set error label text
             self.error_label.grid(row=4, column=0, columnspan=2, pady=(5, 0), padx=50, sticky="n")
         else:
             self.error_label.grid_forget()
@@ -82,6 +82,7 @@ class LoginFormFrame(ctk.CTkFrame):
         # reset entrys for privacy
         self.username_entry.delete(0, "end")
         self.password_entry.delete(0, "end")
-        self.username_entry.configure(border_color=("#979DA2", "#565B5E"))
-        self.password_entry.configure(border_color=("#979DA2", "#565B5E"))
+        self.username_entry.configure(border_color=("#979DA2", "#565B5E"))  # reset border color
+        self.password_entry.configure(border_color=("#979DA2", "#565B5E"))  
+        self.error_label.grid_forget()  # hide error label
     
