@@ -84,9 +84,7 @@ def username_exists(username: str) -> bool:
 class AuthenticationService:
     def __init__(self):
         self.username = None
-        self.used = True
-        self.code: str = ""
-        self.expires: datetime = datetime.now()
+        self.code = None
 
     def update_password(self, new_password: str):
         updateJson(paths["passwords"], {self.username: mhash(new_password)}, replace=True)
@@ -101,9 +99,8 @@ class AuthenticationService:
             return True
 
     def generate_code(self):
-        self.code = random_chars(8)
-        self.expires = datetime.now() + timedelta(minutes=10)
-        self.used = False
+        if self.code is None:
+            self.code = random_chars(8)
 
     def check_code(self, code: str):
-        return not self.used and code == self.code and self.expires < datetime.now()
+        return code == self.code
