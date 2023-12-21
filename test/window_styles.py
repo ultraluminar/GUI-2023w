@@ -18,10 +18,7 @@ class WindowCompositionAttributes(Structure):
 class ChangeHeaderColor:
     """ change the titlebar background color """
 
-    def __init__(self,
-                 window,
-                 color):
-
+    def __init__(self, window, color):
         self.HWND = detect(window)
 
         ChangeDWMAccent(self.HWND, 30, (2 if color == "transparent" else 0))
