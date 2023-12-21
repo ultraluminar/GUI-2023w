@@ -2,9 +2,9 @@ import customtkinter as ctk
 
 from source.classes.mainLoginFrame import MainLoginFrame
 from source.classes.mainRegisterFrame import MainRegisterFrame
-from source.classes.login_sidebar import LoginSidebar
+from source.classes.loginSidebar import LoginSidebar
 
-from source.classes.main_sidebar import MainSidebar
+from source.classes.mainSidebar import MainSidebar
 from source.classes.mainBookingFrame import MainBookingFrame
 
 from source.auth_util import AuthenticationService
