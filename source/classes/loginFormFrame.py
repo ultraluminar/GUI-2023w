@@ -40,10 +40,10 @@ class LoginFormFrame(ctk.CTkFrame):
 
         # check if all entrys are filled
         entry_map = [
-            [self.username_entry, username == "", "please give a username"],
-            [self.username_entry, not username_exists(username), "username doesn't exist"],
-            [self.password_entry, password == "", "please give a password"],
-            [self.password_entry, not self.auth_service.check_login(username, password), "password incorrect"]
+            [self.username_entry, username == "", "Kein Benutzername angegeben"],
+            [self.username_entry, not username_exists(username), "Benutzername existiert nicht"],
+            [self.password_entry, password == "", "Kein Passwort angegeben"],
+            [self.password_entry, not self.auth_service.check_login(username, password), "Passwort ist falsch"]
         ]
 
         error_entrys = []

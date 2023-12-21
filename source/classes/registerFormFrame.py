@@ -153,14 +153,14 @@ class RegisterFormFrame(ctk.CTkTabview):
         default_color = ("#979DA2", "#565B5E")
 
         entry_map = [
-            [self.patient_username_entry, username == "", "no username given"],
-            [self.patient_name_entry, name == "", "no name given"],
-            [self.patient_password_entry, password == "", "no password given"],
-            [self.patient_confirm_password_entry, confirm_password == "", "confirm your password"],
-            [self.patient_confirm_password_entry, confirm_password != password, "your confirmation password does not match"],
-            [self.insurance_combobox, insurance == "Krankenkassenart", "choose your type of insurance"],
-            [self.dental_problem_combobox, dental_problem == "Dentale Problematik", "choose your dental problem"],
-            [self.patient_username_entry, username_exists(username), "username already exists"]]
+            [self.patient_username_entry, username == "", "Kein Benutzername angegeben"],
+            [self.patient_name_entry, name == "", "Kein Nachname angegeben"],
+            [self.patient_password_entry, password == "", "Kein Passwort angegeben"],
+            [self.patient_confirm_password_entry, confirm_password == "", "Passwort nicht bestätigt"],
+            [self.patient_confirm_password_entry, confirm_password != password, "Passwort stimmt nicht überein"],
+            [self.insurance_combobox, insurance == "Krankenkassenart", "Wählen Sie Ihre Krankenkassenart"],
+            [self.dental_problem_combobox, dental_problem == "Dentale Problematik", "Wählen Sie Ihre dentale Problematik"],
+            [self.patient_username_entry, username_exists(username), "Benutzername bereits vergeben"]]
 
         error_entrys = []
         error_messages = []
@@ -226,16 +226,16 @@ class RegisterFormFrame(ctk.CTkTabview):
         otp_verified = code != "" and self.auth_service.check_code(code)
         
         entry_map = [
-            [self.doctor_username_entry,             username == "",                "no username given"],
-            [self.doctor_name_entry,                 name == "",                    "no name given"],
-            [self.doctor_password_entry,             password == "",                "no password given"],
-            [self.doctor_confirm_password_entry,     confirm_password == "",        "confirm your password"],
-            [self.doctor_confirm_password_entry,     confirm_password != password,  "your confirmation password does not match"],
-            [self.doctor_insurance_checkbox_private, not any(insurances),           "choose at least one type of insurance"],
-            [self.doctor_time_selector_button,       self.availability == [],       "select ure availability schedule"],
-            [self.doctor_username_entry,             username_exists(username),     "username already exists"],
-            [self.doctor_code, code == "", "no authorization code given"],
-            [self.doctor_code, not otp_verified, "wrong authorization code"]]
+            [self.doctor_username_entry,             username == "",                "Kein Benutzername angegeben"],
+            [self.doctor_name_entry,                 name == "",                    "Kein Nachname angegeben"],
+            [self.doctor_password_entry,             password == "",                "Kein Passwort angegeben"],
+            [self.doctor_confirm_password_entry,     confirm_password == "",        "Passwort nicht bestätigt"],
+            [self.doctor_confirm_password_entry,     confirm_password != password,  "Passwort stimmt nicht überein"],
+            [self.doctor_insurance_checkbox_private, not any(insurances),           "Wählen mindestens eine Krankenkassenart"],
+            [self.doctor_time_selector_button,       self.availability == [],       "Wählen Sie einen Behandlungszeitraum"],
+            [self.doctor_username_entry,             username_exists(username),     "Benutzername bereits vergeben"],
+            [self.doctor_code, code == "", "Kein Freischalt-Code angegeben"],
+            [self.doctor_code, not otp_verified, "Freischalt-Code ungültig"]]
         
         error_entrys = []
         error_messages = []
