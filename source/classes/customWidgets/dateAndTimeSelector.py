@@ -71,7 +71,7 @@ class DateAndTimeSelector(ctk.CTkFrame):
         days_from = self.day_from.get()
         days_to = self.day_to.get()
 
-        if not days_from:   # der callback wird warumauchimmer 2x aufgerufen mit 1x days_from = ""
+        if not days_from:   # the callback is called 2x for whatever reason with 1x time_from = ""
             return
 
         index = self.weekdays.index(days_from)
@@ -85,15 +85,16 @@ class DateAndTimeSelector(ctk.CTkFrame):
         time_from = self.time_from.get()
         time_to = self.time_to.get()
 
-        if not time_from:   # der callback wird warumauchimmer 2x aufgerufen mit 1x time_from = ""
+        if not time_from:   # the callback is called 2x for whatever reason with 1x time_from = ""
             return
 
         index = self.hours.index(time_from)
-        new_values = self.hours[index:]
+        new_values = self.hours[index + 1:]
         self.time_to_combobox.configure(values=new_values)
         if time_to and time_to not in new_values:
             self.time_to.set("")
 
+    # retrieves date and time range inputs from combo boxes, validates them, and returns a recurrence rule string representing the selected range.
     def get(self) -> str:
         default_color = ("#979DA2", "#565B5E")
         values =      [self.day_from.get(),    self.day_to.get(),    self.time_from.get(),    self.time_to.get()]
