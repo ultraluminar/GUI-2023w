@@ -19,6 +19,11 @@ class RegisterFormFrame(ctk.CTkTabview):
 
         # font
         self.font15 = ctk.CTkFont(family="Segoe UI", size=15)
+        
+        # colors
+        self.default_color = ("#979DA2", "#565B5E")
+        self.button_default_color = ("#3B8ED0", "#1F6AA5")
+        self.button_default_hover_color = ("#36719F", "#144870")
 
         # tk variables
         self.sex = tk.StringVar(value="Herr")
@@ -161,7 +166,6 @@ class RegisterFormFrame(ctk.CTkTabview):
         for entry, is_problem, error_string in entry_map:
             if is_problem:
                 error_entrys.append(entry)
-                print(error_string)
                 error_messages.append(error_string)
                 
 
@@ -191,15 +195,9 @@ class RegisterFormFrame(ctk.CTkTabview):
             "dental_problem": dental_problem,
             "problem_teeth_count": problem_teeth_count
         })
-        print("patient added")
+        print(f"patient added to database ({username})")
         
-        # delete entrys for privacy
-        self.patient_username_entry.delete(0, "end")
-        self.patient_name_entry.delete(0, "end")
-        self.patient_password_entry.delete(0, "end")
-        self.patient_confirm_password_entry.delete(0, "end")
-        self.insurance_var.set("Krankenkassenart")
-        self.dental_problem_combobox.set("Dentale Problematik")        
+        self.reset()     
         
         # automatically log in
         if (self.auth_service.check_login(username=username, password=password)):
@@ -211,10 +209,6 @@ class RegisterFormFrame(ctk.CTkTabview):
             self.nametowidget(".").home_grid()
         else: 
             raise PermissionError
-        
-        #destroy time selector window
-        if self.time_selector_window is not None:
-            self.time_selector_window.destroy()
         
     def try_doctor_register(self, event = None) -> None:
         username = self.doctor_username_entry.get()
@@ -228,11 +222,6 @@ class RegisterFormFrame(ctk.CTkTabview):
         insurance_voluntarily = self.insurance_voluntarily.get()
         insurances = [insurance_voluntarily, insurance_by_law, insurance_private]
         otp_verified = code != "" and not self.auth_service.check_code(code)
-
-        
-        default_color = ("#979DA2", "#565B5E")
-        button_default_color = ("#26a31d", "#369130")
-        button_default_hover_color = ("#36719F", "#144870")
         
         entry_map = [
             [self.doctor_username_entry,             username == "",                "no username given"],
@@ -251,7 +240,6 @@ class RegisterFormFrame(ctk.CTkTabview):
         for entry, is_problem, error_string in entry_map:
             if is_problem:
                 error_entrys.append(entry)
-                print(error_string)
                 error_messages.append(error_string)
                 
         entrys = [self.doctor_username_entry, self.doctor_name_entry, self.doctor_password_entry, self.doctor_confirm_password_entry,
@@ -260,17 +248,16 @@ class RegisterFormFrame(ctk.CTkTabview):
         # visual error feedback
         for entry in entrys:
             if entry is self.doctor_insurance_checkbox_private: # handling all checkboxes if none are ticked
-                self.doctor_insurance_checkbox_by_law.configure(border_color=("red" if entry in error_entrys else default_color))
-                self.doctor_insurance_checkbox_voluntarily.configure(border_color=("red" if entry in error_entrys else default_color))
-            entry.configure(border_color=("red" if entry in error_entrys else default_color))
-        self.doctor_time_selector_button.configure(fg_color="red" if self.doctor_time_selector_button in error_entrys else button_default_color)
+                self.doctor_insurance_checkbox_by_law.configure(border_color=("red" if entry in error_entrys else self.default_color))
+                self.doctor_insurance_checkbox_voluntarily.configure(border_color=("red" if entry in error_entrys else self.default_color))
+            entry.configure(border_color=("red" if entry in error_entrys else self.default_color))
+        self.doctor_time_selector_button.configure(fg_color="red" if self.doctor_time_selector_button in error_entrys else self.button_default_color)
         if error_messages:  # not empty
             self.doctor_error_string.set("\n".join(error_messages))
             self.doctor_error_label.grid(row=13, column=0, columnspan=2, pady=(10, 0), padx=50, sticky="n")
         else:
             self.doctor_error_label.grid_forget()
 
-        print(error_entrys)
         if error_entrys:  # not empty
             return
 
@@ -286,20 +273,9 @@ class RegisterFormFrame(ctk.CTkTabview):
             "insurance_voluntarily": insurance_voluntarily,
             "availability": self.availability
         })
-        print("doctor added")
+        print(f"doctor added to database ({username})")
         
-        # delete entrys for privacy
-        for entry in [self.doctor_username_entry, self.doctor_name_entry,
-                      self.doctor_password_entry, self.doctor_confirm_password_entry,
-                      self.doctor_code]:
-            entry.delete(0, "end")
-
-        for insurance in [self.insurance_private, self.insurance_by_law, self.insurance_voluntarily]:
-            insurance.set(False)
-            
-        self.time_selector_window.destroy()
-        self.time_selector_window = None
-        self.doctor_time_selector_button.configure(fg_color=button_default_color, hover_color=button_default_hover_color, text="Behandlungszeit auswählen")
+        self.reset()
         
         # automatically log in
         if (self.auth_service.check_login(username=username, password=password)):
@@ -331,3 +307,41 @@ class RegisterFormFrame(ctk.CTkTabview):
         # visual feedback
         self.doctor_time_selector_button.configure(fg_color=("#26a31d", "#369130"), hover_color=("#1d8017", "#2c7527"), text="Behandlungszeit ändern")
     
+    def reset(self):
+        # delete patient entrys for privacy
+        self.patient_username_entry.delete(0, "end")
+        self.patient_name_entry.delete(0, "end")
+        self.patient_password_entry.delete(0, "end")
+        self.patient_confirm_password_entry.delete(0, "end")
+        self.insurance_var.set("Krankenkassenart")
+        self.dental_problem_combobox.set("Dentale Problematik")
+        self.teeth_count_spinbox.set(1)
+        # delete patient error label
+        self.patient_error_label.grid_forget()
+        # revert patient error colorings
+        for entry in [self.patient_username_entry, self.patient_name_entry, self.patient_password_entry, self.patient_confirm_password_entry,
+                      self.insurance_combobox, self.dental_problem_combobox]:
+            entry.configure(border_color=self.default_color)
+        
+        # delete doctor entrys for privacy
+        for entry in [self.doctor_username_entry, self.doctor_name_entry,
+                      self.doctor_password_entry, self.doctor_confirm_password_entry,
+                      self.doctor_code]:
+            entry.delete(0, "end")
+        for insurance in [self.insurance_private, self.insurance_by_law, self.insurance_voluntarily]:
+            insurance.set(False)
+            
+        self.availability = []
+        # delete doctor error label
+        self.doctor_error_label.grid_forget()
+        # revert doctor error colorings
+        for entry in [self.doctor_username_entry, self.doctor_name_entry, self.doctor_password_entry, self.doctor_confirm_password_entry,
+                      self.doctor_code]:
+            entry.configure(border_color=self.default_color)
+        self.doctor_time_selector_button.configure(fg_color=self.button_default_color, hover_color=self.button_default_hover_color, text="Behandlungszeit auswählen")
+
+        # destroy time selector window
+        if self.time_selector_window is not None:
+            self.time_selector_window.destroy()
+            self.time_selector_window = None
+        
