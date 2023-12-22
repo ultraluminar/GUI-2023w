@@ -58,14 +58,13 @@ class DoctorSidebar(ctk.CTkFrame):
     
     # hides widgets from the main view and brings back login widgets
     def logout(self):
-        self.reset()
         if self.settings_window is None or not self.settings_window.winfo_exists():
             pass
         else:
             print("test")
             self.settings_window.destroy()
         self.grid_forget()
-        self.nametowidget(".").home.grid_forget()
+        self.nametowidget(".").doctor_view.grid_forget()
         self.nametowidget(".").booking.grid_forget()
         self.nametowidget(".").initial_grid()     
         
