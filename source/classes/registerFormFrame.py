@@ -286,8 +286,7 @@ class RegisterFormFrame(ctk.CTkTabview):
             self.nametowidget(".!ctkframe2.!canvas.!mainregisterframe").grid_forget()
             self.nametowidget(".").login_sidebar.grid_forget()
             # grid
-            self.nametowidget(".").main_sidebar_grid()
-            self.nametowidget(".").home_grid()
+            self.nametowidget(".").doctor_grid()
         else:
             raise PermissionError
         

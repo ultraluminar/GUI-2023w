@@ -3,8 +3,9 @@ import json
 
 import pandas as pd
 from pandas import read_csv
-from dateutil.rrule import rrulestr, weekday
+from dateutil.rrule import rrulestr, weekday, rruleset
 from datetime import date, datetime, timedelta
+from dateutil.relativedelta import relativedelta, MO, SA
 
 from source.classes.customWidgets.doctorAppointmentOverview import DoctorOverview
 
@@ -16,8 +17,6 @@ class DoctorHome(ctk.CTkScrollableFrame):
         self.username = None
         
         self.grid_columnconfigure(0, weight=1)
-        
-        print("test", self.get_appointments_day(), "test")
         
         # fonts
         font30 = ctk.CTkFont(family="Segoe UI", size=30, weight="bold")
@@ -86,11 +85,11 @@ class DoctorHome(ctk.CTkScrollableFrame):
         self.appointments_sub_frame.reset()
         
     def get_doctor_name(self):
-        return read_csv("data/doctors.csv", index_col="username").loc[self.username]["Name"]
+        return read_csv("data/doctors.csv", index_col="Username").loc[self.username]["Name"]
     
     # csv format: [Username (str),Name (str),ID/Passwort (str),privat (boolean),gesetzlich (boolean),freiwillig gesetzlich (boolean)]
     def get_treated_insurance_types(self):
-        df = read_csv("data/doctors.csv", index_col="username")
+        df = read_csv("data/doctors.csv", index_col="Username")
         username = self.username
         privat = df.loc[username]["privat"]
         gesetzlich = df.loc[username]["gesetzlich"]
@@ -114,15 +113,17 @@ class DoctorHome(ctk.CTkScrollableFrame):
             return "Keine"
         
     def get_weekly_hours(self):
-        days: list[weekday] = [weekday(i) for i in range(5)]
-        hours: list[int] = [i for i in range(8, 17)]
-        weekly_hours = 0
-        # iterate over all weekdays and hours and check if the doctor is available
-        for day in days: 
-            for hour in hours:
-                if self.is_in_rules(day, hour):
-                    weekly_hours += 1
-        return weekly_hours
+        mo = datetime.now() + relativedelta(weekday=MO(-1), hour=0)
+        sa = mo + relativedelta(weekday=SA)
+        with open("data/doctors_free.json") as file:
+            data = json.load(file)
+        ruleset = rruleset()
+        for rulestr in data[self.username]:
+            rule = rrulestr(rulestr)
+            hours = range(rule._byhour[0], rule._byhour[-1])
+            rule = rule.replace(dtstart=mo, byhour=hours)
+            ruleset.rrule(rule)
+        return len(ruleset.between(mo, sa))
     
     def get_appointments_week(self):
         next_days_in_week: list[date] = self.get_next_week_days()
@@ -157,24 +158,10 @@ class DoctorHome(ctk.CTkScrollableFrame):
         next_days_in_week = []
         for i in range(7):
             next_day = today + timedelta(days=i)    # add i days to today
-            # Prüfen, ob der nächste Tag ein Wochentag ist (0-4 entspricht Montag bis Freitag)
+            # check if next_day is in the same week and not a weekend
             if next_day.weekday() < 5 and next_day.isocalendar()[1] == today.isocalendar()[1]:  # isocalendar()[1] returns the week number to make sure its in the same week
                 next_days_in_week.append(next_day)
         return next_days_in_week
-
-    # Check if the given weekday and hour are within the doctor's free time rules
-    def is_in_rules(self, weekday: weekday, hour: int) -> bool:
-        with open("data/doctors_free.json") as file:
-            data = json.load(file)
-        
-        for rule in data[self.username]:
-            rrule = rrulestr(rule)
-            start_hour, end_hour = rrule.byhour[0], rrule.byhour[-1]    # byhour value pair is treated as start and end hour
-            
-            if weekday in rrule._byweekday and start_hour <= hour < end_hour:
-                return True
-        
-        return False
             
     def book_appointment(self):
         self.nametowidget(".!mainsidebar").book_event()

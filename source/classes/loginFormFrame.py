@@ -3,6 +3,7 @@ import tkinter as tk
 import logging
 
 from source.auth_util import username_exists
+from pandas import read_csv
 
 class LoginFormFrame(ctk.CTkFrame):
     def __init__(self, master):
@@ -74,7 +75,10 @@ class LoginFormFrame(ctk.CTkFrame):
         # grid forget
         self.nametowidget(".!ctkframe.!canvas.!mainloginframe").grid_forget()
         self.nametowidget(".!loginsidebar").grid_forget()
-        # grid grid
+        # grid
+        if self.User_is_doctor(username):   # check if user is doctor
+            self.nametowidget(".").doctor_grid()
+            return
         self.nametowidget(".").main_sidebar_grid()
         self.nametowidget(".").home_grid()
 
@@ -85,4 +89,8 @@ class LoginFormFrame(ctk.CTkFrame):
         self.username_entry.configure(border_color=("#979DA2", "#565B5E"))  # reset border color
         self.password_entry.configure(border_color=("#979DA2", "#565B5E"))  
         self.error_label.grid_forget()  # hide error label
+        
+    def User_is_doctor(self, username: str) -> bool:
+        df = read_csv("data/doctors.csv")
+        return username in df["Username"].tolist()   # check if username is in doctors.csv
     
