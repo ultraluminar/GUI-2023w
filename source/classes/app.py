@@ -5,11 +5,13 @@ from source.classes.mainRegisterFrame import MainRegisterFrame
 from source.classes.loginSidebar import LoginSidebar
 
 from source.classes.mainSidebar import MainSidebar
+from source.classes.doctorSidebar import DoctorSidebar
 from source.classes.mainBookingFrame import MainBookingFrame
 
 from source.auth_util import AuthenticationService
 from source.utils import center_window
 from source.classes.home import HomeFrame
+from source.classes.doctorHome import DoctorHome
 
 from PIL import ImageTk, Image
 
@@ -48,10 +50,13 @@ class App(ctk.CTk):
         self.main_frame_register = MainRegisterFrame(self)
 
         # logged in frames
+        # patient
         self.main_sidebar = MainSidebar(self)
         self.home = HomeFrame(self)
         self.booking = MainBookingFrame(self)
-
+        # doctor
+        self.doctor_sidebar = DoctorSidebar(self)
+        self.doctor_view = DoctorHome(self)
 
         self.initial_grid()
 
@@ -74,3 +79,9 @@ class App(ctk.CTk):
         # booking grid and reset
         self.booking.grid(row=0, column=1, sticky="nsew")
         self.booking.reset()
+        
+    def doctor_grid(self):
+        # doctor grid and reset
+        self.doctor_sidebar.grid(row=0, column=0, sticky="nsew")
+        self.doctor_view.grid(row=0, column=1, sticky="nsew")
+        self.doctor_view.reset()
