@@ -15,7 +15,7 @@ class HomeFrame(ctk.CTkScrollableFrame):
         # fonts
         font30 = ctk.CTkFont(family="Segoe UI", size=30, weight="bold")
         font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
-        fat = ctk.CTkFont(family="Segoe UI", size=12, weight="bold")
+        fat = ctk.CTkFont(family="Segoe UI", weight="bold")
         
         # main widgets
         self.main_heading_label = ctk.CTkLabel(self, text=f"Willkommen, {self.username}!", font=font30)

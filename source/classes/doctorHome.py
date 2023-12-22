@@ -21,7 +21,7 @@ class DoctorHome(ctk.CTkScrollableFrame):
         # fonts
         font30 = ctk.CTkFont(family="Segoe UI", size=30, weight="bold")
         font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
-        fat = ctk.CTkFont(family="Segoe UI", size=12, weight="bold")
+        fat = ctk.CTkFont(family="Segoe UI", weight="bold")
         
         # main widgets
         self.main_heading_label = ctk.CTkLabel(self, text=f"Willkommen, {self.username}!", font=font30)
@@ -33,13 +33,13 @@ class DoctorHome(ctk.CTkScrollableFrame):
         self.profil_heading_label = ctk.CTkLabel(self.profil_frame, text="Mein Profil", font=font24)
         self.profil_sub_heading_label = ctk.CTkLabel(self.profil_frame, text="Hier können sie ihre Daten einsehen.")
         self.insurance_type_label = ctk.CTkLabel(self.profil_frame, text="Sie behandeln:", anchor="w", width=280)
-        self.insurance_value_label = ctk.CTkLabel(self.profil_frame, width=130, anchor="w", font=fat)
+        self.insurance_value_label = ctk.CTkLabel(self.profil_frame, width=230, anchor="w", font=fat)
         self.weekly_hours_label = ctk.CTkLabel(self.profil_frame, text="Arbeitszeit:", anchor="w", width=280)
-        self.weekly_hours_value_label = ctk.CTkLabel(self.profil_frame, width=130, anchor="w", font=fat)
+        self.weekly_hours_value_label = ctk.CTkLabel(self.profil_frame, width=230, anchor="w", font=fat)
         self.number_appointments_week_label = ctk.CTkLabel(self.profil_frame, text="Anzahl anstehender Termine diese Woche:", anchor="w", width=280)
-        self.number_appointments_week_value_label = ctk.CTkLabel(self.profil_frame, width=130, anchor="w", font=fat)
+        self.number_appointments_week_value_label = ctk.CTkLabel(self.profil_frame, width=230, anchor="w", font=fat)
         self.number_appointments_today_label = ctk.CTkLabel(self.profil_frame, text="Davon Termine noch heute:", anchor="w", width=280)
-        self.number_appointments_today_value_label = ctk.CTkLabel(self.profil_frame, width=130, anchor="w", font=fat)
+        self.number_appointments_today_value_label = ctk.CTkLabel(self.profil_frame, width=230, anchor="w", font=fat)
         
         # appointments sub Frame
         self.appointments_frame = ctk.CTkFrame(self)
@@ -98,14 +98,14 @@ class DoctorHome(ctk.CTkScrollableFrame):
         insurance_types = {
             True: {
                 True: {
-                    True: "Privatpatienten, gesetzlich Versicherte und freiwillig gesetzlich Versicherte",
-                    False: "Privatpatienten und gesetzlich Versicherte"},
+                    True: "Privatpatienten,\ngesetzlich Versicherte und\nfreiwillig gesetzlich Versicherte",
+                    False: "Privatpatienten und\ngesetzlich Versicherte"},
                 False: {
-                    True: "Privatpatienten und freiwillig gesetzlich Versicherte",
+                    True: "Privatpatienten und\nfreiwillig gesetzlich Versicherte",
                     False: "Privatpatienten"}},
             False: {
                 True: {
-                    True: "Gesetzlich Versicherte und freiwillig gesetzlich Versicherte",
+                    True: "Gesetzlich Versicherte und\nfreiwillig gesetzlich Versicherte",
                     False: "Gesetzlich Versicherte"},
                 False: {
                     True: "Freiwillig gesetzlich Versicherte",
