@@ -33,13 +33,13 @@ class DoctorHome(ctk.CTkScrollableFrame):
         self.profil_heading_label = ctk.CTkLabel(self.profil_frame, text="Mein Profil", font=font24)
         self.profil_sub_heading_label = ctk.CTkLabel(self.profil_frame, text="Hier können sie ihre Daten einsehen.")
         self.insurance_type_label = ctk.CTkLabel(self.profil_frame, text="Sie behandeln:", anchor="w", width=280)
-        self.insurance_value_label = ctk.CTkLabel(self.profil_frame, width=110, anchor="w", font=fat)
+        self.insurance_value_label = ctk.CTkLabel(self.profil_frame, width=130, anchor="w", font=fat)
         self.weekly_hours_label = ctk.CTkLabel(self.profil_frame, text="Arbeitszeit:", anchor="w", width=280)
-        self.weekly_hours_value_label = ctk.CTkLabel(self.profil_frame, width=110, anchor="w", font=fat)
+        self.weekly_hours_value_label = ctk.CTkLabel(self.profil_frame, width=130, anchor="w", font=fat)
         self.number_appointments_week_label = ctk.CTkLabel(self.profil_frame, text="Anzahl anstehender Termine diese Woche:", anchor="w", width=280)
-        self.number_appointments_week_value_label = ctk.CTkLabel(self.profil_frame, width=110, anchor="w", font=fat)
+        self.number_appointments_week_value_label = ctk.CTkLabel(self.profil_frame, width=130, anchor="w", font=fat)
         self.number_appointments_today_label = ctk.CTkLabel(self.profil_frame, text="Davon Termine noch heute:", anchor="w", width=280)
-        self.number_appointments_today_value_label = ctk.CTkLabel(self.profil_frame, width=110, anchor="w", font=fat)
+        self.number_appointments_today_value_label = ctk.CTkLabel(self.profil_frame, width=130, anchor="w", font=fat)
         
         # appointments sub Frame
         self.appointments_frame = ctk.CTkFrame(self)
@@ -68,7 +68,7 @@ class DoctorHome(ctk.CTkScrollableFrame):
         self.number_appointments_week_label.grid(row=4, column=1, pady=(10, 0))
         self.number_appointments_week_value_label.grid(row=4, column=2, pady=(10, 0))
         self.number_appointments_today_label.grid(row=5, column=1, pady=(10, 15))
-        self.number_appointments_week_value_label.grid(row=5, column=2, pady=(10, 15))
+        self.number_appointments_today_value_label.grid(row=5, column=2, pady=(10, 15))
     
     def set_appointments_grid(self):
         self.appointments_heading_label.grid(row=0, column=1, pady=(10, 0))
