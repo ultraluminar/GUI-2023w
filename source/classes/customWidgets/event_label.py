@@ -20,3 +20,6 @@ class EventLabel:
 
     def grid(self):
         self.label.grid(row=self.row, column=self.column, rowspan=self.rowspan, sticky="nsew", padx=1, pady=1)
+
+    def get_space(self):
+        return self.dt_start, self.dt_stop
