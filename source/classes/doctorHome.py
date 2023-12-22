@@ -96,21 +96,23 @@ class DoctorHome(ctk.CTkScrollableFrame):
         freiwillig_gesetzlich = df.loc[username]["freiwillig gesetzlich"]
 
         insurance_types = {
-            "Privatpatienten, gesetzlich Versicherte und freiwillig gesetzlich Versicherte": privat and gesetzlich and freiwillig_gesetzlich,
-            "Privatpatienten und gesetzlich Versicherte": privat and gesetzlich,
-            "Privatpatienten und freiwillig gesetzlich Versicherte": privat and freiwillig_gesetzlich,
-            "Gesetzlich Versicherte und freiwillig gesetzlich Versicherte": gesetzlich and freiwillig_gesetzlich,
-            "Privatpatienten": privat,
-            "Gesetzlich Versicherte": gesetzlich,
-            "Freiwillig gesetzlich Versicherte": freiwillig_gesetzlich,
-            "Keine": not (privat or gesetzlich or freiwillig_gesetzlich)
+            True: {
+                True: {
+                    True: "Privatpatienten, gesetzlich Versicherte und freiwillig gesetzlich Versicherte",
+                    False: "Privatpatienten und gesetzlich Versicherte"},
+                False: {
+                    True: "Privatpatienten und freiwillig gesetzlich Versicherte",
+                    False: "Privatpatienten"}},
+            False: {
+                True: {
+                    True: "Gesetzlich Versicherte und freiwillig gesetzlich Versicherte",
+                    False: "Gesetzlich Versicherte"},
+                False: {
+                    True: "Freiwillig gesetzlich Versicherte",
+                    False: "Keine"}}
         }
 
-        for insurance_type, condition in insurance_types.items():
-            if condition:
-                return insurance_type
-
-        return "Keine"
+        return insurance_types[privat][gesetzlich][freiwillig_gesetzlich]
             
     def get_weekly_hours(self):
         mo = datetime.now() + relativedelta(weekday=MO(-1), hour=0)

@@ -88,14 +88,12 @@ class Booking(ctk.CTkToplevel):
         self.choose_time_combobox.configure(values=times)
 
     def cancel(self):
-        # TODO: Implement cancel
-        # self.destroy()
-        pass
+        self.destroy()
 
     def save(self):
         weekday = self.days_names.index(self.day.get())
-        time = datetime.strptime(self.hour.get(), "%H:%M").time()
-        start = (self.day_of_week + relativedelta(weekday=weekday)).replace(hour=time.hour, minute=time.minute)
+        time_ = datetime.strptime(self.hour.get(), "%H:%M").time()
+        start = (self.day_of_week + relativedelta(weekday=weekday)).replace(hour=time_.hour, minute=time_.minute)
         stop = start + relativedelta(minutes=15*self.duration)
         print("save:", start, stop)
         self.nametowidget(".!mainbookingframe.!calenderviewframe.!weekcalenderview").add_ex_date(start, stop)
