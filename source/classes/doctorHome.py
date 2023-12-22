@@ -94,24 +94,24 @@ class DoctorHome(ctk.CTkScrollableFrame):
         privat = df.loc[username]["privat"]
         gesetzlich = df.loc[username]["gesetzlich"]
         freiwillig_gesetzlich = df.loc[username]["freiwillig gesetzlich"]
-        
-        if privat and gesetzlich and freiwillig_gesetzlich:
-            return "Privatpatienten, gesetzlich Versicherte und freiwillig gesetzlich Versicherte"
-        elif privat and gesetzlich:
-            return "Privatpatienten und gesetzlich Versicherte"
-        elif privat and freiwillig_gesetzlich:
-            return "Privatpatienten und freiwillig gesetzlich Versicherte"
-        elif gesetzlich and freiwillig_gesetzlich:
-            return "Gesetzlich Versicherte und freiwillig gesetzlich Versicherte"
-        elif privat:
-            return "Privatpatienten"
-        elif gesetzlich:
-            return "Gesetzlich Versicherte"
-        elif freiwillig_gesetzlich:
-            return "Freiwillig gesetzlich Versicherte"
-        else:
-            return "Keine"
-        
+
+        insurance_types = {
+            "Privatpatienten, gesetzlich Versicherte und freiwillig gesetzlich Versicherte": privat and gesetzlich and freiwillig_gesetzlich,
+            "Privatpatienten und gesetzlich Versicherte": privat and gesetzlich,
+            "Privatpatienten und freiwillig gesetzlich Versicherte": privat and freiwillig_gesetzlich,
+            "Gesetzlich Versicherte und freiwillig gesetzlich Versicherte": gesetzlich and freiwillig_gesetzlich,
+            "Privatpatienten": privat,
+            "Gesetzlich Versicherte": gesetzlich,
+            "Freiwillig gesetzlich Versicherte": freiwillig_gesetzlich,
+            "Keine": not (privat or gesetzlich or freiwillig_gesetzlich)
+        }
+
+        for insurance_type, condition in insurance_types.items():
+            if condition:
+                return insurance_type
+
+        return "Keine"
+            
     def get_weekly_hours(self):
         mo = datetime.now() + relativedelta(weekday=MO(-1), hour=0)
         sa = mo + relativedelta(weekday=SA)
