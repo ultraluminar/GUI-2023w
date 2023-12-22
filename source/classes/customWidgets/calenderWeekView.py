@@ -17,7 +17,8 @@ class WeekCalenderView(ctk.CTkFrame):
     def __init__(self, master, width: int = 140, height: int = 32):
         super().__init__(master=master, width=width, height=height)
 
-        self.events: list[EventLabel] = []
+        self.events_free: list[EventLabel] = []
+        self.events_used: list[EventLabel] = []
 
         self.start_3m: datetime = datetime.now().replace(hour=0)
         self.stop_3m = self.start_3m + relativedelta(months=3)
@@ -73,8 +74,8 @@ class WeekCalenderView(ctk.CTkFrame):
         week_filter = self.get_week_filter()
         labels = [label for isday, label in zip(week_filter, labels) if isday]
 
-        self.events.extend(labels)
-        for label in self.events:
+        self.events_free.extend(labels)
+        for label in self.events_free:
             label.grid()
 
 
@@ -108,13 +109,14 @@ class WeekCalenderView(ctk.CTkFrame):
     def add_ex_date(self, dt_start: datetime, dt_stop: datetime):
         label = EventLabel(master=self, dt_start=dt_start, dt_stop=dt_stop, fg_color="darkred")
         label.grid()
-        self.events.append(label)
+        self.events_used.append(label)
 
     def reset(self):
-        if self.events:
-            for event in self.events:
-                event.label.destroy()
-            self.events.clear()
+        for events in [self.events_used, self.events_free]:
+            if events:
+                for event in events:
+                    event.label.destroy()
+                events.clear()
 
     def set_grid(self):
         self.month_label.grid(column=0, row=0, sticky="nsew")

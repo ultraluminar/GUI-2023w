@@ -3,20 +3,24 @@ import tkinter as tk
 
 from PIL import Image, ImageTk
 
-class Booking (ctk.CTkToplevel):
-    def __init__(self):
+from source.classes.timespace import TimeSpace
+
+class Booking(ctk.CTkToplevel):
+    def __init__(self, timespace: TimeSpace):
         super().__init__()
+
+        self.timespace = timespace
         
         # variables
         self.days = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"]
-        self.times = ["8:00", "9:00", "10:00", "11:00", "12:00", "13:00",
-                      "14:00", "15:00", "16:00", "17:00"]
+        self.times = [f"{hour}:00" for hour in range(8, 18)]
         
         # tk variables
         self.day = tk.StringVar(value="")
+        self.hour = tk.StringVar(value="")
         
         # window icon
-        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_logo_dark.png", "r"))
+        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_logo_dark.png"))
         self.wm_iconbitmap()
         self.after(300, lambda: self.iconphoto(False, self.iconpath))
         
@@ -48,7 +52,7 @@ class Booking (ctk.CTkToplevel):
         self.choose_time_frame = ctk.CTkFrame(self)
         self.choose_time_heading_label = ctk.CTkLabel(self.choose_time_frame, text="Uhrzeit auswählen", font=self.font20, anchor="w", width=400)
         self.choose_time_subheading_label = ctk.CTkLabel(self.choose_time_frame, text="Bitte wählen Sie eine Uhrzeit aus", anchor="w", width=400)
-        self.choose_time_combobox = ctk.CTkComboBox(self.choose_time_frame, values=self.times, variable=self.day)
+        self.choose_time_combobox = ctk.CTkComboBox(self.choose_time_frame, values=self.times, variable=self.hour)
 
         self.set_choose_day_frame_grid()
         self.set_choose_time_frame_grid()

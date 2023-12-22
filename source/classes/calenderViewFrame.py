@@ -4,6 +4,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta, MO
 from dateutil.rrule import rrule, WEEKLY
 
+from source.classes.timespace import TimeSpace
 from source.classes.customWidgets.calenderWeekView import WeekCalenderView
 from source.classes.booking import Booking
 
@@ -79,7 +80,8 @@ class CalenderViewFrame(ctk.CTkFrame):
     
     def booking_view(self):
         if self.booking is None or not self.booking.winfo_exists():
-            self.booking = Booking()    # create window if its None or destroyed
+            timespace = TimeSpace(self.week_calender_view.events_free, self.week_calender_view.events_used)
+            self.booking = Booking(timespace)    # create window if its None or destroyed
         elif self.booking.state() == "iconic":
             self.booking.deiconify()    # bring back window if its minimized
         else:
