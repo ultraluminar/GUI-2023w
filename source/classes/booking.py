@@ -104,18 +104,21 @@ class Booking(ctk.CTkToplevel):
     def save(self):
         weekday = self.days_names.index(self.day.get())
         time_ = datetime.strptime(self.hour.get(), "%H:%M").time()
+        print(time_)
         start = (self.day_of_week + relativedelta(weekday=weekday)).replace(hour=time_.hour, minute=time_.minute)
         stop = start + relativedelta(minutes=15*self.duration)
         print("save:", start, stop)
+        print(start.hour, start.minute)
         row_data = [
             self.data_bundle["doctor"],
             self.auth_service.username,
-            start.strftime("%d-%m-%Y %M:%H"),
-            stop.strftime("%d-%m-%Y %M:%H"),
+            start.strftime("%d-%m-%Y %H:%M"),
+            stop.strftime("%d-%m-%Y %H:%M"),
             self.data_bundle["dental_problem"],
             self.data_bundle["tooth_count"],
             self.data_bundle["fill_type"]
         ]
+        print("save:", start, stop)
         appendCSV(paths["appointments"], row_data)
         self.nametowidget(".!mainbookingframe.!calenderviewframe.!weekcalenderview").add_ex_date(start, stop)
         self.destroy()
