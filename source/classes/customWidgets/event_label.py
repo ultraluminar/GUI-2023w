@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
 from datetime import datetime, timedelta
-from dateutil.rrule import rrule, WEEKLY
+from dateutil.rrule import rrule
 
 
 class EventLabel:
