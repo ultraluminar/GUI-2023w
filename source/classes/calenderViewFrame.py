@@ -32,6 +32,7 @@ class CalenderViewFrame(ctk.CTkFrame):
         self.week_calender_view = WeekCalenderView(self, self.data_bundle)
         self.booking = None
         self.book_button = ctk.CTkButton(self, text="Buchen", command=self.booking_view)
+        self.next_button = ctk.CTkButton(self, text="Weiter", command=self.next_page)
         self.buttons = [self.last_week_button, self.next_week_button]
 
         self.set_main_grid()
@@ -84,3 +85,14 @@ class CalenderViewFrame(ctk.CTkFrame):
             self.booking.deiconify()    # bring back window if its minimized
         else:
             self.booking.focus()
+            
+    def booking_saved(self):
+        # change button text to "Termin ändern"
+        self.book_button.configure(text="Termin ändern", fg_color=("#26a31d", "#369130"), hover_color=("#1d8017", "#2c7527"))
+        # grid next button
+        self.next_button.grid(column=0, rowspan=3, row=4, pady=20, sticky="e", padx=(0, 20))
+        
+    def next_page(self):
+        self.master.next_page()
+        #TODO: add possible changes to data_bundle
+        
