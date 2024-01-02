@@ -44,7 +44,7 @@ class Admin(ctk.CTkToplevel):
         self.title("Freischalt-code")
         
         # window icon
-        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_logo_dark.png", "r"))
+        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_icon.png", "r"))
         self.wm_iconbitmap()
         self.after(0, lambda: self.iconphoto(False, self.iconpath))
 

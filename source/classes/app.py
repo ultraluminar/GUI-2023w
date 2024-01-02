@@ -33,7 +33,7 @@ class App(ctk.CTk):
         center_window(self, self.initial_width, self.initial_height)
 
         # window icon
-        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_logo_dark.png"))
+        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_icon.png"))
         self.wm_iconbitmap()
         self.iconphoto(False, self.iconpath)
 
