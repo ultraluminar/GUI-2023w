@@ -51,7 +51,7 @@ class Booking(ctk.CTkToplevel):
         minute_string = f"und {self.hour_minute[1]} Minuten"
         self.main_subheading_label = ctk.CTkLabel(self, text=f"Ihre Behandlung dauert {hour_string} {minute_string if self.hour_minute[1] != 0 else ''}")
         self.cancel_button = ctk.CTkButton(self, text="Abbrechen", command=self.cancel)
-        self.save_button = ctk.CTkButton(self, text="Speichern", command=self.save)
+        self.save_button = ctk.CTkButton(self, text="Speichern", state="disabled", command=self.save)
         
         # choose day subframe widgets
         self.choose_day_frame = ctk.CTkFrame(self)
@@ -63,11 +63,15 @@ class Booking(ctk.CTkToplevel):
         self.choose_time_frame = ctk.CTkFrame(self)
         self.choose_time_heading_label = ctk.CTkLabel(self.choose_time_frame, text="Uhrzeit auswählen", font=self.font20, anchor="w", width=400)
         self.choose_time_subheading_label = ctk.CTkLabel(self.choose_time_frame, text="Bitte wählen Sie eine Uhrzeit aus", anchor="w", width=400)
-        self.choose_time_combobox = ctk.CTkComboBox(self.choose_time_frame, values=self.times, variable=self.hour, state="readonly")
+        self.choose_time_combobox = ctk.CTkComboBox(self.choose_time_frame, values=self.times, variable=self.hour, state="readonly", command=self.enable_save)
 
         self.set_choose_day_frame_grid()
         self.set_choose_time_frame_grid()
         self.set_main_grid()
+
+    def enable_save(self, *args):
+        if self.day.get() != "" and self.hour.get() != "":
+            self.save_button.configure(state="normal")
 
     def set_main_grid(self):
         self.main_heading_label.grid(row=0, column=0, padx=20, pady=(10, 0), sticky="nsew", columnspan=2)
