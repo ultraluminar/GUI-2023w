@@ -19,6 +19,7 @@ class CalenderViewFrame(ctk.CTkFrame):
         self.min = None
         self.max = None
         self.current = None
+        self.doctor = None
         
         # fonts
         self.font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
@@ -65,6 +66,7 @@ class CalenderViewFrame(ctk.CTkFrame):
 
 
     def set_doctor(self, name: str = None):
+        self.doctor = name
         self.update_current(name=name)
 
     def reset(self):
@@ -81,7 +83,7 @@ class CalenderViewFrame(ctk.CTkFrame):
     def booking_view(self):
         if self.booking is None or not self.booking.winfo_exists():
             timespace = TimeSpace(self.week_calender_view.events_free, self.week_calender_view.events_used)
-            self.booking = Booking(timespace, self.current)    # create window if its None or destroyed
+            self.booking = Booking(timespace, self.current, doctor=self.doctor)    # create window if its None or destroyed
         elif self.booking.state() == "iconic":
             self.booking.deiconify()    # bring back window if its minimized
         else:

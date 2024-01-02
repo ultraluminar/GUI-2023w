@@ -11,6 +11,7 @@ from dateutil.relativedelta import relativedelta
 # variables
 paths = {
     "passwords": Path("data/pwd.json"),
+    "appointments": Path("data/appointments.csv"),
     "patients": {"csv": Path("data/patients.csv")},
     "doctors": {"csv": Path("data/doctors.csv"),
                 "free": Path("data/doctors_free.json"),

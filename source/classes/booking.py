@@ -2,19 +2,22 @@ import customtkinter as ctk
 import tkinter as tk
 
 from PIL import Image, ImageTk
-
-from source.classes.timespace import TimeSpace
 from datetime import time, datetime
 from dateutil.relativedelta import relativedelta
 
+from source.classes.timespace import TimeSpace
+from source.auth_util import appendCSV, paths
+
+
 class Booking(ctk.CTkToplevel):
-    def __init__(self, timespace: TimeSpace, day_of_week: datetime, duration: int = 4):
+    def __init__(self, timespace: TimeSpace, day_of_week: datetime, doctor: str, duration: int = 4):
         super().__init__()
 
         self.day_of_week = day_of_week
         self.duration = duration
         self.timespace = timespace
         self.termine = self.timespace.get_termine(duration=4)
+        self.doctor = doctor
         
         # variables
         self.days_names = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"]
@@ -103,6 +106,7 @@ class Booking(ctk.CTkToplevel):
         start = (self.day_of_week + relativedelta(weekday=weekday)).replace(hour=time_.hour, minute=time_.minute)
         stop = start + relativedelta(minutes=15*self.duration)
         print("save:", start, stop)
+        appendCSV(paths["appointments"], [self.doctor])
         self.nametowidget(".!mainbookingframe.!calenderviewframe.!weekcalenderview").add_ex_date(start, stop)
         self.destroy()
         
