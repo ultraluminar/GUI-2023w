@@ -14,7 +14,7 @@ path_docotrs_free = Path("data/doctors_free.json")
 workdays = weekdays[:5]
 
 class WeekCalenderView(ctk.CTkFrame):
-    def __init__(self, master, width: int = 140, height: int = 32):
+    def __init__(self, master, bundle: dict, width: int = 140, height: int = 32):
         super().__init__(master=master, width=width, height=height)
 
         self.events_free: list[EventLabel] = []
@@ -25,8 +25,8 @@ class WeekCalenderView(ctk.CTkFrame):
 
         self.start_week = None
         self.stop_week = None
-        self.doctor_name = None
         self.dates = None
+        self.data_bundle = bundle
 
         self.day_shortnames: list[str] = ["MO", "DI", "MI", "DO", "FR"]
 
@@ -55,9 +55,7 @@ class WeekCalenderView(ctk.CTkFrame):
         self.start_week = day_of_week + relativedelta(weekday=MO(-1), hour=0)
         self.stop_week = self.start_week + relativedelta(weekday=SA)
 
-    def set_week(self, day_of_week: datetime, doctor_name=None):
-        if doctor_name is not None:
-            self.doctor_name = doctor_name
+    def set_week(self, day_of_week: datetime):
 
         self.set_week_limits(day_of_week)
         self.update_date_labels()
@@ -67,7 +65,7 @@ class WeekCalenderView(ctk.CTkFrame):
     def update_event_labels(self):
         self.reset()
 
-        rule_strings = loadJson(path_docotrs_free)[self.doctor_name]
+        rule_strings = loadJson(path_docotrs_free)[self.data_bundle["doctor"]]
         rules = [rrulestr(rule) for rule in rule_strings]
         labels = self.labels_from_rules(rules)
 

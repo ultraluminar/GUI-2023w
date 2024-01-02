@@ -9,7 +9,7 @@ from source.classes.customWidgets.calenderWeekView import WeekCalenderView
 from source.classes.booking import Booking
 
 class CalenderViewFrame(ctk.CTkFrame):
-    def __init__(self, master: ctk.CTk):
+    def __init__(self, master: ctk.CTk, bundle: dict):
         super().__init__(master=master)
         
         self.grid_columnconfigure(1, weight=1)
@@ -20,6 +20,7 @@ class CalenderViewFrame(ctk.CTkFrame):
         self.max = None
         self.current = None
         self.doctor = None
+        self.data_bundle = bundle
         
         # fonts
         self.font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
@@ -29,7 +30,7 @@ class CalenderViewFrame(ctk.CTkFrame):
         self.sub_heading_label = ctk.CTkLabel(self, text="Sehen sie sich den Kalender an und buchen sie einen Termin.")
         self.last_week_button = ctk.CTkButton(self, text="last", command=lambda: self.update_current(weeks=-1))
         self.next_week_button = ctk.CTkButton(self, text="next", command=lambda: self.update_current(weeks=1))
-        self.week_calender_view = WeekCalenderView(self)
+        self.week_calender_view = WeekCalenderView(self, self.data_bundle)
         self.booking = None
         self.book_button = ctk.CTkButton(self, text="Buchen", command=self.booking_view)
         self.buttons = [self.last_week_button, self.next_week_button]
@@ -44,7 +45,7 @@ class CalenderViewFrame(ctk.CTkFrame):
         self.week_calender_view.grid(column=0, columnspan=3, row=2, pady=20, sticky="nsew")
         self.book_button.grid(column=0, columnspan=3, row=3, pady=20, sticky="e", padx=(0, 20))
 
-    def update_current(self, weeks: int = None, name: str = None):
+    def update_current(self, weeks: int = None):
         if weeks is None:
             self.min = datetime.now() + relativedelta(weekday=MO(-1), hour=0)
             self.max = self.min + relativedelta(months=3)
@@ -59,15 +60,11 @@ class CalenderViewFrame(ctk.CTkFrame):
             states[1] = "disabled"
         else:
             self.current = new
-            self.week_calender_view.set_week(doctor_name=name, day_of_week=self.current)
+            self.week_calender_view.set_week(day_of_week=self.current)
 
         for button, state in zip(self.buttons, states):
             button.configure(state=state)
 
-
-    def set_doctor(self, name: str = None):
-        self.doctor = name
-        self.update_current(name=name)
 
     def reset(self):
         pass
@@ -83,7 +80,7 @@ class CalenderViewFrame(ctk.CTkFrame):
     def booking_view(self):
         if self.booking is None or not self.booking.winfo_exists():
             timespace = TimeSpace(self.week_calender_view.events_free, self.week_calender_view.events_used)
-            self.booking = Booking(timespace, self.current, doctor=self.doctor)    # create window if its None or destroyed
+            self.booking = Booking(timespace, self.current)    # create window if its None or destroyed
         elif self.booking.state() == "iconic":
             self.booking.deiconify()    # bring back window if its minimized
         else:
