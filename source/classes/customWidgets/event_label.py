@@ -19,7 +19,7 @@ class EventLabel:
         self.label = ctk.CTkLabel(master=master, text="", corner_radius=5, fg_color=fg_color)
 
     def __str__(self):
-        return f"{self.dt_start.strftime("%d-%m-%Y %M:%H")}, {self.dt_stop.strftime("%d-%m-%Y %M:%H")}"
+        return f'{self.dt_start.strftime("%d-%m-%Y %M:%H")}, {self.dt_stop.strftime("%d-%m-%Y %M:%H")}'
 
     def grid(self):
         self.label.grid(row=self.row, column=self.column, rowspan=self.rowspan, sticky="nsew", padx=1, pady=1)
