@@ -128,6 +128,7 @@ class WeekCalenderView(ctk.CTkFrame):
                 for event in events:
                     event.label.destroy()
                 events.clear()
+        print("lens: ", len(self.events_used), len(self.events_free))
 
     def set_grid(self):
         self.month_label.grid(column=0, row=0, sticky="nsew")
