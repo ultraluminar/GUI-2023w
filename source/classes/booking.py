@@ -119,5 +119,6 @@ class Booking(ctk.CTkToplevel):
         calendar_view = self.nametowidget(".!mainbookingframe.!calenderviewframe.!weekcalenderview")
         calendar_view.set_week(self.day_of_week)
         calendar_view.add_ex_date(start, stop)
+        self.master.next_page()
         self.destroy()
         
