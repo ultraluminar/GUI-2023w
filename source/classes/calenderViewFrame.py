@@ -80,7 +80,7 @@ class CalenderViewFrame(ctk.CTkFrame):
     def booking_view(self):
         if self.booking is None or not self.booking.winfo_exists():
             timespace = TimeSpace(self.week_calender_view.events_free, self.week_calender_view.events_used)
-            self.booking = Booking(timespace, self.current)    # create window if its None or destroyed
+            self.booking = Booking(timespace, self.current, self.data_bundle)    # create window if its None or destroyed
         elif self.booking.state() == "iconic":
             self.booking.deiconify()    # bring back window if its minimized
         else:
