@@ -4,7 +4,7 @@ import tkinter as tk
 from pandas import read_csv
 
 class TreatmentFrame(ctk.CTkFrame):
-    def __init__(self, master: ctk.CTk):
+    def __init__(self, master):
         super().__init__(master=master)
         
         # variables

@@ -9,7 +9,7 @@ from source.classes.customWidgets.calenderWeekView import WeekCalenderView
 from source.classes.booking import Booking
 
 class CalenderViewFrame(ctk.CTkFrame):
-    def __init__(self, master: ctk.CTk, bundle: dict):
+    def __init__(self, master, bundle: dict):
         super().__init__(master=master)
         
         self.grid_columnconfigure(1, weight=1)
