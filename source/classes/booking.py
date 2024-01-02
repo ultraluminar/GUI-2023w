@@ -43,7 +43,10 @@ class Booking(ctk.CTkToplevel):
         
         # widgets
         self.main_heading_label = ctk.CTkLabel(self, text="Buchung", font=self.font24)
-        self.main_subheading_label = ctk.CTkLabel(self, text=f"Ihre Behandlung dauert {self.duration} ViertelStunden !")
+        self.hour_minute = self.convert_to_hour_minute(self.duration)
+        hour_string = f"{self.hour_minute(0)} Stunde{'n' if self.hour_minute(0) == 1 else ''}"
+        minute_string = f"und {self.hour_minute(1)} Minuten"
+        self.main_subheading_label = ctk.CTkLabel(self, text=f"Ihre Behandlung dauert {hour_string} {minute_string if self.hour_minute(1) != 0 else ''}")
         self.cancel_button = ctk.CTkButton(self, text="Abbrechen", command=self.cancel)
         self.save_button = ctk.CTkButton(self, text="Speichern", command=self.save)
         
@@ -86,6 +89,10 @@ class Booking(ctk.CTkToplevel):
         weekday = self.days_names.index(self.day.get())
         times = [termin.strftime("%H:%M") for termin in self.termine[weekday]]
         self.choose_time_combobox.configure(values=times)
+        
+    # function for converting a count of 15 minutes to a tuple of hours and minutes
+    def convert_to_hour_minute(self, count: int) -> tuple:
+        return (count // 4, (count % 4) * 15)
 
     def cancel(self):
         self.destroy()
