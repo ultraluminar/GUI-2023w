@@ -16,6 +16,8 @@ class TimeSpace:
             self.quaters_used[event.dt_start.weekday()] |= quarters
 
     def get_termine(self, duration: int):
+        print(sorted(self.quaters_free[0]))
+        print(sorted(self.quaters_used[0]))
         termine: list[list[time]] = [[] for _ in range(5)]
         for weekday, quaters in enumerate(self.quaters_free):
             for start in quaters:

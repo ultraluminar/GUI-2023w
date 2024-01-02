@@ -10,9 +10,9 @@ class PatientOverview(ctk.CTkFrame):
         
         self.auth_service = self.nametowidget(".").auth_service
         self.username = None
-        df_appointments = None
+        self.df_appointments = None
         
-        self.headings: list[str] = ["Datum", "Arzt", "Von", "Ende", "Zahnproblem", "Anzahl Zähne", "Art der Füllung"]
+        self.headings: list[str] = ["Datum", "Arzt", "Von", "Bis", "Zahnproblem", "Anzahl Zähne", "Art der Füllung"]
         self.header_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, width=110, height=30, fg_color=("gray70", "gray30"), corner_radius=5, text=heading, font=ctk.CTkFont(weight="bold")) for heading in self.headings]
         self.empty_label = ctk.CTkLabel(self, text="Keine Termine vorhanden. Buchen sie ihren nächsten Termin über den Button unten\noder über die Navigationsleiste unter Termin buchen")
         
@@ -24,7 +24,6 @@ class PatientOverview(ctk.CTkFrame):
         self.dental_problem_labels: list[ctk.CTkLabel] = []
         self.teeth_count_labels: list[ctk.CTkLabel] = []
         self.fill_type_labels: list[ctk.CTkLabel] = []
-        self.labels = [self.date_labels, self.doctor_labels, self.time_start_labels, self.time_end_labels, self.dental_problem_labels, self.teeth_count_labels, self.fill_type_labels]
     
     def reset(self):
         self.table_ungrid()
@@ -37,16 +36,17 @@ class PatientOverview(ctk.CTkFrame):
         self.date_labels = [ctk.CTkLabel(self, text=date.split(" ")[0]) for date in self.df_appointments["dt_start"]]
         self.doctor_labels = [ctk.CTkLabel(self, text=self.get_doctor_name(doctor)) for doctor in self.df_appointments["Doctor"]]
         self.time_start_labels = [ctk.CTkLabel(self, text=time.split(" ")[1]) for time in self.df_appointments["dt_start"]]
-        self.time_end_labels = [ctk.CTkLabel(self, text=time) for time in self.df_appointments["dt_stop"]]
+        self.time_end_labels = [ctk.CTkLabel(self, text=time.split(" ")[1]) for time in self.df_appointments["dt_stop"]]
         self.dental_problem_labels = [ctk.CTkLabel(self, text=dental_problem) for dental_problem in self.df_appointments["dental_problem"]]
         self.teeth_count_labels = [ctk.CTkLabel(self, text=tooth_count) for tooth_count in self.df_appointments["tooth_count"]]
         self.fill_type_labels = [ctk.CTkLabel(self, text=fill_type) for fill_type in self.df_appointments["fill_type"]]
         
         self.table_grid()
-        
+
     def table_ungrid(self):
         self.empty_label.grid_forget()
-        for labels in self.labels:
+        labels = [self.date_labels, self.doctor_labels, self.time_start_labels, self.time_end_labels, self.dental_problem_labels, self.teeth_count_labels, self.fill_type_labels]
+        for labels in labels:
             for label in labels:
                 label.grid_forget()
             
@@ -55,7 +55,8 @@ class PatientOverview(ctk.CTkFrame):
             label.grid(column=index, row=0, sticky="nsew", padx=(10 if index == 0 else 5, 10 if index == 6 else 0), pady=(10, 15))
         if (self.df_appointments.empty):
             self.empty_label.grid(column=0, row=1, columnspan=7, sticky="nsew", padx=10, pady=(0, 10))
-        for index, labels in enumerate(self.labels):
+        labels = [self.date_labels, self.doctor_labels, self.time_start_labels, self.time_end_labels, self.dental_problem_labels, self.teeth_count_labels, self.fill_type_labels]
+        for index, labels in enumerate(labels):
             for label in labels:
                 label.grid(column=index, row=labels.index(label) + 1, sticky="nsew", padx=(10 if index == 0 else 5, 10 if index == 6 else 0), pady=(0, 10))
         

@@ -5,8 +5,8 @@ import customtkinter as ctk
 from dateutil.rrule import rrule, WEEKLY, MO, SA, rrulestr, weekdays
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+from pandas import read_csv
 
-from source.utils import center_window
 from source.classes.customWidgets.event_label import EventLabel
 from source.auth_util import loadJson
 
@@ -60,7 +60,17 @@ class WeekCalenderView(ctk.CTkFrame):
         self.set_week_limits(day_of_week)
         self.update_date_labels()
         self.update_event_labels()
+        self.update_ex_dates()
         self.update_month_week_label()
+
+    def update_ex_dates(self):
+        df_appointments = read_csv("data/appointments.csv")
+        df_appointments = df_appointments.loc[df_appointments["Doctor"] == self.data_bundle["doctor"]]
+        for index, row in df_appointments.iterrows():
+            start = datetime.strptime(row["dt_start"], "%d-%m-%Y %H:%M")
+            stop = datetime.strptime(row["dt_stop"], "%d-%m-%Y %H:%M")
+            if max(self.start_3m, self.start_week) <= start < min(self.stop_3m, self.stop_week):
+                self.add_ex_date(start, stop)
 
     def update_event_labels(self):
         self.reset()
@@ -77,7 +87,6 @@ class WeekCalenderView(ctk.CTkFrame):
             label.grid()
 
         for label in self.events_used:
-            print("ex_date grid", label)
             label.grid()
 
 
@@ -110,7 +119,6 @@ class WeekCalenderView(ctk.CTkFrame):
 
     def add_ex_date(self, dt_start: datetime, dt_stop: datetime):
         label = EventLabel(master=self, dt_start=dt_start, dt_stop=dt_stop, fg_color="darkred")
-        print("saved", dt_start, dt_stop, label)
         label.grid()
         self.events_used.append(label)
 
