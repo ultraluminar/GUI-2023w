@@ -27,6 +27,7 @@ class MainBookingFrame(ctk.CTkFrame):
         super().__init__(master=master, corner_radius=0, fg_color="transparent")
         
         # variables
+        self.data_bundle = {}
 
         self.progression: int = 0
         self.current_state: int = 0
@@ -52,8 +53,8 @@ class MainBookingFrame(ctk.CTkFrame):
 
         # main frames
         self.treatment_frame = TreatmentFrame(self)
-        self.choose_doctors_frame = chooseDoctorsFrame(self)
-        self.calendar_view_frame = CalenderViewFrame(self)
+        self.choose_doctors_frame = chooseDoctorsFrame(self, self.data_bundle)
+        self.calendar_view_frame = CalenderViewFrame(self, self.data_bundle)
 
         self.main_frames = [self.treatment_frame, self.choose_doctors_frame, self.calendar_view_frame]
 
@@ -81,7 +82,7 @@ class MainBookingFrame(ctk.CTkFrame):
 
         # show calendar for chosen doctor
         if self.current_state == 2:
-            self.calendar_view_frame.set_doctor(name=self.choose_doctors_frame.get_doctor())
+            self.calendar_view_frame.update_current()
 
         # ungrid frame
         for index, frame in enumerate(self.main_frames):

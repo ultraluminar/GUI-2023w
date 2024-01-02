@@ -4,7 +4,7 @@ import tkinter as tk
 from pandas import read_csv
 
 class chooseDoctorsFrame(ctk.CTkFrame):
-    def __init__(self, master: ctk.CTk):
+    def __init__(self, master, bundle: dict):
         super().__init__(master=master)
         
         # variables
@@ -14,6 +14,7 @@ class chooseDoctorsFrame(ctk.CTkFrame):
         self.df_doctors = None
         self.df_patients = None
         self.doctor_list: list[tuple] = []
+        self.data_bundle = bundle
         
         # fonts
         self.font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
@@ -76,8 +77,10 @@ class chooseDoctorsFrame(ctk.CTkFrame):
         self.set_main_grid()
         
     def next_page(self):
+        self.data_bundle["doctor"] = self.var_chosen_doctor_username.get()
         self.master.next_page()
+
         
     def get_doctor(self):
-        return self.var_chosen_doctor_username.get()
+        return
         

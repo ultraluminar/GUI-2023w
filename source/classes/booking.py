@@ -10,14 +10,14 @@ from source.auth_util import appendCSV, paths
 
 
 class Booking(ctk.CTkToplevel):
-    def __init__(self, timespace: TimeSpace, day_of_week: datetime, doctor: str, duration: int = 4):
+    def __init__(self, timespace: TimeSpace, day_of_week: datetime, bundle: dict, duration: int = 4):
         super().__init__()
 
         self.day_of_week = day_of_week
         self.duration = duration
         self.timespace = timespace
         self.termine = self.timespace.get_termine(duration=4)
-        self.doctor = doctor
+        self.data_bundle = bundle
         
         # variables
         self.days_names = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"]
@@ -108,7 +108,7 @@ class Booking(ctk.CTkToplevel):
         stop = start + relativedelta(minutes=15*self.duration)
         print("save:", start, stop)
         row_data = [
-            self.doctor,
+            self.data_bundle["doctor"],
             self.auth_service.username,
             start.strftime("%d-%m-%Y %M:%H"),
             stop.strftime("%d-%m-%Y %M:%H"),
