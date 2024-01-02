@@ -19,7 +19,6 @@ class CalenderViewFrame(ctk.CTkFrame):
         self.min = None
         self.max = None
         self.current = None
-        self.doctor = None
         self.data_bundle = bundle
         
         # fonts
