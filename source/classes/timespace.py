@@ -1,5 +1,5 @@
 from source.classes.customWidgets.event_label import EventLabel
-from datetime import time
+from datetime import time, datetime
 from dateutil.relativedelta import relativedelta
 
 class TimeSpace:
@@ -19,8 +19,12 @@ class TimeSpace:
         termine: list[list[time]] = [[] for _ in range(5)]
         for weekday, quaters in enumerate(self.quaters_free):
             for start in quaters:
-                hour, minute = divmod(duration, 4)
-                stop = time(hour=start.hour + hour, minute=start.minute + minute)
+
+                hour1, minute1 = divmod(duration, 4)
+                hour2, minute = divmod(start.minute + minute1 * 15, 60)
+                hour = start.hour + hour1 + hour2
+
+                stop = time(hour=hour, minute=minute)
                 if stop in self.quaters_free[weekday] and not any(start <= q < stop for q in self.quaters_used[weekday]):
                     termine[weekday].append(start)
             termine[weekday].sort()
