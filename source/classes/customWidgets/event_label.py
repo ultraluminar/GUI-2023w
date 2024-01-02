@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
 from datetime import datetime, timedelta
-from dateutil.rrule import rrule
+from dateutil.rrule import rrule, WEEKLY
 
 
 class EventLabel:
@@ -16,10 +16,10 @@ class EventLabel:
         self.row = (self.dt_start - self.dt_start.replace(hour=8)) // timedelta(minutes=15) + 4
         self.rowspan = (self.dt_stop - self.dt_start) // timedelta(minutes=15)
 
-        self.label = ctk.CTkLabel(master=master, text="text", corner_radius=5, fg_color=fg_color)
+        self.label = ctk.CTkLabel(master=master, text="", corner_radius=5, fg_color=fg_color)
+
+    def __str__(self):
+        return f"{self.dt_start.strftime("%d-%m-%Y %M:%H")}, {self.dt_stop.strftime("%d-%m-%Y %M:%H")}"
 
     def grid(self):
         self.label.grid(row=self.row, column=self.column, rowspan=self.rowspan, sticky="nsew", padx=1, pady=1)
-
-    def get_space(self):
-        return self.dt_start, self.dt_stop
