@@ -215,10 +215,10 @@ class TreatmentFrame(ctk.CTkFrame):
         
     def get_treatment_duration_quarters(self):
         df = read_csv("data/costs.csv")
-        durations = df.loc[df["Dentale Problematik"] == self.dental_problem]
+        durations = df.loc[df["Dentale Problematik"] == self.dental_problem, "Zeit (Stunden)"]
         durations = list(durations.values)
         fillings_index = self.fillings.index(self.filling.get())
-        return durations[fillings_index]*4  # 4 quarters in an hour
+        return int(float(durations[fillings_index].replace(",", "."))*4)  # 4 quarters in an hour
     
     def next_page(self):
         self.master.next_page()

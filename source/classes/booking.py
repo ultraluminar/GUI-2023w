@@ -10,13 +10,13 @@ from source.auth_util import appendCSV, paths
 
 
 class Booking(ctk.CTkToplevel):
-    def __init__(self, timespace: TimeSpace, day_of_week: datetime, bundle: dict, duration: int = 4):
+    def __init__(self, timespace: TimeSpace, day_of_week: datetime, bundle: dict):
         super().__init__()
 
         self.day_of_week = day_of_week
-        self.duration = duration
         self.timespace = timespace
-        self.termine = self.timespace.get_termine(duration=4)
+        self.duration = bundle["duration_quarters"]
+        self.termine = self.timespace.get_termine(self.duration)
         self.data_bundle = bundle
         
         # variables
@@ -57,13 +57,13 @@ class Booking(ctk.CTkToplevel):
         self.choose_day_frame = ctk.CTkFrame(self)
         self.choose_day_heading_label = ctk.CTkLabel(self.choose_day_frame, text="Tag auswählen", font=self.font20, anchor="w", width=400)
         self.choose_day_subheading_label = ctk.CTkLabel(self.choose_day_frame, text="Bitte wählen Sie einen Tag aus", anchor="w", width=400)
-        self.choose_day_combobox = ctk.CTkComboBox(self.choose_day_frame, values=self.days, variable=self.day, command=self.set_times)
+        self.choose_day_combobox = ctk.CTkComboBox(self.choose_day_frame, values=self.days, variable=self.day, command=self.set_times, state="readonly")
 
         # choose time subframe widgets
         self.choose_time_frame = ctk.CTkFrame(self)
         self.choose_time_heading_label = ctk.CTkLabel(self.choose_time_frame, text="Uhrzeit auswählen", font=self.font20, anchor="w", width=400)
         self.choose_time_subheading_label = ctk.CTkLabel(self.choose_time_frame, text="Bitte wählen Sie eine Uhrzeit aus", anchor="w", width=400)
-        self.choose_time_combobox = ctk.CTkComboBox(self.choose_time_frame, values=self.times, variable=self.hour)
+        self.choose_time_combobox = ctk.CTkComboBox(self.choose_time_frame, values=self.times, variable=self.hour, state="readonly")
 
         self.set_choose_day_frame_grid()
         self.set_choose_time_frame_grid()
