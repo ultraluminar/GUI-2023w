@@ -47,7 +47,7 @@ class Booking(ctk.CTkToplevel):
         # widgets
         self.main_heading_label = ctk.CTkLabel(self, text="Buchung", font=self.font24)
         self.hour_minute = self.convert_to_hour_minute(self.duration)
-        hour_string = f"{self.hour_minute[0]} Stunde{'n' if self.hour_minute[0] == 1 else ''}"
+        hour_string = f"{self.hour_minute[0]} Stunde{'n' if self.hour_minute[0] != 1 else ''}"
         minute_string = f"und {self.hour_minute[1]} Minuten"
         self.main_subheading_label = ctk.CTkLabel(self, text=f"Ihre Behandlung dauert {hour_string} {minute_string if self.hour_minute[1] != 0 else ''}")
         self.cancel_button = ctk.CTkButton(self, text="Abbrechen", command=self.cancel)
