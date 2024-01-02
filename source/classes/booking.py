@@ -95,7 +95,8 @@ class Booking(ctk.CTkToplevel):
         
     # function for converting a count of 15 minutes to a tuple of hours and minutes
     def convert_to_hour_minute(self, count: int) -> tuple:
-        return (count // 4, (count % 4) * 15)
+        hours, minutes = divmod(count, 4)
+        return hours, minutes * 15
 
     def cancel(self):
         self.destroy()
@@ -106,7 +107,13 @@ class Booking(ctk.CTkToplevel):
         start = (self.day_of_week + relativedelta(weekday=weekday)).replace(hour=time_.hour, minute=time_.minute)
         stop = start + relativedelta(minutes=15*self.duration)
         print("save:", start, stop)
-        appendCSV(paths["appointments"], [self.doctor])
+        row_data = [
+            self.doctor,
+            self.auth_service.username,
+            start.strftime("%d-%m-%Y %M:%H"),
+            stop.strftime("%d-%m-%Y %M:%H"),
+        ]
+        appendCSV(paths["appointments"], row_data)
         self.nametowidget(".!mainbookingframe.!calenderviewframe.!weekcalenderview").add_ex_date(start, stop)
         self.destroy()
         
