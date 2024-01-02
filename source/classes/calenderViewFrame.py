@@ -43,8 +43,8 @@ class CalenderViewFrame(ctk.CTkFrame):
         self.last_week_button.grid(column=0, row=0, rowspan=2, pady=20, sticky="e", padx=(20, 0))
         self.next_week_button.grid(column=2, row=0, rowspan=2, pady=20, sticky="w", padx=(0, 20))
         self.week_calender_view.grid(column=0, columnspan=3, row=2, pady=20, sticky="nsew")
-        self.book_button.grid(column=0, columnspan=3, row=3, pady=(0, 20), sticky="e", padx=(0, 20))
-        self.next_button.grid(column=0, columnspan=3, row=3, pady=(0, 20), sticky="e", padx=(0, 20 + 140 + 10))
+        self.book_button.grid(column=0, columnspan=3, row=3, pady=(0, 20), sticky="e", padx=(0, 20 + 140 + 10))
+        self.next_button.grid(column=0, columnspan=3, row=3, pady=(0, 20), sticky="e", padx=(0, 20))
 
     def update_current(self, weeks: int = None):
         if weeks is None:
