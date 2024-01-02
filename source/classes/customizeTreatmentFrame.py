@@ -178,7 +178,7 @@ class TreatmentFrame(ctk.CTkFrame):
         
         # filling frame
         self.filling.set("normal")
-        
+
         self.cost = df_costs.loc[df_costs["Dentale Problematik"] == self.dental_problem, "Kosten(€)"]
         self.cost = list(self.cost.values)
         
@@ -226,6 +226,7 @@ class TreatmentFrame(ctk.CTkFrame):
             "duration_quarters": self.get_treatment_duration_quarters(),
             "dental_problem": self.dental_problem,
             "tooth_count": self.teeth_count.get(),
-            "fill_type": self.filling.get()
+            "fill_type": self.filling.get(),
+            "total_cost": self.total_cost_value_label.cget("text")
         })
         
