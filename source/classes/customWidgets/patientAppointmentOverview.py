@@ -31,10 +31,10 @@ class PatientOverview(ctk.CTkFrame):
         self.username = self.auth_service.username
         self.df_appointments = read_csv("data/appointments.csv")
         self.df_appointments = self.df_appointments.loc[self.df_appointments["Patient"] == self.username]
-        self.df_appointments = self.df_appointments.sort_values("date")
+        self.df_appointments = self.df_appointments.sort_values("dt_start")
         
         
-        self.date_labels = [ctk.CTkLabel(self, text=datetime.fromisoformat(date).strftime("%d.%m.%Y")) for date in self.df_appointments["date"]]
+        self.date_labels = [ctk.CTkLabel(self, text=datetime.fromisoformat(date).strftime("%d.%m.%Y")) for date in self.df_appointments["dt_start"]]
         self.doctor_labels = [ctk.CTkLabel(self, text=self.get_doctor_name(doctor)) for doctor in self.df_appointments["Doctor"]]
         self.time_start_labels = [ctk.CTkLabel(self, text=datetime.fromisoformat(time).strftime("%H:%M Uhr")) for time in self.df_appointments["dt_start"]]
         self.time_end_labels = [ctk.CTkLabel(self, text=datetime.fromisoformat(time).strftime("%H:%M Uhr")) for time in self.df_appointments["dt_stop"]]
