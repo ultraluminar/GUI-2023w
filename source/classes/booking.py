@@ -96,6 +96,8 @@ class Booking(ctk.CTkToplevel):
         weekday = self.days_names.index(self.day.get())
         times = [termin.strftime("%H:%M") for termin in self.termine[weekday]]
         self.choose_time_combobox.configure(values=times)
+        self.hour.set("")
+        self.save_button.configure(state="disabled")
         
     # function for converting a count of 15 minutes to a tuple of hours and minutes
     def convert_to_hour_minute(self, count: int) -> tuple:
