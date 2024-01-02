@@ -1,6 +1,7 @@
 import customtkinter as ctk
 
 from pandas import read_csv
+from datetime import datetime
 from source.classes.customWidgets.patientAppointmentOverview import PatientOverview
 
 class HomeFrame(ctk.CTkScrollableFrame):
@@ -77,6 +78,7 @@ class HomeFrame(ctk.CTkScrollableFrame):
         self.insurance_value_label.configure(text=self.get_insurace_type())
         self.dental_problem_value_label.configure(text=self.get_dental_problem())
         self.tooth_number_value_label.configure(text=self.get_tooth_number())
+        self.tooth_number_with_appointment_value_label.configure(text=self.get_tooth_number_with_appointment())
         self.appointments_sub_frame.reset()
         
     def get_patient_name(self):
@@ -94,6 +96,14 @@ class HomeFrame(ctk.CTkScrollableFrame):
     def get_tooth_number(self):
         df = read_csv("data/patients.csv")
         return df.loc[df["Username"] == self.username, "Anzahl zu behandelnder Zähne"].iloc[0]
+    
+    def get_tooth_number_with_appointment(self):
+        df = read_csv("data/appointments.csv")
+        # filter out appointments that are already over
+        df = df.loc[df["dt_stop"] > datetime.now().strftime("%d-%m-%Y %H:%M")]
+        # filter out appointments that are not for the patient
+        df = df.loc[df["Patient"] == self.username]
+        return df["tooth_count"].sum()
         
     def book_appointment(self):
         self.nametowidget(".!mainsidebar").book_event()

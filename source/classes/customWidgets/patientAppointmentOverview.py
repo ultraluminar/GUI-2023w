@@ -30,6 +30,7 @@ class PatientOverview(ctk.CTkFrame):
         self.username = self.auth_service.username
         self.df_appointments = read_csv("data/appointments.csv")
         self.df_appointments = self.df_appointments.loc[self.df_appointments["Patient"] == self.username]
+        self.df_appointments = self.df_appointments.loc[self.df_appointments["dt_stop"] > datetime.now().strftime("%d-%m-%Y %H:%M")]   # filter out appointments that are already over
         self.df_appointments = self.df_appointments.sort_values("dt_start")
         
         
