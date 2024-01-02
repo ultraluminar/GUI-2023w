@@ -1,8 +1,9 @@
 import customtkinter as ctk
 
 from source.classes.customizeTreatmentFrame import TreatmentFrame
-from source.classes.chooseDoctorsFrame import chooseDoctorsFrame
+from source.classes.chooseDoctorsFrame import ChooseDoctorsFrame
 from source.classes.calenderViewFrame import CalenderViewFrame
+from source.classes.finishFrame import FinishFrame
 
 button_configure_kwargs = {
     "disabled": {
@@ -53,10 +54,11 @@ class MainBookingFrame(ctk.CTkFrame):
 
         # main frames
         self.treatment_frame = TreatmentFrame(self, self.data_bundle)
-        self.choose_doctors_frame = chooseDoctorsFrame(self, self.data_bundle)
+        self.choose_doctors_frame = ChooseDoctorsFrame(self, self.data_bundle)
         self.calendar_view_frame = CalenderViewFrame(self, self.data_bundle)
+        self.finish_frame = FinishFrame(self, self.data_bundle)
 
-        self.main_frames = [self.treatment_frame, self.choose_doctors_frame, self.calendar_view_frame]
+        self.main_frames = [self.treatment_frame, self.choose_doctors_frame, self.calendar_view_frame, self.finish_frame]
 
         self.set_grid()
 
