@@ -10,7 +10,7 @@ class SettingsWindow(ctk.CTkToplevel):
         self.inner_width = 400
         
         # window icon
-        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_logo_dark.png", "r"))
+        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_icon.png", "r"))
         self.wm_iconbitmap()
         self.after(300, lambda: self.iconphoto(False, self.iconpath))
         

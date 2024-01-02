@@ -30,7 +30,7 @@ class Booking(ctk.CTkToplevel):
         self.hour = tk.StringVar(value="")
         
         # window icon
-        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_logo_dark.png"))
+        self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_icon.png"))
         self.wm_iconbitmap()
         self.after(300, lambda: self.iconphoto(False, self.iconpath))
         
