@@ -112,6 +112,9 @@ class Booking(ctk.CTkToplevel):
             self.auth_service.username,
             start.strftime("%d-%m-%Y %M:%H"),
             stop.strftime("%d-%m-%Y %M:%H"),
+            self.data_bundle["dental_problem"],
+            self.data_bundle["tooth_count"],
+            self.data_bundle["fill_type"]
         ]
         appendCSV(paths["appointments"], row_data)
         self.nametowidget(".!mainbookingframe.!calenderviewframe.!weekcalenderview").add_ex_date(start, stop)

@@ -52,7 +52,7 @@ class MainBookingFrame(ctk.CTkFrame):
 
 
         # main frames
-        self.treatment_frame = TreatmentFrame(self)
+        self.treatment_frame = TreatmentFrame(self, self.data_bundle)
         self.choose_doctors_frame = chooseDoctorsFrame(self, self.data_bundle)
         self.calendar_view_frame = CalenderViewFrame(self, self.data_bundle)
 

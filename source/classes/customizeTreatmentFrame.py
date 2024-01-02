@@ -4,7 +4,7 @@ import tkinter as tk
 from pandas import read_csv
 
 class TreatmentFrame(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, bundle: dict):
         super().__init__(master=master)
         
         # variables
@@ -14,6 +14,7 @@ class TreatmentFrame(ctk.CTkFrame):
         self.total_teeth_count = None
         self.dental_problem = None
         self.insurance_shares = None
+        self.data_bundle = bundle
 
         self.fillings = ["normal", "hochwertig", "höchstwertig"]
         
@@ -152,7 +153,7 @@ class TreatmentFrame(ctk.CTkFrame):
         self.bill_sub_frame.grid(column=1, row=2, padx=15, pady=(0, 15), sticky="nsew")
         
         
-    def update_teeth_count(self, event = None):
+    def update_teeth_count(self, *args):
         self.teeth_count_string.set(str(self.teeth_count.get()))
         self.update_bill()
         
@@ -215,4 +216,9 @@ class TreatmentFrame(ctk.CTkFrame):
     
     def next_page(self):
         self.master.next_page()
+        self.data_bundle.update({
+            "dental_problem": self.dental_problem,
+            "tooth_count": self.teeth_count.get(),
+            "fill_type": self.filling.get()
+        })
         
