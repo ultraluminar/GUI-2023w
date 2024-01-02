@@ -31,16 +31,18 @@ class DoctorOverview(ctk.CTkFrame):
         self.username = self.auth_service.username
         self.df_appointments = read_csv("data/appointments.csv")
         self.df_appointments = self.df_appointments.loc[self.df_appointments["Doctor"] == self.username]
+        self.df_appointments = self.df_appointments.loc[self.df_appointments["dt_stop"] > datetime.now().strftime("%d-%m-%Y %H:%M")]   # filter out appointments that are already over
         self.df_appointments = self.df_appointments.sort_values("dt_start")
         
         
-        self.date_labels = [ctk.CTkLabel(self, text=datetime.fromisoformat(date).strftime("%d.%m.%Y")) for date in self.df_appointments["dt_start"]]
+        self.date_labels = [ctk.CTkLabel(self, text=datetime.strptime(date, "%d-%m-%Y %H:%M").strftime("%d.%m.%Y")) for date in self.df_appointments["dt_start"]]
         self.patient_labels = [ctk.CTkLabel(self, text=self.get_patient_name(patient)) for patient in self.df_appointments["Patient"]]
-        self.time_start_labels = [ctk.CTkLabel(self, text=datetime.fromisoformat(time).strftime("%H:%M Uhr")) for time in self.df_appointments["dt_start"]]
-        self.time_end_labels = [ctk.CTkLabel(self, text=datetime.fromisoformat(time).strftime("%H:%M Uhr")) for time in self.df_appointments["dt_stop"]]
+        self.time_start_labels = [ctk.CTkLabel(self, text=datetime.strptime(time, "%d-%m-%Y %H:%M").strftime("%H:%M Uhr")) for time in self.df_appointments["dt_start"]]
+        self.time_end_labels = [ctk.CTkLabel(self, text=datetime.strptime(time, "%d-%m-%Y %H:%M").strftime("%H:%M Uhr")) for time in self.df_appointments["dt_stop"]]
         self.dental_problem_labels = [ctk.CTkLabel(self, text=dental_problem) for dental_problem in self.df_appointments["dental_problem"]]
         self.teeth_count_labels = [ctk.CTkLabel(self, text=tooth_count) for tooth_count in self.df_appointments["tooth_count"]]
         self.fill_type_labels = [ctk.CTkLabel(self, text=fill_type) for fill_type in self.df_appointments["fill_type"]]
+        self.labels = [self.date_labels, self.patient_labels, self.time_start_labels, self.time_end_labels, self.dental_problem_labels, self.teeth_count_labels, self.fill_type_labels]
         
         self.table_grid()
         
@@ -61,4 +63,4 @@ class DoctorOverview(ctk.CTkFrame):
         
     def get_patient_name(self, username: str) -> str:
         df_patients = read_csv("data/patients.csv")
-        return df_patients.loc[df_patients["Username"] == self.username, "Name"].iloc[0]
+        return df_patients.loc[df_patients["Username"] == username, "Name"].iloc[0]

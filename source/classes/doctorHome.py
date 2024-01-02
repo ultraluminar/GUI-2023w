@@ -140,19 +140,19 @@ class DoctorHome(ctk.CTkScrollableFrame):
         self.username = "lösch"
         df = pd.read_csv("data/appointments.csv")   # read appointments.csv
         now = datetime.now()    # get current datetime
-        df["date"] = df["date"].apply(lambda x: datetime.fromisoformat(x))   # convert date string to datetime object
+        df["dt_start"] = df["dt_start"].apply(lambda x: datetime.strptime(x, "%d-%m-%Y %H:%M"))   # convert date string to datetime object
         if len(df) == 0:    
             return 0    # return 0 if there are no appointments
         # count appointments for the given date that are later than the current time
-        count = len(df[(df["Doctor"] == self.username) & (df["date"].dt.date == now.date()) & (df["date"] > now)])
+        count = len(df[(df["Doctor"] == self.username) & (df["dt_start"].dt.date == now.date()) & (df["dt_start"] > now)])
         return count
             
     def count_appointments(self, date) -> int:
         df = pd.read_csv("data/appointments.csv")   # read appointments.csv
-        df["date"] = df["date"].apply(lambda x: datetime.fromisoformat(x).date())   # convert date string to date object
+        df["dt_start"] = df["dt_start"].apply(lambda x: datetime.strptime(x, "%d-%m-%Y %H:%M").date())   # convert date string to date object
         if len(df) == 0:
             return 0    # return 0 if there are no appointments
-        count = len(df[(df["Doctor"] == self.username) & (df["date"] == date)])  # count appointments for the given date
+        count = len(df[(df["Doctor"] == self.username) & (df["dt_start"] == date)])  # count appointments for the given date
         return count
     
     def get_next_week_days(self) -> list[date]:
