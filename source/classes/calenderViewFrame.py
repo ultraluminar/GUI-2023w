@@ -32,7 +32,7 @@ class CalenderViewFrame(ctk.CTkFrame):
         self.week_calender_view = WeekCalenderView(self, self.data_bundle)
         self.booking = None
         self.book_button = ctk.CTkButton(self, text="Buchen", command=self.booking_view)
-        self.next_button = ctk.CTkButton(self, text="Weiter", command=self.next_page)
+        self.next_button = ctk.CTkButton(self, text="Weiter", command=self.next_page, state="disabled")
         self.buttons = [self.last_week_button, self.next_week_button]
 
         self.set_main_grid()
@@ -43,7 +43,8 @@ class CalenderViewFrame(ctk.CTkFrame):
         self.last_week_button.grid(column=0, row=0, rowspan=2, pady=20, sticky="e", padx=(20, 0))
         self.next_week_button.grid(column=2, row=0, rowspan=2, pady=20, sticky="w", padx=(0, 20))
         self.week_calender_view.grid(column=0, columnspan=3, row=2, pady=20, sticky="nsew")
-        self.book_button.grid(column=0, columnspan=3, row=3, pady=20, sticky="e", padx=(0, 20))
+        self.book_button.grid(column=0, columnspan=3, row=3, pady=(0, 20), sticky="e", padx=(0, 20))
+        self.next_button.grid(column=0, columnspan=3, row=3, pady=(0, 20), sticky="e", padx=(0, 20 + 140 + 10))
 
     def update_current(self, weeks: int = None):
         if weeks is None:
@@ -90,7 +91,7 @@ class CalenderViewFrame(ctk.CTkFrame):
         # change button text to "Termin ändern"
         self.book_button.configure(text="Termin ändern", fg_color=("#26a31d", "#369130"), hover_color=("#1d8017", "#2c7527"))
         # grid next button
-        self.next_button.grid(column=0, rowspan=3, row=4, pady=20, sticky="e", padx=(0, 20))
+        self.next_button.configure(state="normal")
         
     def next_page(self):
         self.master.next_page()
