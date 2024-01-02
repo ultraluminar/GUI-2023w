@@ -4,7 +4,6 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta, MO
 from dateutil.rrule import rrule, WEEKLY
 
-from source.auth_util import appendCSV, paths
 from source.classes.timespace import TimeSpace
 from source.classes.customWidgets.calenderWeekView import WeekCalenderView
 from source.classes.booking import Booking
@@ -96,5 +95,5 @@ class CalenderViewFrame(ctk.CTkFrame):
         
     def next_page(self):
         self.master.next_page()
-        appendCSV(paths["appointments"], self.data_bundle["appointment_row"])
+
         

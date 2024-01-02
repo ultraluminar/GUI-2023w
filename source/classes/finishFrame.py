@@ -1,6 +1,8 @@
 import customtkinter as ctk
 import tkinter as tk
 
+from source.auth_util import appendCSV, paths
+
 class finishFrame(ctk.CTkFrame):
     def __init__(self, master, bundle: dict):
         super().__init__(master=master)
@@ -80,6 +82,6 @@ class finishFrame(ctk.CTkFrame):
         self.set_main_grid()
         
     def confirm(self):
-        self.data_bundle["doctor"] = self.var_chosen_doctor_username.get()
+        appendCSV(paths["appointments"], self.data_bundle["appointment_row"])
         self.master.next_page()
         
