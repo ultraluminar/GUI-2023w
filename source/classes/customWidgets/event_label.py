@@ -5,7 +5,7 @@ from dateutil.rrule import rrule
 
 
 class EventLabel:
-    def __init__(self, master, dt_start: datetime, dt_stop: datetime = None, rule: rrule = None, fg_color="gray"):
+    def __init__(self, master, dt_start: datetime, dt_stop: datetime = None, rule: rrule = None, fg_color=("#3ba156", "#458556")):
         self.dt_start = dt_start
         self.dt_stop = dt_stop
 
