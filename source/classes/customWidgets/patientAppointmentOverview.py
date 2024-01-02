@@ -36,8 +36,8 @@ class PatientOverview(ctk.CTkFrame):
         
         self.date_labels = [ctk.CTkLabel(self, text=datetime.fromisoformat(date).strftime("%d.%m.%Y")) for date in self.df_appointments["date"]]
         self.doctor_labels = [ctk.CTkLabel(self, text=self.get_doctor_name(doctor)) for doctor in self.df_appointments["Doctor"]]
-        self.time_start_labels = [ctk.CTkLabel(self, text=datetime.fromisoformat(time).strftime("%H:%M Uhr")) for time in self.df_appointments["date"]]
-        self.time_end_labels = [ctk.CTkLabel(self, text=datetime.fromisoformat(time).strftime("%H:%M Uhr")) for time in self.df_appointments["t_stop"]]
+        self.time_start_labels = [ctk.CTkLabel(self, text=datetime.fromisoformat(time).strftime("%H:%M Uhr")) for time in self.df_appointments["dt_start"]]
+        self.time_end_labels = [ctk.CTkLabel(self, text=datetime.fromisoformat(time).strftime("%H:%M Uhr")) for time in self.df_appointments["dt_stop"]]
         self.dental_problem_labels = [ctk.CTkLabel(self, text=dental_problem) for dental_problem in self.df_appointments["dental_problem"]]
         self.teeth_count_labels = [ctk.CTkLabel(self, text=tooth_count) for tooth_count in self.df_appointments["tooth_count"]]
         self.fill_type_labels = [ctk.CTkLabel(self, text=fill_type) for fill_type in self.df_appointments["fill_type"]]

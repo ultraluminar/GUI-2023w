@@ -91,4 +91,4 @@ with open(f"{path_data}/doctors_free.json", mode="w", encoding="utf-8") as file:
     
 # create new csv file for appointments with header ["doctor", "patient", date, t_stop, "dental_problem", "tooth_count", "fill_type"]
 with open(f"{path_data}/appointments.csv", mode="w", encoding="utf-8") as file:
-    file.write("Doctor,Patient,date,t_stop,dental_problem,tooth_count,fill_type\n")
+    file.write("Doctor,Patient,dt_start,dt_stop,dental_problem,tooth_count,fill_type\n")
