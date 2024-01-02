@@ -213,10 +213,17 @@ class TreatmentFrame(ctk.CTkFrame):
         total_cost_value = (single_cost * self.teeth_count.get()) - (single_cost * self.teeth_count.get() * self.insurance_share)
         self.total_cost_value_label.configure(text=f"{round(total_cost_value, 2)}€")
         
+    def get_treatment_duration_quarters(self):
+        df = read_csv("data/costs.csv")
+        durations = df.loc[df["Dentale Problematik"] == self.dental_problem]
+        durations = list(durations.values)
+        fillings_index = self.fillings.index(self.filling.get())
+        return durations[fillings_index]*4  # 4 quarters in an hour
     
     def next_page(self):
         self.master.next_page()
         self.data_bundle.update({
+            "duration_quarters": self.get_treatment_duration_quarters(),
             "dental_problem": self.dental_problem,
             "tooth_count": self.teeth_count.get(),
             "fill_type": self.filling.get()
