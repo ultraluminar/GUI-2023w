@@ -5,7 +5,51 @@ from datetime import datetime
 from pandas import read_csv
 
 class PatientOverview(ctk.CTkFrame):
+    """
+    A custom widget for displaying patient appointment overview.
+
+    Attributes:
+        auth_service (AuthService): An instance of the authentication service.
+        username (str): The username of the patient.
+        df_appointments (pandas.DataFrame): The dataframe containing the patient's appointments.
+        headings (list[str]): The list of column headings for the appointment table.
+        header_labels (list[ctk.CTkLabel]): The list of header labels for the appointment table.
+        empty_label (ctk.CTkLabel): The label to display when there are no appointments.
+        date_labels (list[ctk.CTkLabel]): The list of labels for displaying appointment dates.
+        doctor_labels (list[ctk.CTkLabel]): The list of labels for displaying doctor names.
+        time_start_labels (list[ctk.CTkLabel]): The list of labels for displaying appointment start times.
+        time_end_labels (list[ctk.CTkLabel]): The list of labels for displaying appointment end times.
+        dental_problem_labels (list[ctk.CTkLabel]): The list of labels for displaying dental problems.
+        teeth_count_labels (list[ctk.CTkLabel]): The list of labels for displaying tooth counts.
+        fill_type_labels (list[ctk.CTkLabel]): The list of labels for displaying fill types.
+
+    Methods:
+        __init__(self, master: any, width: int = 200, height: int = 200, corner_radius: int | str | None = None):
+            Initializes the PatientOverview widget.
+        
+        reset(self):
+            Resets the widget by updating the appointment data and refreshing the table.
+        
+        table_ungrid(self):
+            Removes all labels from the table.
+        
+        table_grid(self):
+            Displays the labels in the table.
+        
+        get_doctor_name(self, username: str) -> str:
+            Retrieves the name of the doctor based on the username.
+    """
+    
     def __init__(self, master: any, width: int = 200, height: int = 200, corner_radius: int | str | None = None):
+        """
+        Initializes the PatientOverview widget.
+
+        Args:
+            master (any): The master widget.
+            width (int): The width of the widget. Default is 200.
+            height (int): The height of the widget. Default is 200.
+            corner_radius (int | str | None): The corner radius of the widget. Default is None.
+        """
         super().__init__(master, width, height, corner_radius)
         
         self.auth_service = self.nametowidget(".").auth_service
@@ -26,13 +70,15 @@ class PatientOverview(ctk.CTkFrame):
         self.fill_type_labels: list[ctk.CTkLabel] = []
     
     def reset(self):
+        """
+        Resets the widget by updating the appointment data and refreshing the table.
+        """
         self.table_ungrid()
         self.username = self.auth_service.username
         self.df_appointments = read_csv("data/appointments.csv")
         self.df_appointments = self.df_appointments.loc[self.df_appointments["Patient"] == self.username]
         self.df_appointments = self.df_appointments.loc[self.df_appointments["dt_stop"] > datetime.now().strftime("%d-%m-%Y %H:%M")]   # filter out appointments that are already over
         self.df_appointments = self.df_appointments.sort_values("dt_start")
-        
         
         self.date_labels = [ctk.CTkLabel(self, text=date.split(" ")[0]) for date in self.df_appointments["dt_start"]]
         self.doctor_labels = [ctk.CTkLabel(self, text=self.get_doctor_name(doctor)) for doctor in self.df_appointments["Doctor"]]
@@ -45,6 +91,9 @@ class PatientOverview(ctk.CTkFrame):
         self.table_grid()
 
     def table_ungrid(self):
+        """
+        Removes all labels from the table.
+        """
         self.empty_label.grid_forget()
         labels = [self.date_labels, self.doctor_labels, self.time_start_labels, self.time_end_labels, self.dental_problem_labels, self.teeth_count_labels, self.fill_type_labels]
         for labels in labels:
@@ -52,6 +101,9 @@ class PatientOverview(ctk.CTkFrame):
                 label.grid_forget()
             
     def table_grid(self):
+        """
+        Displays the labels in the table.
+        """
         for index, label in enumerate(self.header_labels):
             label.grid(column=index, row=0, sticky="nsew", padx=(10 if index == 0 else 5, 10 if index == 6 else 0), pady=(10, 15))
         if (self.df_appointments.empty):
@@ -62,5 +114,14 @@ class PatientOverview(ctk.CTkFrame):
                 label.grid(column=index, row=labels.index(label) + 1, sticky="nsew", padx=(10 if index == 0 else 5, 10 if index == 6 else 0), pady=(0, 10))
         
     def get_doctor_name(self, username: str) -> str:
+        """
+        Retrieves the name of the doctor based on the username.
+
+        Args:
+            username (str): The username of the doctor.
+
+        Returns:
+            str: The name of the doctor.
+        """
         df_doctors = read_csv("data/doctors.csv")
         return df_doctors.loc[df_doctors["Username"] == username, "Name"].iloc[0]

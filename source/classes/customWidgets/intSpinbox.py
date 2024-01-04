@@ -4,6 +4,35 @@ import customtkinter as ctk
 from PIL import Image
 
 class IntSpinbox(ctk.CTkFrame):
+    """
+    A custom spinbox widget that allows the user to input and adjust an integer value within a specified range.
+
+    Args:
+        master (tk.Widget): The parent widget.
+        width (int, optional): The width of the spinbox widget. Defaults to 140.
+        height (int, optional): The height of the spinbox widget. Defaults to 32.
+        step (int, optional): The increment or decrement step value. Defaults to 1.
+        from_ (int, optional): The minimum value of the spinbox. Defaults to 1.
+        to (int, optional): The maximum value of the spinbox. Defaults to 32.
+
+    Attributes:
+        step (int): The increment or decrement step value.
+        from_ (int): The minimum value of the spinbox.
+        to (int): The maximum value of the spinbox.
+        plus_image (ctk.CTkImage): The image for the plus button.
+        minus_image (ctk.CTkImage): The image for the minus button.
+        entryInt (tk.IntVar): The variable storing the current value of the spinbox.
+        subtract_button (ctk.CTkButton): The button for decrementing the value.
+        entry (ctk.CTkEntry): The entry field for displaying and editing the value.
+        add_button (ctk.CTkButton): The button for incrementing the value.
+
+    Methods:
+        add(): Increments the value of the spinbox by the specified step.
+        subtract(): Decrements the value of the spinbox by the specified step.
+        get() -> int: Returns the current value of the spinbox.
+        set(value: int): Sets the value of the spinbox to the specified value.
+    """
+
     def __init__(self, master, width: int = 140, height: int = 32, step: int = 1, from_: int = 1, to: int = 32):
         super().__init__(master=master, width=width, height=height)
 
@@ -35,17 +64,35 @@ class IntSpinbox(ctk.CTkFrame):
         self.add_button.grid(row=0, column=2, padx=(0, 3), pady=3)
 
     def add(self):
+        """
+        Increments the value of the spinbox by the specified step.
+        """
         value = self.entryInt.get()
         if value < self.to:
             self.entryInt.set(value + self.step)
 
     def subtract(self):
+        """
+        Decrements the value of the spinbox by the specified step.
+        """
         value = self.entryInt.get()
         if value > self.from_:
             self.entryInt.set(value - self.step)
 
     def get(self) -> int:
+        """
+        Returns the current value of the spinbox.
+
+        Returns:
+            int: The current value of the spinbox.
+        """
         return self.entryInt.get()
 
     def set(self, value: int):
+        """
+        Sets the value of the spinbox to the specified value.
+
+        Args:
+            value (int): The value to set the spinbox to.
+        """
         self.entryInt.set(value=value)

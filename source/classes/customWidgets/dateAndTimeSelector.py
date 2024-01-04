@@ -4,7 +4,33 @@ import customtkinter as ctk
 from dateutil.rrule import rrule, WEEKLY
 
 class DateAndTimeSelector(ctk.CTkFrame):
+    """
+    A widget for selecting a date and time range. The widget consists of two subframes, one for selecting the days and one for selecting the times. The widget also has a destroy button.
+    
+    Attributes:
+        day_from (tkinter.StringVar): The day selected in the "Von" combobox.
+        day_to (tkinter.StringVar): The day selected in the "Bis" combobox.
+        time_from (tkinter.StringVar): The time selected in the "Von" combobox.
+        time_to (tkinter.StringVar): The time selected in the "Bis" combobox.
+        weekdays (list): A list of the weekdays.
+        hours (list): A list of the hours.
+        destroy_color (tuple): A tuple containing the colors for the destroy button.
+        destroy_hover_color (tuple): A tuple containing the hover colors for the destroy button.
+
+    Methods:
+        day_updater: Callback function for updating the available days in the "Bis" combobox based on the selected "Von" day.
+        time_updater: Callback function for updating the available times in the "Bis" combobox based on the selected "Von" time.
+        get: Retrieves date and time range inputs from combo boxes, validates them, and returns a recurrence rule string representing the selected range.
+    """
     def __init__(self, master, width: int = 400, height: int = 150):
+        """
+        Initializes the DateAndTimeSelector widget.
+
+        Args:
+            master (tkinter.Tk|tkinter.Toplevel): The parent widget.
+            width (int, optional): The width of the widget in pixels. Defaults to 400.
+            height (int, optional): The height of the widget in pixels. Defaults to 150.
+        """
         super().__init__(master=master, width=width, height=height)
         
         # fonts
@@ -68,6 +94,12 @@ class DateAndTimeSelector(ctk.CTkFrame):
         self.destroy_button.grid(row=0, column=2, pady=10, padx=10)
         
     def day_updater(self, *args):
+        """
+        Callback function for updating the available days in the "Bis" combobox based on the selected "Von" day.
+
+        Args:
+            *args: Variable number of arguments.
+        """
         days_from = self.day_from.get()
         days_to = self.day_to.get()
 
@@ -80,8 +112,13 @@ class DateAndTimeSelector(ctk.CTkFrame):
         if days_to and days_to not in new_values:
             self.day_to.set("")
 
-
     def time_updater(self, *args):
+        """
+        Callback function for updating the available times in the "Bis" combobox based on the selected "Von" time.
+
+        Args:
+            *args: Variable number of arguments.
+        """
         time_from = self.time_from.get()
         time_to = self.time_to.get()
 
@@ -94,17 +131,27 @@ class DateAndTimeSelector(ctk.CTkFrame):
         if time_to and time_to not in new_values:
             self.time_to.set("")
 
-    # retrieves date and time range inputs from combo boxes, validates them, and returns a recurrence rule string representing the selected range.
     def get(self) -> str:
+        """
+        Retrieves date and time range inputs from combo boxes, validates them, and returns a recurrence rule string representing the selected range.
+
+        Returns:
+            str: Recurrence rule string representing the selected range.
+        """
         default_color = ("#979DA2", "#565B5E")
-        values =      [self.day_from.get(),    self.day_to.get(),    self.time_from.get(),    self.time_to.get()]
+        values =       [self.day_from.get(),    self.day_to.get(),    self.time_from.get(),    self.time_to.get()]
         combos_boxes = [self.day_from_combobox, self.day_to_combobox, self.time_from_combobox, self.time_to_combobox]
         
+        # mark empty combo boxes with red border as invalid
         if any(var == '' for var in values):
             for var in values:
-                if var == '': combos_boxes[values.index(var)].configure(border_color="red") 
-            return None 
+                if var == '':
+                    combos_boxes[values.index(var)].configure(border_color="red") 
+            return None     # return None if any combo box is empty
+
+        # creating range of weekday indices from selected start day to selected end day
         day_range = range(self.weekdays.index(self.day_from.get()), self.weekdays.index(self.day_to.get()) + 1)
+        # extracting hour from selected start time and selected end time
         time_range = (int(self.time_from.get().split(':')[0]), int(self.time_to.get().split(':')[0]))  # exclusive
 
         rule = rrule(freq=WEEKLY, byweekday=day_range, byhour=time_range, byminute=0, bysecond=0)
