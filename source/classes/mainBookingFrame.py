@@ -126,26 +126,26 @@ class MainBookingFrame(ctk.CTkFrame):
 
         
     def next_page(self):
-        if self.current_state == 3:
+        if self.current_state == 3:    # if last page,
             return
-        if self.current_state == self.progression:
+        if self.current_state == self.progression:  
             self.progression += 1
             self.main_frames[self.progression].reset()
 
         self.current_state += 1
         self.update_progression_bar()
 
-    def ungrid_all(self):
+    def ungrid_all(self):   # hide all frames
         self.progression_bar_frame.grid_forget()
         self.no_teeth_frame.grid_forget()
         for frame in self.main_frames:
             frame.grid_forget()
 
-    def switch_to(self, new_state: int):
+    def switch_to(self, new_state: int):    # switch to page (for progression bar buttons)
         if self.current_state != new_state and self.progression >= new_state:
             self.current_state = new_state
             self.update_progression_bar()
         
-    def changed(self):
-        self.progression = self.current_state
+    def changed(self):  # called when data is changed on some page
+        self.progression = self.current_state   # resets progression to current state
         self.update_progression_bar()
