@@ -1,6 +1,8 @@
 import customtkinter as ctk
+import tkinter as tk
 
 from PIL import ImageTk, Image
+import logging
     
 class SettingsWindow(ctk.CTkToplevel):
     def __init__(self):
@@ -8,6 +10,7 @@ class SettingsWindow(ctk.CTkToplevel):
         
         # variables
         self.inner_width = 400
+        self.error_string = tk.StringVar(value="")
         
         # window icon
         self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_icon.png", "r"))
@@ -41,6 +44,7 @@ class SettingsWindow(ctk.CTkToplevel):
         self.change_password_label = ctk.CTkLabel(self.change_password_frame, text="Passwort ändern", font=self.font20, anchor="w", width=self.inner_width)
         self.old_password_entry = ctk.CTkEntry(self.change_password_frame, placeholder_text="Altes Passwort", show="•")
         self.new_password_entry = ctk.CTkEntry(self.change_password_frame, placeholder_text="Neues Passwort", show="•")
+        self.error_label = ctk.CTkLabel(self.change_password_frame, text_color="red", textvariable=self.error_string)
         self.change_password_button = ctk.CTkButton(self.change_password_frame, text="Passwort ändern", command=self.change_password)
         
         # design subframe grid       
@@ -51,7 +55,7 @@ class SettingsWindow(ctk.CTkToplevel):
         self.change_password_label.grid(row=0, column=0, padx=20, pady=(15, 20))
         self.old_password_entry.grid(row=1, column=0, columnspan=2, pady=(0, 10))
         self.new_password_entry.grid(row=2, column=0, columnspan=2, pady=(0, 20))
-        self.change_password_button.grid(row=3, column=0, columnspan=2, pady=(0, 20))
+        self.change_password_button.grid(row=4, column=0, columnspan=2, pady=(0, 20))
         
         # main label and subframe packing on window
         self.main_label.grid(column=0, row=0, pady=(10, 15), padx=20, sticky="nsew")
@@ -77,21 +81,28 @@ class SettingsWindow(ctk.CTkToplevel):
         entrys = [self.old_password_entry, self.new_password_entry]
 
         entry_map = [
-            [self.old_password_entry, old_password == "", "please enter ure old password"],
-            [self.old_password_entry, not self.auth_service.check_login(self.auth_service.username, old_password), "Password is incorrect"],
-            [self.new_password_entry, new_password == "", "please give a new password"],
-            [self.new_password_entry, old_password == new_password, "password has not changed"]
+            [self.old_password_entry, old_password == "", "Bitte geben sie ihr altes Passwort ein"],
+            [self.old_password_entry, not self.auth_service.check_login(self.auth_service.username, old_password), "Das alte Passwort ist falsch"],
+            [self.new_password_entry, new_password == "", "Bitte geben sie ihr neues Passwort ein"],
+            [self.new_password_entry, old_password == new_password, "Das neue Passwort darf nicht gleich dem alten sein"]
         ]
 
         error_entrys = []
+        error_messages = []
         for entry, is_problem, error_string in entry_map:
             if is_problem:
                 error_entrys.append(entry)
-                print(error_string)
+                logging.warning(error_string)
+                error_messages.append(error_string)
                 break
 
         for entry in entrys:
             entry.configure(border_color=("red" if entry in error_entrys else default_color))
+        if error_messages:  # not empty
+            self.error_string.set("\n".join(error_messages))    # set error label text
+            self.error_label.grid(row=3, column=0, columnspan=2, pady=(0, 10), sticky="nsew")
+        else:
+            self.error_label.grid_forget()
 
         if error_entrys:  # not empty:
             return
