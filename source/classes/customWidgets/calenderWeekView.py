@@ -117,8 +117,8 @@ class WeekCalenderView(ctk.CTkFrame):
 
         return [self.start_3m <= day < self.stop_3m for day in week]
 
-    def add_ex_date(self, dt_start: datetime, dt_stop: datetime):
-        label = EventLabel(master=self, dt_start=dt_start, dt_stop=dt_stop, fg_color="darkred")
+    def add_ex_date(self, dt_start: datetime, dt_stop: datetime, fg_color: str = "darkred"):
+        label = EventLabel(master=self, dt_start=dt_start, dt_stop=dt_stop, fg_color=fg_color)
         label.grid()
         self.events_used.append(label)
 

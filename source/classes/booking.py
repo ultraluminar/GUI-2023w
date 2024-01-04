@@ -125,7 +125,7 @@ class Booking(ctk.CTkToplevel):
         self.data_bundle["dt_start"] = start.strftime("%d-%m-%Y %H:%M")
         calendar_view = self.nametowidget(".!mainbookingframe.!calenderviewframe.!weekcalenderview")
         calendar_view.set_week(self.day_of_week)
-        calendar_view.add_ex_date(start, stop)
+        calendar_view.add_ex_date(start, stop, fg_color=("#3B8ED0", "#1F6AA5"))
         self.nametowidget(".!mainbookingframe.!calenderviewframe").booking_saved()
         self.destroy()
         
