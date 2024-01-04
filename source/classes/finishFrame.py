@@ -4,6 +4,8 @@ from datetime import datetime
 from source.auth_util import appendCSV, paths
 import logging
 
+from source.auth_util import getfromCSV, updateCSV, paths
+
 class FinishFrame(ctk.CTkFrame):
     def __init__(self, master, bundle: dict):
         super().__init__(master=master)
@@ -81,6 +83,12 @@ class FinishFrame(ctk.CTkFrame):
         self.set_main_grid()
         
     def confirm(self):
+        username = self.auth_service.username
+        new_tooth_count = getfromCSV(paths["patients"]["csv"], ("Username", username), "Anzahl zu behandelnder Zähne")
+        new_tooth_count -= self.data_bundle["tooth_count"]
+
+        updateCSV(paths["patients"]["csv"], ("Username", username), ("Anzahl zu behandelnder Zähne", new_tooth_count))
+
         appendCSV(paths["appointments"], self.data_bundle["appointment_row"])
         logging.info(f"Appointment booked: {self.data_bundle['appointment_row']}")
         self.master.next_page()
