@@ -112,7 +112,7 @@ class HomeFrame(ctk.CTkScrollableFrame):
         self.nametowidget(".!mainsidebar").book_event()
 
     def displayAppointmentFeedback(self):
-        info_banner = InfoBanner(self, text=f"Termin gebucht: {self.data_bundle["appointment_row"][2]}")
+        info_banner = InfoBanner(self, text=f"Termin gebucht: {self.data_bundle['appointment_row'][2]}")
         info_banner.grid(row=2, column=0, columnspan=3, sticky="ns", pady=(0, 20), padx=20)
         info_banner.show()
         print("showed info banner")
