@@ -12,7 +12,7 @@ class DoctorOverview(ctk.CTkFrame):
         self.username = None
         df_appointments = None
         
-        self.headings: list[str] = ["Datum", "Patient", "Von", "Ende", "Zahnproblem", "Anzahl Zähne", "Art der Füllung"]
+        self.headings: list[str] = ["Datum", "Patient", "Von", "Bis", "Zahnproblem", "Anzahl Zähne", "Art der Füllung"]
         self.header_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, width=110, height=30, fg_color=("gray70", "gray30"), corner_radius=5, text=heading, font=ctk.CTkFont(weight="bold")) for heading in self.headings]
         self.empty_label = ctk.CTkLabel(self, text="Keine Termine vorhanden. Bei ihnen wurden noch keine Termine gebucht.")
         
