@@ -1,6 +1,5 @@
 import unittest
 import customtkinter as ctk
-from source.classes.app import App
 from tkinter import Widget
 
 def getFullName(widget: Widget):
@@ -22,6 +21,7 @@ class TestApp(unittest.TestCase):
         return self.app.nametowidget(string)
 
     def setUp(self):
+        from source.classes.app import App
         self.app = App()
         with self.assertWarns(RuntimeWarning) as warn:
             self._start_app()
