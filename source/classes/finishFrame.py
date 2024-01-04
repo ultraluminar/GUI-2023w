@@ -13,6 +13,7 @@ class FinishFrame(ctk.CTkFrame):
         # variables
         self.data_bundle = bundle
         self.auth_service = self.nametowidget(".").auth_service
+        self.main_sidebar = self.nametowidget(".").main_sidebar
         
         # fonts
         self.font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
@@ -93,3 +94,4 @@ class FinishFrame(ctk.CTkFrame):
         logging.info(f"Appointment booked: {self.data_bundle['appointment_row']}")
 
         self.nametowidget(".!ctkframe3.!canvas.!homeframe").displayAppointmentFeedback()
+        self.main_sidebar.home()
