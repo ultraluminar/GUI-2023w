@@ -3,6 +3,7 @@
 # TODO: Kennzeichnung des gebuchten Termins im Kalenderview
 # TODO: Aufteilung des Doctor Termin Overview nach Wochentagen
 # TODO: Textfeedback bei der Passwortänderung
+# TODO: Nicht zulassen, dass ein Termin gebucht wird, der schon vorbei ist (heute frühere Zeit)
 
 
 # TODO: Testing
