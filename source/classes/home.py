@@ -2,14 +2,17 @@ import customtkinter as ctk
 
 from pandas import read_csv
 from datetime import datetime
+
 from source.classes.customWidgets.patientAppointmentOverview import PatientOverview
+from source.classes.customWidgets.infoBanner import InfoBanner
 
 class HomeFrame(ctk.CTkScrollableFrame):
-    def __init__(self, master: ctk.CTk):
-        super().__init__(master=master, corner_radius=0, fg_color="transparent")
+    def __init__(self, master: ctk.CTk, bundle: dict):
+        super().__init__(master=master, corner_radius=0)
         
         self.auth_service = self.nametowidget(".").auth_service
         self.username = None
+        self.data_bundle = bundle
         
         self.grid_columnconfigure(0, weight=1)
         
@@ -51,8 +54,8 @@ class HomeFrame(ctk.CTkScrollableFrame):
     def set_main_grid(self):
         self.main_heading_label.grid(row=0, column=0, columnspan=2, pady=(10, 0), sticky="nsew")
         self.sub_heading_label.grid(row=1, column=0, columnspan=2, pady=(0, 20), sticky="nsew")
-        self.profil_frame.grid(row=2, column=0, padx=20, pady=(0, 20), sticky="nsew")
-        self.appointments_frame.grid(row=3, column=0, padx=20, pady=(0, 20), sticky="nsew")
+        self.profil_frame.grid(row=3, column=0, padx=20, pady=(0, 20), sticky="nsew")
+        self.appointments_frame.grid(row=4, column=0, padx=20, pady=(0, 20), sticky="nsew")
         
     def set_profile_grid(self):
         self.profil_heading_label.grid(row=0, column=1, columnspan=2, pady=(10, 0))
@@ -107,5 +110,11 @@ class HomeFrame(ctk.CTkScrollableFrame):
         
     def book_appointment(self):
         self.nametowidget(".!mainsidebar").book_event()
+
+    def displayAppointmentFeedback(self):
+        info_banner = InfoBanner(self, text=f"Termin gebucht: {self.data_bundle["appointment_row"][2]}")
+        info_banner.grid(row=2, column=0, columnspan=3, sticky="ns", pady=(0, 20), padx=20)
+        info_banner.show()
+        print("showed info banner")
     
         
