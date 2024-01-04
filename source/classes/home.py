@@ -98,7 +98,7 @@ class HomeFrame(ctk.CTkScrollableFrame):
     
     def get_tooth_number(self):
         df = read_csv("data/patients.csv")
-        return df.loc[df["Username"] == self.username, "Anzahl zu behandelnder Zähne"].iloc[0]
+        return df.loc[df["Username"] == self.username, "Anzahl zu behandelnder Zähne"].iloc[0] + self.get_tooth_number_with_appointment()
     
     def get_tooth_number_with_appointment(self):
         df = read_csv("data/appointments.csv")
