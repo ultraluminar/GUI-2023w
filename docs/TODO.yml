@@ -1,5 +1,4 @@
 # TODO: Aufteilung des Doctor Termin Overview nach Wochentagen
-# TODO: Nicht zulassen, dass ein Termin gebucht wird, der schon vorbei ist (heute frühere Zeit)
 
 # TODO: Testing
 # TODO: Anforderung aus der Vorlesung
@@ -8,3 +7,7 @@
 # TODO: Vortrag machen/üben
 
 # TODO: Dokumentation auf Githubfdddddf
+
+
+# machen wir nicht mehr:
+# Nicht zulassen, dass ein Termin gebucht wird, der schon vorbei ist (heute frühere Zeit)
