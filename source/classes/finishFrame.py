@@ -73,7 +73,7 @@ class FinishFrame(ctk.CTkFrame):
         self.tooth_number_value_label.configure(text=self.data_bundle["tooth_count"])
         self.dental_problem_value_label.configure(text=self.data_bundle["dental_problem"])
         self.doctor_name_value_label.configure(text=self.data_bundle["doctor"])
-        self.date_value_label.configure(text=datetime.strptime(self.data_bundle["dt_start"], "%d-%m-%Y %H:%M").strftime("am %d-%m-%y um %H:%M Uhr"))
+        self.date_value_label.configure(text=datetime.strptime(self.data_bundle["dt_start"], "%d-%m-%Y %H:%M").strftime("am %d.%m.%y um %H:%M Uhr"))
         self.total_cost_value_label.configure(text=self.data_bundle["total_cost"])
         
         self.set_data_frame_grid()
