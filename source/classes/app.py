@@ -43,6 +43,7 @@ class App(ctk.CTk):
         self.grid_columnconfigure(1, weight=1)
 
         self.auth_service = AuthenticationService()
+        self.data_bundle = {}
 
         # login
         self.login_sidebar = LoginSidebar(self)
@@ -52,8 +53,8 @@ class App(ctk.CTk):
         # logged in frames
         # patient
         self.main_sidebar = MainSidebar(self)
-        self.home = HomeFrame(self)
-        self.booking = MainBookingFrame(self)
+        self.home = HomeFrame(self, self.data_bundle)
+        self.booking = MainBookingFrame(self, self.data_bundle)
         # doctor
         self.doctor_sidebar = DoctorSidebar(self)
         self.doctor_view = DoctorHome(self)

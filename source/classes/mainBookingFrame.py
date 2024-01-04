@@ -24,11 +24,11 @@ frame_grid_kwargs = {"row": 1, "sticky": "nsew", "padx": 20, "pady": (0, 20), "c
 button_grid_kwargs = {"row": 0, "sticky": "nsew", "padx": 5, "pady": 20}
 
 class MainBookingFrame(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, bundle: dict):
         super().__init__(master=master, corner_radius=0, fg_color="transparent")
         
         # variables
-        self.data_bundle = {}
+        self.data_bundle = bundle
 
         self.progression: int = 0
         self.current_state: int = 0
