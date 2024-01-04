@@ -93,5 +93,5 @@ class FinishFrame(ctk.CTkFrame):
         appendCSV(paths["appointments"], self.data_bundle["appointment_row"])
         logging.info(f"Appointment booked: {self.data_bundle['appointment_row']}")
 
-        self.nametowidget(".!ctkframe3.!canvas.!homeframe").displayAppointmentFeedback()
         self.main_sidebar.home()
+        self.nametowidget(".!ctkframe3.!canvas.!homeframe").displayAppointmentFeedback()
