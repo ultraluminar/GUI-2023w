@@ -4,6 +4,7 @@ from source.classes.customizeTreatmentFrame import TreatmentFrame
 from source.classes.chooseDoctorsFrame import ChooseDoctorsFrame
 from source.classes.calenderViewFrame import CalenderViewFrame
 from source.classes.finishFrame import FinishFrame
+from source.auth_util import getfromCSV
 
 button_configure_kwargs = {
     "disabled": {
@@ -29,12 +30,17 @@ class MainBookingFrame(ctk.CTkFrame):
         
         # variables
         self.data_bundle = {}
+        self.auth_service = self.nametowidget(".").auth_service     # get auth service from app
+        self.main_sidebar = self.nametowidget(".").main_sidebar   # get login sidebar from app
 
         self.progression: int = 0
         self.current_state: int = 0
         
         self.columnconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
+        
+        # fonts
+        self.font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
         
         # widgets for progression bar
         self.progression_bar_frame = ctk.CTkFrame(self, corner_radius=14)
@@ -51,28 +57,56 @@ class MainBookingFrame(ctk.CTkFrame):
             ctk.CTkButton(self.progression_bar_frame, corner_radius=14, **kwargs)
             for kwargs in button_create_kwargs]
 
-
         # main frames
         self.treatment_frame = TreatmentFrame(self, self.data_bundle)
         self.choose_doctors_frame = ChooseDoctorsFrame(self, self.data_bundle)
         self.calendar_view_frame = CalenderViewFrame(self, self.data_bundle)
         self.finish_frame = FinishFrame(self, self.data_bundle)
 
-        self.main_frames = [self.treatment_frame, self.choose_doctors_frame, self.calendar_view_frame, self.finish_frame]
+        # list of main frames
+        self.main_frames: list[ctk.CTkFrame] = [self.treatment_frame, self.choose_doctors_frame, self.calendar_view_frame, self.finish_frame]
+        
+        # widgets for frame when patient has no teeth to treat
+        self.no_teeth_frame = ctk.CTkFrame(self)
+        self.no_teeth_frame.columnconfigure((0, 2), weight=1)
+        self.no_teeth_heading_label = ctk.CTkLabel(self.no_teeth_frame, text="Keine Behandlung möglich", font=self.font24)
+        explainer_text = """Es scheint, dass Sie keine Zähne haben, die einer Behandlung bedürfen.
+        
+        Dies kann verschiedene Gründe haben, wie zum Beispiel eine bereits
+        abgeschlossene Behandlung, eine fehlende Zahnproblematik oder bereits gebuchte Termine.
+        
+        Falls Sie dennoch Fragen oder Bedenken haben, empfehlen wir Ihnen,
+        sich an Ihren Zahnarzt zu wenden, um weitere Informationen zu erhalten.
+        
+        Vielen Dank für Ihr Verständnis."""
+        self.no_teeth_label = ctk.CTkLabel(self.no_teeth_frame, text=explainer_text)
+        self.no_teeth_button = ctk.CTkButton(self.no_teeth_frame, text="Zurück zur Startseite", command=self.main_sidebar.home)
+        
 
-        self.set_grid()
-
-    def set_grid(self):
+    def set_progress_bar_grid(self):
         self.progression_bar_frame.grid(column=0, row=0, sticky="new", padx=20, pady=20)
         self.treatment_frame.grid(**frame_grid_kwargs)
 
         for column, button in enumerate(self.buttons, start=1):
             button.grid(column=column, **button_grid_kwargs)
-
+            
+    def set_no_teeth_grid(self):
+        self.no_teeth_frame.grid(column=0, row=0, sticky="new", padx=20, pady=20)
+        self.no_teeth_heading_label.grid(column=1, row=0, sticky="nsew", pady=(20, 0))
+        self.no_teeth_label.grid(column=1, row=1, sticky="nsew", pady=(20, 0))
+        self.no_teeth_button.grid(column=1, row=2, sticky="nsew", pady=(20, 20))
         
     def reset(self):
+        self.ungrid_all()   # hide all frames
+        # check if patient has teeth to treat
+        if int(getfromCSV("data/patients.csv", ("Username", self.auth_service.username), "Anzahl zu behandelnder Zähne")) < 1:
+            # if not, show no_teeth_frame only
+            self.set_no_teeth_grid()
+            return
+        # if yes, reset progression, show progression bar and show first frame
         self.progression = -1
         self.current_state = -1
+        self.set_progress_bar_grid()
         self.next_page()
 
         
@@ -92,7 +126,7 @@ class MainBookingFrame(ctk.CTkFrame):
 
         
     def next_page(self):
-        if self.current_state == 3:
+        if self.current_state == 3: 
             return
         if self.current_state == self.progression:
             self.progression += 1
@@ -100,12 +134,17 @@ class MainBookingFrame(ctk.CTkFrame):
 
         self.current_state += 1
         self.update_progression_bar()
+        
+    def ungrid_all(self):
+        self.progression_bar_frame.grid_forget()
+        self.no_teeth_frame.grid_forget()
+        for frame in self.main_frames:
+            frame.grid_forget()
 
     def switch_to(self, new_state: int):
         if self.current_state != new_state and self.progression >= new_state:
             self.current_state = new_state
             self.update_progression_bar()
-
         
     def changed(self):
         self.progression = self.current_state
