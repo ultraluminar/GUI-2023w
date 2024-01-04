@@ -1,6 +1,16 @@
-# TODO this whole file
-Registration:
-  Users:
-    choose multiple dental problems
-  Doctors:
-    implement master or one-time-password
+# TODO: Anzahl zu behanlnder Zähne vom Patieten nach dem verbindlichen bestätigen abziehen 
+# TODO: Terminbuchung untersagen, wenn keine Zähne zu behandeln sind (eigener View dafür anstatt des costumize TreatmentFrame)
+# TODO: bei Termin ändern Termin zulassen, der sich mit dem vorher ausgewählten Termin überschniedet
+# TODO: Feedback im Finishframe
+# TODO: light mode für den Kalenderview
+# TODO: Kennzeichnung des gebuchten Termins im Kalenderview
+# TODO: Aufteilung des Doctor Termin Overview nach Wochentagen
+
+
+# TODO: Testing
+# TODO: Anforderung aus der Vorlesung
+# TODO: GUI-Elemente aus der Vorlesung studieren, um zu schauen, welche wir schon benutzen (in die Powerpoint einfügen) oder welche uns auch noch fehlen könnten (gegebenenfalls noch implementieren)
+# TODO: Powerpoint erstellen
+# TODO: Vortrag machen/üben
+
+# TODO: Dokumentation auf Github
