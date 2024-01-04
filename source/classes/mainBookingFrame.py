@@ -116,9 +116,6 @@ class MainBookingFrame(ctk.CTkFrame):
             state = "current" if index == self.current_state else "enabled" if index <= self.progression else "disabled"
             button.configure(**button_configure_kwargs[state])
 
-        # show calendar for chosen doctor
-        if self.current_state == 2:
-            self.calendar_view_frame.update_current()
 
         # ungrid frame
         for index, frame in enumerate(self.main_frames):

@@ -68,7 +68,11 @@ class CalenderViewFrame(ctk.CTkFrame):
 
 
     def reset(self):
-        pass
+        self.current = None
+        self.book_button.configure(text="Buchen", fg_color=("#3B8ED0", "#1F6AA5"), hover_color=("#36719F", "#144870"))
+        self.next_button.configure(state="disabled")
+        self.update_current()
+        self.data_bundle.pop("appointment_row", None)
         
     def last_week(self):
         self.current += relativedelta(weeks=-1)
@@ -81,8 +85,9 @@ class CalenderViewFrame(ctk.CTkFrame):
     def booking_view(self):
         if self.booking is None or not self.booking.winfo_exists():
             events_used = self.week_calender_view.events_used
-            if "appointment_row" in self.data_bundle.keys():
+            if "appointment_row" in self.data_bundle.keys() and events_used:
                 events_used.pop(-1)
+            print("appointment_row" in self.data_bundle.keys(), bool(events_used))
             timespace = TimeSpace(self.week_calender_view.events_free, events_used)
             self.booking = Booking(timespace, self.current, self.data_bundle)    # create window if its None or destroyed
         elif self.booking.state() == "iconic":
