@@ -9,6 +9,12 @@ from source.classes.timespace import TimeSpace
 from source.auth_util import appendCSV, paths
 
 
+# function for converting a count of 15 minutes to a tuple of hours and minutes
+def convert_to_hour_minute(count: int) -> tuple:
+    hours, minutes = divmod(count, 4)
+    return hours, minutes * 15
+
+
 class Booking(ctk.CTkToplevel):
     def __init__(self, timespace: TimeSpace, day_of_week: datetime, bundle: dict):
         super().__init__()
@@ -46,7 +52,7 @@ class Booking(ctk.CTkToplevel):
         
         # widgets
         self.main_heading_label = ctk.CTkLabel(self, text="Buchung", font=self.font24)
-        self.hour_minute = self.convert_to_hour_minute(self.duration)
+        self.hour_minute = convert_to_hour_minute(self.duration)
         hour_string = f"{self.hour_minute[0]} Stunde{'n' if self.hour_minute[0] != 1 else ''}"
         minute_string = f"und {self.hour_minute[1]} Minuten"
         self.main_subheading_label = ctk.CTkLabel(self, text=f"Ihre Behandlung dauert {hour_string} {minute_string if self.hour_minute[1] != 0 else ''}")
@@ -98,11 +104,6 @@ class Booking(ctk.CTkToplevel):
         self.choose_time_combobox.configure(values=times)
         self.hour.set("")
         self.save_button.configure(state="disabled")
-        
-    # function for converting a count of 15 minutes to a tuple of hours and minutes
-    def convert_to_hour_minute(self, count: int) -> tuple:
-        hours, minutes = divmod(count, 4)
-        return hours, minutes * 15
 
     def cancel(self):
         self.destroy()
