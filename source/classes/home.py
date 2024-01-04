@@ -24,6 +24,7 @@ class HomeFrame(ctk.CTkScrollableFrame):
         # main widgets
         self.main_heading_label = ctk.CTkLabel(self, text=f"Willkommen, {self.username}!", font=font30)
         self.sub_heading_label = ctk.CTkLabel(self, text="Was möchten sie tun?")
+        self.info_banner = InfoBanner(self, self.data_bundle)
         
         # profil sub Frame
         self.profil_frame = ctk.CTkFrame(self)
@@ -112,9 +113,8 @@ class HomeFrame(ctk.CTkScrollableFrame):
         self.nametowidget(".!mainsidebar").book_event()
 
     def displayAppointmentFeedback(self):
-        info_banner = InfoBanner(self, text=f"Termin gebucht: {self.data_bundle['appointment_row'][2]}")
-        info_banner.grid(row=2, column=0, columnspan=3, sticky="ns", pady=(0, 20), padx=20)
-        info_banner.show()
-        print("showed info banner")
+        self.info_banner.grid(row=2, column=0, columnspan=3, sticky="ns", pady=(0, 20), padx=20)
+        self.info_banner.show()
+        self.info_banner.grid_forget()
     
         
