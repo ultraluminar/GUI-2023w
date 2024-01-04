@@ -8,7 +8,7 @@ from source.classes.customWidgets.infoBanner import InfoBanner
 
 class HomeFrame(ctk.CTkScrollableFrame):
     def __init__(self, master: ctk.CTk, bundle: dict):
-        super().__init__(master=master, corner_radius=0)
+        super().__init__(master=master, corner_radius=0, fg_color="transparent")
         
         self.auth_service = self.nametowidget(".").auth_service
         self.username = None
