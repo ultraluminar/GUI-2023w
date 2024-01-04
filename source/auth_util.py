@@ -37,6 +37,23 @@ def appendCSV(path: Path, row: iter):
     with open(path, mode='a', newline='', encoding="utf-8") as file:
         writer(file).writerow(row)
 
+def getfromCSV(path: Path, filter: tuple[str, str], field: str = None):
+    df = read_csv(path)
+
+    df.set_index(filter[0], inplace=True)
+    df = df.loc[filter[1]]
+
+    return df if field is None else df[field]
+
+def updateCSV(path: Path, filter: tuple[str, str], update: tuple[str, str]):
+    df = read_csv(path)
+
+    df.set_index(filter[0], inplace=True)
+    df.loc[filter[1], update[0]] = update[1]
+    df.reset_index(inplace=True)
+    df.to_csv(path, index=False)
+
+
 def loadJson(path: Path) -> dict:
     with open(path, mode='r', encoding="utf-8") as file:
         return load(file)
