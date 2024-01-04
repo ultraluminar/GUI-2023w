@@ -38,13 +38,13 @@ class WeekCalenderView(ctk.CTkFrame):
         self.date_rule = rrule(freq=WEEKLY, byweekday=range(5), byhour=8, byminute=0, bysecond=0, dtstart=self.start_week)
 
         # widgets
-        self.month_label = ctk.CTkLabel(self, fg_color="gray30", width=100)
-        self.week_label = ctk.CTkLabel(self, fg_color="gray30")
-        self.time_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, fg_color="gray20", text=f"{time}:00") for time in range(8, 18+1)]
-        self.day_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, fg_color="gray30", text=day) for day in self.day_shortnames]
-        self.date_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, fg_color="gray30") for _ in workdays]
+        self.month_label = ctk.CTkLabel(self, fg_color=("gray70", "gray30"), width=100)
+        self.week_label = ctk.CTkLabel(self, fg_color=("gray70", "gray30"))
+        self.time_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, fg_color=("gray80", "gray20"), text=f"{time}:00") for time in range(8, 18+1)]
+        self.day_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, fg_color=("gray70", "gray30"), text=day) for day in self.day_shortnames]
+        self.date_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, fg_color=("gray70", "gray30")) for _ in workdays]
         self.hour_buttons: list[list[ctk.CTkLabel]] = [[
-            ctk.CTkLabel(self, text="", corner_radius=5, fg_color="gray25"
+            ctk.CTkLabel(self, text="", corner_radius=5, fg_color=("gray75", "gray25")
                 ) for hour in range(8, 18)] for _ in workdays]
 
         self.update_date_labels()

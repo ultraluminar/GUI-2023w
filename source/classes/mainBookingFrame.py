@@ -12,8 +12,8 @@ button_configure_kwargs = {
             "hover_color": ("gray75", "gray25")},
     "enabled": {
             "text_color": ("black", "white"),
-            "fg_color": ("#4b677c", "#3a4c5a"),
-            "hover_color": ("#364a59", "#2a3741")},
+            "fg_color": ("#4f7c9e", "#3a4c5a"),
+            "hover_color": ("#456b87", "#2a3741")},
     "current": {
             "text_color": ("black", "white"),
             "fg_color": ("#3B8ED0", "#1F6AA5"),

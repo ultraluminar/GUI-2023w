@@ -2,6 +2,7 @@ import customtkinter as ctk
 
 from datetime import datetime
 from source.auth_util import appendCSV, paths
+import logging
 
 class FinishFrame(ctk.CTkFrame):
     def __init__(self, master, bundle: dict):
@@ -81,5 +82,6 @@ class FinishFrame(ctk.CTkFrame):
         
     def confirm(self):
         appendCSV(paths["appointments"], self.data_bundle["appointment_row"])
+        logging.info(f"Appointment booked: {self.data_bundle['appointment_row']}")
         self.master.next_page()
         
