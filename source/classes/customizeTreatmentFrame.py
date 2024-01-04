@@ -209,9 +209,9 @@ class TreatmentFrame(ctk.CTkFrame):
         
         self.step_sum_value_label.configure(text=f"{single_cost * self.teeth_count.get()}€")
         insurance_share = single_cost * self.teeth_count.get() * self.insurance_share
-        self.insurance_share_value_label.configure(text=f"-{round(insurance_share, 2)}€")
+        self.insurance_share_value_label.configure(text=f"-{insurance_share:.2f}€")
         total_cost_value = (single_cost * self.teeth_count.get()) - (single_cost * self.teeth_count.get() * self.insurance_share)
-        self.total_cost_value_label.configure(text=f"{round(total_cost_value, 2)}€")
+        self.total_cost_value_label.configure(text=f"{total_cost_value:.2f}€")
         
     def get_treatment_duration_quarters(self):
         df = read_csv("data/costs.csv")
