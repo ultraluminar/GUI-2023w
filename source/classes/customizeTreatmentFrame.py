@@ -75,9 +75,9 @@ class TreatmentFrame(ctk.CTkFrame):
         self.filling_selector_frame.grid_columnconfigure((0, 2), weight=1)
         self.filling_selector_heading_label = ctk.CTkLabel(self.filling_selector_frame, text="Füllung", font=self.font20)
         self.filling_selector_sub_heading_label = ctk.CTkLabel(self.filling_selector_frame, text="Wählen sie aus, welches Füllmaterial verwendet werden soll.")
-        self.low_filling_radio = ctk.CTkRadioButton(self.filling_selector_frame, text="an error occured", variable=self.filling, value="normal", command=self.update_bill)
-        self.mid_filling_radio = ctk.CTkRadioButton(self.filling_selector_frame, text="an error occured", variable=self.filling, value="hochwertig", command=self.update_bill)
-        self.high_filling_radio = ctk.CTkRadioButton(self.filling_selector_frame, text="an error occured", variable=self.filling, value="höchstwertig", command=self.update_bill)
+        self.low_filling_radio = ctk.CTkRadioButton(self.filling_selector_frame, text="an error occured", variable=self.filling, value="normal", command=self.filling_changed)
+        self.mid_filling_radio = ctk.CTkRadioButton(self.filling_selector_frame, text="an error occured", variable=self.filling, value="hochwertig", command=self.filling_changed)
+        self.high_filling_radio = ctk.CTkRadioButton(self.filling_selector_frame, text="an error occured", variable=self.filling, value="höchstwertig", command=self.filling_changed)
         
         # billing subframe
         # variables
@@ -193,8 +193,10 @@ class TreatmentFrame(ctk.CTkFrame):
         Args:
             *args: Variable arguments.
         """
+        self.master.changed(2)
         self.teeth_count_string.set(str(self.teeth_count.get()))
         self.update_bill()
+
         
     def reset(self):
         """
@@ -258,6 +260,13 @@ class TreatmentFrame(ctk.CTkFrame):
         self.insurance_share_value_label.configure(text=f"-{insurance_share:.2f}€")
         total_cost_value = (single_cost * self.teeth_count.get()) - (single_cost * self.teeth_count.get() * self.insurance_share)
         self.total_cost_value_label.configure(text=f"{total_cost_value:.2f}€")
+
+    def filling_changed(self, *args):
+        """
+        Updates the bill when the filling is changed.
+        """
+        self.master.changed(1)
+        self.update_bill()
         
     def get_treatment_duration_quarters(self):
         """
@@ -281,4 +290,6 @@ class TreatmentFrame(ctk.CTkFrame):
             "total_cost": self.total_cost_value_label.cget("text")
         })
         self.master.next_page()
+
+
         

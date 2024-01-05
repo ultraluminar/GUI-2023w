@@ -105,7 +105,7 @@ class ChooseDoctorsFrame(ctk.CTkFrame):
         self.doctor_select_frames = [ctk.CTkFrame(self.doctor_list_frame) for _ in range(0, len(self.doctor_list))]  # create frames
         # create radio buttons
         for index, frame in enumerate(self.doctor_select_frames): 
-            self.doctor_select_radio.append(ctk.CTkRadioButton(frame, text=self.doctor_list[index][1], variable=self.var_chosen_doctor_username, value=self.doctor_list[index][0], command=self.master.changed))
+            self.doctor_select_radio.append(ctk.CTkRadioButton(frame, text=self.doctor_list[index][1], variable=self.var_chosen_doctor_username, value=self.doctor_list[index][0], command=lambda: self.master.changed(1)))
             
         self.set_doctors_grid()
         self.set_main_grid()

@@ -201,11 +201,11 @@ class MainBookingFrame(ctk.CTkFrame):
             self.update_progression_bar()
         self.nametowidget(".").bind("<Return>", self.main_frames[self.current_state].next_page)
         
-    def changed(self):
+    def changed(self, current: int):
         """
         Called when data is changed on some page.
 
         Resets the progression to the current state and updates the progression bar.
         """
-        self.progression = self.current_state   # resets progression to current state
+        self.progression = min(self.progression, current)   # resets progression to current state
         self.update_progression_bar()
