@@ -16,7 +16,7 @@ class TimeSelector(ctk.CTkToplevel):
         destroy_selector(selector): Removes a DateAndTimeSelector object from the window.
     """
 
-    def __init__(self):
+    def __init__(self, master):
         """
         Initializes the TimeSelector object.
 
@@ -24,8 +24,11 @@ class TimeSelector(ctk.CTkToplevel):
         Configures the rows and columns of the window.
         Initializes fonts, scrollable frame, and widgets.
         Packs the widgets into the grid layout.
+
+        Args:
+            master (tk.Tk): The master widget.
         """
-        super().__init__()
+        super().__init__(master)
 
         self.initial_width = 600
         self.initial_height = 500

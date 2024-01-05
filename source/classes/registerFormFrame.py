@@ -412,7 +412,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         Otherwise, it focuses on the existing time selector window.
         """
         if self.time_selector_window is None or not self.time_selector_window.winfo_exists():
-            self.time_selector_window = TimeSelector()     # create window if it's None or destroyed
+            self.time_selector_window = TimeSelector(self)     # create window if it's None or destroyed
             self.after(100, lambda: self.time_selector_window.focus())
         elif self.time_selector_window.state() in ("iconic", "withdrawn"):
             self.time_selector_window.deiconify()    # bring back window if it's minimized
