@@ -2,6 +2,7 @@ import customtkinter as ctk
 
 from pandas import read_csv
 from datetime import datetime
+from CTkToolTip import CTkToolTip
 
 from source.classes.customWidgets.patientAppointmentOverview import PatientOverview
 from source.classes.customWidgets.infoBanner import InfoBanner
@@ -87,6 +88,9 @@ class HomeFrame(ctk.CTkScrollableFrame):
         self.set_profile_grid()
         self.set_appointments_grid()
         self.set_main_grid()
+
+        # tooltips
+        CTkToolTip(self.book_appointment_button, message="Klicken um einen Termin zu buchen.", alpha=0.8)
         
     def set_main_grid(self):
         """

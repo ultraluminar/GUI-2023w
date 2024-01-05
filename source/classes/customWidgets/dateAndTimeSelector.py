@@ -63,7 +63,8 @@ class DateAndTimeSelector(ctk.CTkFrame):
         self.time_to_combobox = ctk.CTkComboBox(self.time_frame, width=100, values=self.hours, variable=self.time_to, state="readonly")
 
         # main widgets
-        self.destroy_button = ctk.CTkButton(self, width=32, fg_color=self.destroy_color, hover_color=self.destroy_hover_color, text="x", command=lambda: self.nametowidget(".!timeselector").destroy_selector(self))
+        self.destroy_button = ctk.CTkButton(self, width=32, fg_color=self.destroy_color, hover_color=self.destroy_hover_color,
+                                            text="x", command=lambda: self.master.master.master.master.destroy_selector(self))
 
         # grid day subframe
         self.day_label.grid(row=0, column=0, columnspan=4, pady=(6, 0))
