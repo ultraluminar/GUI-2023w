@@ -5,6 +5,26 @@ from PIL import Image, ImageTk
 from source.utils import center_window
 
 class Frame(ctk.CTkFrame):
+    """
+    A custom frame class that represents a GUI frame with a label, entry, and button.
+
+    Args:
+        master: The master widget.
+        font: The font to be used for the label, entry, and button.
+
+    Attributes:
+        font (Font): The font used for the label, entry, and button.
+        auth_service (AuthService): The authentication service instance.
+        copy_image (CTkImage): The image used for the copy button.
+        var (StringVar): The variable used to store the entry text.
+        label (CTkLabel): The label widget.
+        entry (CTkEntry): The entry widget.
+        button (CTkButton): The button widget.
+        
+    Methods:
+        copy_code: Copies the current code to the clipboard.
+    """
+
     def __init__(self, master, font):
         super().__init__(master=master)
         self.font = font
@@ -32,12 +52,31 @@ class Frame(ctk.CTkFrame):
         self.var.set(self.auth_service.code)
 
     def copy_code(self, event=None):
+        """
+        Copies the current code to the clipboard.
+
+        Args:
+            event (Event, optional): The event that triggered the copy action.
+        """
         self.clipboard_clear()
         self.clipboard_append(self.auth_service.code)
         self.button.configure(fg_color=("#26a31d", "#369130"), hover_color=("#1d8017", "#2c7527"))
 
 
 class Admin(ctk.CTkToplevel):
+    """
+    A custom toplevel window that lets you manage the admin code. 
+
+    Attributes:
+        title (str): The title of the Admin window.
+        iconpath (str): The path to the icon image file.
+        font24 (ctk.CTkFont): The font used in the Admin window.
+        frame (Frame): The main frame of the Admin window.
+
+    Methods:
+        __init__(self, master): Initializes the Admin window.
+    """
+
     def __init__(self, master):
         super().__init__(master=master)
 

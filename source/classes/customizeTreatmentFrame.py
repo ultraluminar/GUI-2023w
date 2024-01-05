@@ -4,7 +4,33 @@ import tkinter as tk
 from pandas import read_csv
 
 class TreatmentFrame(ctk.CTkFrame):
+    """
+    A custom frame for customizing treatment options.
+
+    Args:
+        master: The master widget.
+        bundle (dict): A dictionary containing data bundle.
+
+    Methods:
+        set_main_grid(): Sets the grid for the main widgets.
+        set_teeth_selector_grid(): Sets the grid for the teeth selector subframe.
+        set_filling_grid(): Sets the grid for the filling selector subframe.
+        set_bill_grid(): Sets the grid for the billing subframe.
+        update_teeth_count(*args): Updates the number of teeth to be treated.
+        reset(): Resets the TreatmentFrame.
+        update_bill(): Updates the billing subframe.
+        get_treatment_duration_quarters(): Gets the treatment duration in quarters.
+        next_page(): Navigates to the next page.
+    """
+
     def __init__(self, master, bundle: dict):
+        """
+        Initializes the TreatmentFrame.
+
+        Args:
+            master: The master widget.
+            bundle (dict): A dictionary containing data bundle.
+        """
         super().__init__(master=master)
         
         # variables
@@ -99,6 +125,9 @@ class TreatmentFrame(ctk.CTkFrame):
         self.set_main_grid()
         
     def set_main_grid(self):
+        """
+        Sets the grid for the main widgets.
+        """
         self.main_heading_label.grid(column=0, row=0, columnspan=2, pady=(20, 0), sticky="new")
         self.sub_heading_label.grid(column=0, row=1, columnspan=2, pady=(0, 20), sticky="new")
         self.teeth_selector_frame.grid(column=0, row=2, padx=(20, 10), sticky="nsew")
@@ -107,6 +136,9 @@ class TreatmentFrame(ctk.CTkFrame):
         self.next_button.grid(column=0, columnspan=3, row=4, pady=20, sticky="e", padx=(0, 20))
     
     def set_teeth_selector_grid(self):
+        """
+        Sets the grid for the teeth selector subframe.
+        """
         self.teeth_selector_counter_label.grid(column=2, row=0)
         self.teeth_selector_from_label.grid(column=1, row=1)
         self.teeth_selector_slider.grid(column=2, row=1)
@@ -117,6 +149,9 @@ class TreatmentFrame(ctk.CTkFrame):
         self.slider_sub_frame.grid(column=1, row=2, padx=15, pady=(0, 15), sticky="nsew")
     
     def set_filling_grid(self):
+        """
+        Sets the grid for the filling selector subframe.
+        """
         self.filling_selector_heading_label.grid(column=1, row=0, pady=(15, 0), sticky="nsew")
         self.filling_selector_sub_heading_label.grid(column=1, row=1, pady=(0, 15), sticky="nsew")
 
@@ -125,6 +160,9 @@ class TreatmentFrame(ctk.CTkFrame):
         self.high_filling_radio.grid(column=1, row=4, padx=20, pady=(0, 20), sticky="nsew")
     
     def set_bill_grid(self):
+        """
+        Sets the grid for the billing subframe.
+        """
         self.head_row_description_label.grid(column=1, row=0, pady=(15, 0), padx=(15, 0))
         self.head_row_single_cost_label.grid(column=2, row=0, pady=(15, 0), padx=(5, 0))
         self.head_row_count_label.grid(column=3, row=0, pady=(15, 0), padx=(5, 0))
@@ -154,10 +192,23 @@ class TreatmentFrame(ctk.CTkFrame):
         
         
     def update_teeth_count(self, *args):
+        """
+        Updates the number of teeth to be treated.
+
+        Args:
+            *args: Variable arguments.
+        """
         self.teeth_count_string.set(str(self.teeth_count.get()))
         self.update_bill()
         
     def reset(self):
+        """
+        Resets the TreatmentFrame to its initial state.
+
+        This method retrieves the user's information from the patients and costs data files and updates the 
+        TreatmentFrame with this information. It resets the teeth selector frame, the filling frame, and the 
+        billing frame to their initial states. It also updates the bill.
+        """
         self.username = self.auth_service.username
         
         df_patients = read_csv("data/patients.csv")
@@ -193,9 +244,10 @@ class TreatmentFrame(ctk.CTkFrame):
         
         self.update_bill()
         
-        
-        
     def update_bill(self):
+        """
+        Updates the bill based on the selected filling, insurance share, and tooth count.
+        """
         fillings_index = self.fillings.index(self.filling.get())
         self.insurance_share = self.insurance_shares[fillings_index]
         self.insurance_share_label.configure(text=f"Krankenkassenanteil ({round(100*self.insurance_share)}%)")
@@ -214,6 +266,9 @@ class TreatmentFrame(ctk.CTkFrame):
         self.total_cost_value_label.configure(text=f"{total_cost_value:.2f}€")
         
     def get_treatment_duration_quarters(self):
+        """
+        Returns the treatment duration in quarters of an hour based on the dental problem and filling type.
+        """
         df = read_csv("data/costs.csv")
         durations = df.loc[df["Dentale Problematik"] == self.dental_problem, "Zeit (Stunden)"]
         durations = list(durations.values)
@@ -221,6 +276,9 @@ class TreatmentFrame(ctk.CTkFrame):
         return int(float(durations[fillings_index].replace(",", "."))*4)  # 4 quarters in an hour
     
     def next_page(self):
+        """
+        Navigates to the next page and updates the data bundle with the treatment details.
+        """
         self.master.next_page()
         self.data_bundle.update({
             "duration_quarters": self.get_treatment_duration_quarters(),

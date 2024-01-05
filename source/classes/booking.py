@@ -16,6 +16,50 @@ def convert_to_hour_minute(count: int) -> tuple:
 
 
 class Booking(ctk.CTkToplevel):
+    """
+    Represents a booking window for scheduling appointments.
+
+    Args:
+        timespace (TimeSpace): An instance of the TimeSpace class.
+        day_of_week (datetime): The selected day of the week.
+        bundle (dict): A dictionary containing data for the booking.
+
+    Attributes:
+        day_of_week (datetime): The selected day of the week.
+        timespace (TimeSpace): An instance of the TimeSpace class.
+        duration (int): The duration of the appointment in quarters.
+        termine (list): A list of available time slots for the appointment.
+        data_bundle (dict): A dictionary containing data for the booking.
+        days_names (list): A list of day names.
+        times (list): A list of time slots.
+        day (tk.StringVar): The selected day.
+        hour (tk.StringVar): The selected hour.
+        iconpath (ImageTk.PhotoImage): The path to the window icon.
+        auth_service (AuthService): An instance of the AuthService class.
+        font24 (ctk.CTkFont): The font for the main heading label.
+        font20 (ctk.CTkFont): The font for the subheading labels.
+        main_heading_label (ctk.CTkLabel): The main heading label.
+        main_subheading_label (ctk.CTkLabel): The subheading label for the appointment duration.
+        cancel_button (ctk.CTkButton): The cancel button.
+        save_button (ctk.CTkButton): The save button.
+        choose_day_frame (ctk.CTkFrame): The frame for choosing the day.
+        choose_day_heading_label (ctk.CTkLabel): The heading label for choosing the day.
+        choose_day_subheading_label (ctk.CTkLabel): The subheading label for choosing the day.
+        choose_day_combobox (ctk.CTkComboBox): The combobox for selecting the day.
+        choose_time_frame (ctk.CTkFrame): The frame for choosing the time.
+        choose_time_heading_label (ctk.CTkLabel): The heading label for choosing the time.
+        choose_time_subheading_label (ctk.CTkLabel): The subheading label for choosing the time.
+        choose_time_combobox (ctk.CTkComboBox): The combobox for selecting the time.
+
+    Methods:
+        enable_save: Enables the save button if a day and time are selected.
+        set_main_grid: Sets the grid layout for the main window.
+        set_choose_day_frame_grid: Sets the grid layout for the choose day frame.
+        set_choose_time_frame_grid: Sets the grid layout for the choose time frame.
+        set_times: Sets the available time slots based on the selected day.
+        cancel: Cancels the booking and closes the window.
+        save: Saves the booking and updates the calendar view.
+    """
     def __init__(self, timespace: TimeSpace, day_of_week: datetime, bundle: dict):
         super().__init__()
 
@@ -76,43 +120,71 @@ class Booking(ctk.CTkToplevel):
         self.set_main_grid()
 
     def enable_save(self, *args):
+        """
+        Enables the save button if a day and time are selected.
+        Disables the save button otherwise.
+        
+        Args:
+            args: The arguments are ignored to allow the function to be used as a callback.
+        """
         if self.day.get() != "" and self.hour.get() != "":
             self.save_button.configure(state="normal")
 
     def set_main_grid(self):
+        """
+        Sets the grid layout for the main window.
+        """
         self.main_heading_label.grid(row=0, column=0, padx=20, pady=(10, 0), sticky="nsew", columnspan=2)
         self.main_subheading_label.grid(row=1, column=0, padx=20, pady=(0, 15), sticky="nsew", columnspan=2)
         self.choose_day_frame.grid(row=2, column=0, padx=20, pady=(0, 15), sticky="nsew", columnspan=2)
         self.choose_time_frame.grid(row=3, column=0, padx=20, pady=(0, 20), sticky="nsew", columnspan=2)
         self.cancel_button.grid(row=4, column=0, padx=20, pady=(0, 20), sticky="w")
         self.save_button.grid(row=4, column=1, padx=20, pady=(0, 20), sticky="e")
-        
 
     def set_choose_day_frame_grid(self):
+        """
+        Sets the grid layout for the choose day frame.
+        """
         self.choose_day_heading_label.grid(row=0, column=0, padx=20, pady=(15, 0))
         self.choose_day_subheading_label.grid(row=1, column=0, padx=20, pady=(0, 20))
         self.choose_day_combobox.grid(row=2, column=0, columnspan=2, pady=(0, 20))
-    
+
     def set_choose_time_frame_grid(self):
+        """
+        Sets the grid layout for the choose time frame.
+        """
         self.choose_time_heading_label.grid(row=0, column=0, padx=20, pady=(15, 0))
         self.choose_time_subheading_label.grid(row=1, column=0, padx=20, pady=(0, 20))
         self.choose_time_combobox.grid(row=2, column=0, columnspan=2, pady=(0, 20))
 
     def set_times(self, *args):
-        weekday = self.days_names.index(self.day.get())
-        times = [termin.strftime("%H:%M") for termin in self.termine[weekday]]
+        """
+        Sets the available time slots based on the selected day.
+        
+        Args:
+            args: The arguments are ignored to allow the function to be used as a callback.
+        """
+        weekday = self.days_names.index(self.day.get()) # get the index of the selected day
+        times = [termin.strftime("%H:%M") for termin in self.termine[weekday]]  # get the available times for the selected day
         self.choose_time_combobox.configure(values=times)
         self.hour.set("")
         self.save_button.configure(state="disabled")
 
     def cancel(self):
+        """
+        Cancels the booking and closes the window.
+        """
         self.destroy()
 
     def save(self):
+        """
+        Saves the booking into the bundle and updates the calendar view.
+        """
         weekday = self.days_names.index(self.day.get())
         time_ = datetime.strptime(self.hour.get(), "%H:%M").time()
         start = (self.day_of_week + relativedelta(weekday=weekday)).replace(hour=time_.hour, minute=time_.minute)
         stop = start + relativedelta(minutes=15*self.duration)
+        # add appointment data in rowform as list to bundle
         row_data = [
             self.data_bundle["doctor"],
             self.auth_service.username,
@@ -125,6 +197,7 @@ class Booking(ctk.CTkToplevel):
         self.data_bundle["appointment_row"] = row_data
         self.data_bundle["dt_start"] = start.strftime("%d-%m-%Y %H:%M")
         calendar_view = self.nametowidget(".!mainbookingframe.!calenderviewframe.!weekcalenderview")
+        # add the appointment to the calendar view as an exception date
         calendar_view.set_week(self.day_of_week)
         calendar_view.add_ex_date(start, stop, fg_color=("#3B8ED0", "#1F6AA5"))
         self.nametowidget(".!mainbookingframe.!calenderviewframe").booking_saved()

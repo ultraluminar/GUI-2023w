@@ -7,6 +7,32 @@ from source.classes.timeSelector import TimeSelector
 from source.auth_util import username_exists, add_patient, add_doctor
 
 class RegisterFormFrame(ctk.CTkTabview):
+    """
+    A custom frame class for a registration form with tabs for patients and doctors.
+
+    This class extends the `ctk.CTkTabview` class and provides a user interface for registering as a patient or a doctor.
+    It includes various input fields, buttons, and error handling.
+
+    Methods:
+        isVarAlpha(action_type: str, string: str) -> bool:
+            Validates if a string contains only alphabetic characters.
+        isVarAlNum(action_type: str, string: str) -> bool:
+            Validates if a string contains only alphanumeric characters.
+        set_patient_grid() -> None:
+            Sets the grid layout for the patient registration section.
+        set_doctor_grid() -> None:
+            Sets the grid layout for the doctor registration section.
+        try_patient_register(event=None) -> None:
+            Attempts to register a patient based on the entered information.
+        try_doctor_register(event=None) -> None:
+            Attempts to register a doctor based on the entered information.
+        time_selector() -> None:
+            Opens the time slot selection window for the doctor.
+        doctor_time_selector_saved(availability: list) -> None:
+            Saves the selected availability for the doctor.
+        reset() -> None:
+            Resets the registration form to its initial state.
+    """
     def __init__(self, master):
         super().__init__(master=master)
         
@@ -96,6 +122,16 @@ class RegisterFormFrame(ctk.CTkTabview):
 
     @staticmethod
     def isVarAlpha(action_type: str, string: str):
+        """
+        Check if the given string is alphabetic.
+
+        Parameters:
+        - action_type (str): The type of action being performed.
+        - string (str): The string to be checked.
+
+        Returns:
+        - bool: True if the string is alphabetic, False otherwise.
+        """
         if action_type != "1":
             return True
 
@@ -103,6 +139,16 @@ class RegisterFormFrame(ctk.CTkTabview):
 
     @staticmethod
     def isVarAlNum(action_type: str, string: str):
+        """
+        Check if the given string is alphanumeric.
+
+        Parameters:
+        - action_type (str): The type of action being performed.
+        - string (str): The string to be checked.
+
+        Returns:
+        - bool: True if the string is alphanumeric, False otherwise.
+        """
         if action_type != "1":
             return True
         if len(string) > 8:
@@ -111,6 +157,9 @@ class RegisterFormFrame(ctk.CTkTabview):
         
 
     def set_patient_grid(self):
+        """
+        Sets the grid layout for the patient form fields and widgets.
+        """
         self.patient_heading.grid(row=1, column=0, columnspan=2, pady=(10, 0), padx=0, sticky="n")
         self.patient_username_entry.grid(row=2, column=0, columnspan=2, pady=(20, 0), padx=50, sticky="n")
         self.patient_name_entry.grid(row=3, column=0, columnspan=2, pady=(5, 0), padx=50, sticky="n")
@@ -125,6 +174,9 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.patient_register_button.grid(row=12, column=0, columnspan=2, pady=(25, 20), padx=50, sticky="n")
         
     def set_doctor_grid(self):
+        """
+        Sets the grid layout for the doctor form fields and widgets.
+        """
         self.doctor_heading.grid(row=1, column=0, columnspan=2, pady=(10, 0), padx=0, sticky="n")
         self.doctor_username_entry.grid(row=2, column=0, columnspan=2, pady=(20, 0), padx=50, sticky="n")
         self.doctor_name_entry.grid(row=3, column=0, columnspan=2, pady=(5, 0), padx=50, sticky="n")
@@ -141,6 +193,18 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.doctor_register_button.grid(row=14, column=0, columnspan=2, pady=(25, 20), padx=50, sticky="n")
 
     def try_patient_register(self, event=None) -> None:
+        """
+        Attempts to register a new patient with the provided information.
+
+        This method retrieves the patient's details from the respective entry fields and checkboxes, validates 
+        the input, and registers the patient if there are no errors. It provides visual feedback for errors by 
+        changing the border color of the entry fields and checkboxes and displaying the error messages. If the 
+        registration is successful, it logs the patient in and navigates to the home page.
+
+        Args:
+            event (Optional): The event that triggered the registration attempt. Defaults to None.
+        """
+        # get values
         username = self.patient_username_entry.get()
         name = self.patient_name_entry.get()
         password = self.patient_password_entry.get()
@@ -152,6 +216,7 @@ class RegisterFormFrame(ctk.CTkTabview):
 
         default_color = ("#979DA2", "#565B5E")
 
+        
         entry_map = [
             [self.patient_username_entry, username == "", "Kein Benutzername angegeben"],
             [self.patient_name_entry, name == "", "Kein Nachname angegeben"],
@@ -160,7 +225,8 @@ class RegisterFormFrame(ctk.CTkTabview):
             [self.patient_confirm_password_entry, confirm_password != password, "Passwort stimmt nicht überein"],
             [self.insurance_combobox, insurance == "Krankenkassenart", "Wählen Sie Ihre Krankenkassenart"],
             [self.dental_problem_combobox, dental_problem == "Dentale Problematik", "Wählen Sie Ihre dentale Problematik"],
-            [self.patient_username_entry, username_exists(username), "Benutzername bereits vergeben"]]
+            [self.patient_username_entry, username_exists(username), "Benutzername bereits vergeben"]
+        ]
 
         error_entrys = []
         error_messages = []
@@ -213,6 +279,15 @@ class RegisterFormFrame(ctk.CTkTabview):
             raise PermissionError
         
     def try_doctor_register(self, event = None) -> None:
+        """
+        Attempts to register a new doctor.
+
+        This method retrieves the doctor's details from the respective entry fields and checkboxes, checks for 
+        any errors such as empty fields or incorrect OTP, and registers the doctor if there are no errors. It 
+        also provides visual feedback for errors by changing the border color of the entry fields and checkboxes 
+        and displaying the error messages. If the registration is successful, it logs the doctor in and navigates 
+        to the doctor's page.
+        """
         username = self.doctor_username_entry.get()
         name = self.doctor_name_entry.get()
         address = self.sex.get()
@@ -296,20 +371,41 @@ class RegisterFormFrame(ctk.CTkTabview):
         
         
     def time_selector(self):
+        """
+        Opens the time selector window.
+
+        If the time selector window is not created or destroyed, it creates a new window.
+        If the time selector window is minimized or withdrawn, it brings back the window.
+        Otherwise, it focuses on the existing time selector window.
+        """
         if self.time_selector_window is None or not self.time_selector_window.winfo_exists():
-            self.time_selector_window = TimeSelector()     # create window if its None or destroyed
+            self.time_selector_window = TimeSelector()     # create window if it's None or destroyed
         elif self.time_selector_window.state() in ("iconic", "withdrawn"):
-            self.time_selector_window.deiconify()    # bring back window if its minimized
+            self.time_selector_window.deiconify()    # bring back window if it's minimized
         else:
             self.time_selector_window.focus()
         
     def doctor_time_selector_saved(self, availability: list):
+        """
+        Saves the selected availability for the doctor and updates the button text and color.
+
+        Args:
+            availability (list): The list of available time slots.
+        """
         self.availability = availability
         
         # visual feedback
         self.doctor_time_selector_button.configure(fg_color=("#26a31d", "#369130"), hover_color=("#1d8017", "#2c7527"), text="Behandlungszeit ändern")
     
     def reset(self):
+        """
+        Resets the registration form to its initial state.
+
+        This method clears all the patient and doctor entry fields and checkboxes, resets the comboboxes and 
+        spinbox to their default values, hides the error labels, and reverts the border color of the entry fields 
+        and checkboxes to the default color. It also clears the doctor's availability and destroys the time 
+        selector window if it exists.
+        """
         # delete patient entrys for privacy
         self.patient_username_entry.delete(0, "end")
         self.patient_name_entry.delete(0, "end")

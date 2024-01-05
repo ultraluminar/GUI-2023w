@@ -7,7 +7,47 @@ from source.classes.customWidgets.patientAppointmentOverview import PatientOverv
 from source.classes.customWidgets.infoBanner import InfoBanner
 
 class HomeFrame(ctk.CTkScrollableFrame):
+    """
+    A custom frame class representing the home screen of the GUI application.
+
+    Args:
+        master (ctk.CTk): The master widget.
+        bundle (dict): A dictionary containing data bundle.
+
+    Methods:
+        __init__(self, master: ctk.CTk, bundle: dict):
+            Initializes the HomeFrame.
+        set_main_grid(self):
+            Sets the grid layout for the main widgets.
+        set_profile_grid(self):
+            Sets the grid layout for the profile sub frame widgets.
+        set_appointments_grid(self):
+            Sets the grid layout for the appointments sub frame widgets.
+        reset(self):
+            Resets the HomeFrame by updating the displayed information.
+        get_patient_name(self):
+            Retrieves the name of the patient from the data source.
+        get_insurace_type(self):
+            Retrieves the insurance type of the patient from the data source.
+        get_dental_problem(self):
+            Retrieves the dental problem of the patient from the data source.
+        get_tooth_number(self):
+            Retrieves the total number of teeth to be treated for the patient from the data source.
+        get_tooth_number_with_appointment(self):
+            Retrieves the number of teeth to be treated in the next 3 months for the patient from the data source.
+        book_appointment(self):
+            Books an appointment for the patient.
+        displayAppointmentFeedback(self):
+            Displays the appointment feedback.
+    """
     def __init__(self, master: ctk.CTk, bundle: dict):
+        """
+        Initializes the HomeFrame.
+
+        Args:
+            master (ctk.CTk): The master widget.
+            bundle (dict): A dictionary containing data bundle.
+        """
         super().__init__(master=master, corner_radius=0, fg_color="transparent")
         
         self.auth_service = self.nametowidget(".").auth_service
@@ -53,12 +93,18 @@ class HomeFrame(ctk.CTkScrollableFrame):
         self.set_main_grid()
         
     def set_main_grid(self):
+        """
+        Sets the grid layout for the main widgets.
+        """
         self.main_heading_label.grid(row=0, column=0, columnspan=2, pady=(10, 0), sticky="nsew")
         self.sub_heading_label.grid(row=1, column=0, columnspan=2, pady=(0, 20), sticky="nsew")
         self.profil_frame.grid(row=3, column=0, padx=20, pady=(0, 20), sticky="nsew")
         self.appointments_frame.grid(row=4, column=0, padx=20, pady=(0, 20), sticky="nsew")
         
     def set_profile_grid(self):
+        """
+        Sets the grid layout for the profile sub frame widgets.
+        """
         self.profil_heading_label.grid(row=0, column=1, columnspan=2, pady=(10, 0))
         self.profil_sub_heading_label.grid(row=1, column=1, columnspan=2, pady=(0, 10))
         self.insurance_type_label.grid(row=2, column=1, pady=(10, 0))
@@ -71,12 +117,18 @@ class HomeFrame(ctk.CTkScrollableFrame):
         self.tooth_number_with_appointment_value_label.grid(row=5, column=2, pady=(10, 15))
     
     def set_appointments_grid(self):
+        """
+        Sets the grid layout for the appointments sub frame widgets.
+        """
         self.appointments_heading_label.grid(row=0, column=1, pady=(10, 0))
         self.appointments_sub_heading_label.grid(row=1, column=1, pady=(0, 10))
         self.appointments_sub_frame.grid(row=2, column=1, pady=(0, 10))
         self.book_appointment_button.grid(column=0, columnspan=3, row=3, pady=20, sticky="e", padx=(0, 20))
         
     def reset(self):
+        """
+        Resets the HomeFrame by updating the displayed information.
+        """
         self.username = self.auth_service.username
         self.main_heading_label.configure(text=f"Willkommen, {self.get_patient_name()}!")
         self.insurance_value_label.configure(text=self.get_insurace_type())
@@ -86,22 +138,52 @@ class HomeFrame(ctk.CTkScrollableFrame):
         self.appointments_sub_frame.reset()
         
     def get_patient_name(self):
+        """
+        Retrieves the name of the patient from the data source.
+
+        Returns:
+            str: The name of the patient.
+        """
         df = read_csv("data/patients.csv")
         return df.loc[df["Username"] == self.username, "Name"].iloc[0]
     
     def get_insurace_type(self):
+        """
+        Retrieves the insurance type of the patient from the data source.
+
+        Returns:
+            str: The insurance type of the patient.
+        """
         df = read_csv("data/patients.csv")
         return df.loc[df["Username"] == self.username, "Krankenkassenart"].iloc[0]
     
     def get_dental_problem(self):
+        """
+        Retrieves the dental problem of the patient from the data source.
+
+        Returns:
+            str: The dental problem of the patient.
+        """
         df = read_csv("data/patients.csv")
         return df.loc[df["Username"] == self.username, "Dentale Problematik"].iloc[0]
     
     def get_tooth_number(self):
+        """
+        Retrieves the total number of teeth to be treated for the patient from the data source.
+
+        Returns:
+            int: The total number of teeth to be treated.
+        """
         df = read_csv("data/patients.csv")
         return df.loc[df["Username"] == self.username, "Anzahl zu behandelnder Zähne"].iloc[0] + self.get_tooth_number_with_appointment()
     
     def get_tooth_number_with_appointment(self):
+        """
+        Retrieves the number of teeth to be treated in the next 3 months for the patient from the data source.
+
+        Returns:
+            int: The number of teeth to be treated in the next 3 months.
+        """
         df = read_csv("data/appointments.csv")
         # filter out appointments that are already over
         df = df.loc[df["dt_stop"] > datetime.now().strftime("%d-%m-%Y %H:%M")]
@@ -110,9 +192,15 @@ class HomeFrame(ctk.CTkScrollableFrame):
         return df["tooth_count"].sum()
         
     def book_appointment(self):
+        """
+        Books an appointment for the patient.
+        """
         self.nametowidget(".!mainsidebar").book_event()
 
     def displayAppointmentFeedback(self):
+        """
+        Displays the appointment feedback.
+        """
         self.info_banner.grid(row=2, column=0, columnspan=3, sticky="ns", pady=(0, 20), padx=20)
         self.info_banner.show()
         self.info_banner.grid_forget()

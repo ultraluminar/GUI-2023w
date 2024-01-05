@@ -2,9 +2,42 @@ import customtkinter as ctk
 
 from source.classes.customWidgets.dateAndTimeSelector import DateAndTimeSelector
 
-
 class TimeSelector(ctk.CTkToplevel):
+    """
+    A custom top-level window for selecting time rules.
+    It contains a scrollable frame with a list of DateAndTimeSelector objects.
+
+    Attributes:
+        initial_width (int): The initial width of the window.
+        initial_height (int): The initial height of the window.
+        screen_width (int): The width of the screen.
+        screen_height (int): The height of the screen.
+        startpos_x (int): The x-coordinate of the starting position of the window.
+        startpos_y (int): The y-coordinate of the starting position of the window.
+        frame (ctk.CTkScrollableFrame): The scrollable frame for the time selector.
+        main_label (ctk.CTkLabel): The main label of the window.
+        selectors (list): A list of DateAndTimeSelector objects.
+        add_button (ctk.CTkButton): The button to add a new time selector.
+        cancel_button (ctk.CTkButton): The button to cancel and close the window.
+        save_button (ctk.CTkButton): The button to save the selected time rules.
+
+    Methods:
+        __init__(): Initializes the TimeSelector object.
+        cancel(): Closes the window.
+        save(): Saves the selected time rules.
+        add_selector(): Adds a new DateAndTimeSelector object to the window.
+        destroy_selector(selector): Removes a DateAndTimeSelector object from the window.
+    """
+
     def __init__(self):
+        """
+        Initializes the TimeSelector object.
+
+        Sets up the window with initial dimensions, title, and attributes.
+        Configures the rows and columns of the window.
+        Initializes fonts, scrollable frame, and widgets.
+        Packs the widgets into the grid layout.
+        """
         super().__init__()
 
         self.initial_width = 600
@@ -53,9 +86,20 @@ class TimeSelector(ctk.CTkToplevel):
         self.save_button.grid(row=1, column=2, pady=20, padx=(0, 20), sticky="es")
 
     def cancel(self):
+        """
+        Closes the window.
+        """
         self.destroy()
     
     def save(self):
+        """
+        Saves the selected time rules.
+
+        Retrieves the selected time rules from each DateAndTimeSelector object.
+        If any rule is None, the saving process is aborted.
+        Passes the rules to the appropriate method in the parent widget.
+        Hides the window.
+        """
         rules = [selector.get() for selector in self.selectors]
         
         # dont save when inputs faulty
@@ -66,11 +110,23 @@ class TimeSelector(ctk.CTkToplevel):
         self.withdraw()
     
     def add_selector(self):
+        """
+        Adds a new DateAndTimeSelector object to the window.
+
+        Creates a new DateAndTimeSelector object and appends it to the selectors list.
+        Rearranges the widgets in the frame and repacks them.
+        """
         self.selectors.append(DateAndTimeSelector(self.frame))
         self.add_button.pack_forget()
         self.selectors[-1].pack(pady=(20, 0))
         self.add_button.pack(pady=(10, 20))
         
     def destroy_selector(self, selector):
+        """
+        Removes a DateAndTimeSelector object from the window.
+
+        Removes the specified DateAndTimeSelector object from the selectors list.
+        Forgets the packing of the selector widget.
+        """
         selector.pack_forget()
         self.selectors.remove(selector)
