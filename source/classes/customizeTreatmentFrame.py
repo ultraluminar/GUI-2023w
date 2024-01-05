@@ -39,6 +39,7 @@ class TreatmentFrame(ctk.CTkFrame):
         self.dental_problem = None
         self.insurance_shares = None
         self.data_bundle = bundle
+        self.insurance_share = None
 
         self.fillings = ["normal", "hochwertig", "höchstwertig"]
         

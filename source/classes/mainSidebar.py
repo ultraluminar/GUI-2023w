@@ -36,7 +36,7 @@ class MainSidebar(ctk.CTkFrame):
         book_event(self): Navigates to the event booking page.
     """
     
-    def __init__(self, master: ctk.CTk):
+    def __init__(self, master: ctk.CTk, bundle: dict):
         """
         Initializes the MainSidebar object.
 
@@ -44,6 +44,7 @@ class MainSidebar(ctk.CTkFrame):
             master (ctk.CTk): The master widget for the sidebar.
         """
         super().__init__(master=master, width=sidebar_width, corner_radius=0)
+        self.data_bundle = bundle
 
         self.grid_rowconfigure(3, weight=1)
         self.current_state = 0
@@ -116,7 +117,7 @@ class MainSidebar(ctk.CTkFrame):
         Opens the settings window or brings it to focus if already open.
         """
         if self.settings_window is None or not self.settings_window.winfo_exists():
-            self.settings_window = SettingsWindow()     # create window if its None or destroyed
+            self.settings_window = SettingsWindow(self.data_bundle)     # create window if its None or destroyed
         elif self.settings_window.state() == "iconic":
             self.settings_window.deiconify()    # bring back window if its minimized
         else:

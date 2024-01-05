@@ -72,11 +72,11 @@ class App(ctk.CTk):
 
         # logged in frames
         # patient
-        self.main_sidebar = MainSidebar(self)
+        self.main_sidebar = MainSidebar(self, self.data_bundle)
         self.home = HomeFrame(self, self.data_bundle)
         self.booking = MainBookingFrame(self, self.data_bundle)
         # doctor
-        self.doctor_sidebar = DoctorSidebar(self)
+        self.doctor_sidebar = DoctorSidebar(self, self.data_bundle)
         self.doctor_view = DoctorHome(self, self.data_bundle)
 
         self.initial_grid()

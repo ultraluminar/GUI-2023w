@@ -131,14 +131,13 @@ class DateAndTimeSelector(ctk.CTkFrame):
         if time_to and time_to not in new_values:
             self.time_to.set("")
 
-    def get(self) -> str:
+    def get(self) -> str | None:
         """
         Retrieves date and time range inputs from combo boxes, validates them, and returns a recurrence rule string representing the selected range.
 
         Returns:
             str: Recurrence rule string representing the selected range.
         """
-        default_color = ("#979DA2", "#565B5E")
         values =       [self.day_from.get(),    self.day_to.get(),    self.time_from.get(),    self.time_to.get()]
         combos_boxes = [self.day_from_combobox, self.day_to_combobox, self.time_from_combobox, self.time_to_combobox]
         

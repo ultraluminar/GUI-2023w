@@ -37,7 +37,9 @@ class DoctorOverview(ctk.CTkFrame):
 
     def __init__(self, master, bundle: dict, width: int = 200, height: int = 200, corner_radius: int | str | None = None):
         super().__init__(master, width, height, corner_radius)
+
         self.data_bundle = bundle
+        self.df_appointments = None
         
         # initializing header labels
         self.headings: list[str] = ["Datum", "Patient", "Von", "Bis", "Zahnproblem", "Anzahl Zähne", "Art der Füllung"]
@@ -94,7 +96,7 @@ class DoctorOverview(ctk.CTkFrame):
         for index, label in enumerate(self.header_labels):
             label.grid(column=index, row=0, sticky="nsew", padx=(10 if index == 0 else 5, 10 if index == 6 else 0), pady=(10, 15))
         # if there are no appointments, display empty label
-        if (self.df_appointments.empty):
+        if self.df_appointments.empty:
             self.empty_label.grid(column=0, row=1, columnspan=7, sticky="nsew", padx=10, pady=(0, 10))
         for index, labels in enumerate(self.labels):
             for label in labels:
