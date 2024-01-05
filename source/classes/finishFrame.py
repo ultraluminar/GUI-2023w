@@ -6,7 +6,52 @@ import logging
 from source.auth_util import getfromCSV, updateCSV, appendCSV, paths
 
 class FinishFrame(ctk.CTkFrame):
+    """
+    A class representing the finish frame of a booking confirmation GUI.
+
+    Attributes:
+        data_bundle (dict): A dictionary containing the booking data.
+        auth_service: An authentication service object.
+        main_sidebar: A main sidebar object.
+        font24: A font object for the main heading label.
+        fat: A font object for the data labels.
+        main_heading_label: A label for the main heading.
+        sub_heading_label: A label for the sub heading.
+        data_frame: A frame for displaying the booking data.
+        confirm_button: A button for confirming the booking.
+        tooth_number_label: A label for the tooth number.
+        tooth_number_value_label: A label for the tooth number value.
+        dental_problem_label: A label for the dental problem.
+        dental_problem_value_label: A label for the dental problem value.
+        doctor_name_label: A label for the doctor name.
+        doctor_name_value_label: A label for the doctor name value.
+        date_label: A label for the appointment date.
+        date_value_label: A label for the appointment date value.
+        total_cost_label: A label for the total cost.
+        total_cost_value_label: A label for the total cost value.
+
+    Methods:
+        __init__(self, master, bundle: dict):
+            Initializes a new instance of the FinishFrame class.
+        set_main_grid(self):
+            Sets the grid layout for the main widgets in the finish frame.
+        set_data_frame_grid(self):
+            Sets the grid layout for the data subframe widgets in the finish frame.
+        data_frame_ungrid(self):
+            Removes the data subframe widgets from the grid layout.
+        reset(self):
+            Resets the finish frame by updating the data labels and re-setting the grid layout.
+        confirm(self):
+            Confirms the booking by updating the tooth count, adding the appointment to the CSV file, and logging the booking.
+    """
     def __init__(self, master, bundle: dict):
+        """
+        Initializes a new instance of the FinishFrame class.
+
+        Args:
+            master: The parent widget.
+            bundle (dict): A dictionary containing the booking data.
+        """
         super().__init__(master=master)
         
         # variables
@@ -41,12 +86,18 @@ class FinishFrame(ctk.CTkFrame):
         
         
     def set_main_grid(self):
+        """
+        Sets the grid layout for the main widgets in the finish frame.
+        """
         self.main_heading_label.grid(column=1, row=0, pady=(20, 0), sticky="nsew")
         self.sub_heading_label.grid(column=1, row=1, sticky="nsew")
         self.data_frame.grid(column=1, row=2, pady=20, sticky="nsew")
         self.confirm_button.grid(column=1, row=3, pady=(0, 20), sticky="e")
     
     def set_data_frame_grid(self):
+        """
+        Sets the grid layout for the data subframe widgets in the finish frame.
+        """
         self.tooth_number_label.grid(column=0, row=0, pady=(20, 0), padx=(20, 0), sticky="nsew")
         self.tooth_number_value_label.grid(column=1, row=0, pady=(20, 0), padx=(0, 20), sticky="nsew")
         self.dental_problem_label.grid(column=0, row=1, pady=(10, 0), padx=(20, 0), sticky="nsew")
@@ -59,6 +110,9 @@ class FinishFrame(ctk.CTkFrame):
         self.total_cost_value_label.grid(column=1, row=4, pady=(10, 20), padx=(0, 20), sticky="nsew")
             
     def data_frame_ungrid(self):
+        """
+        Removes the data subframe widgets from the grid layout.
+        """
         self.tooth_number_label.grid_forget()
         self.tooth_number_value_label.grid_forget()
         self.dental_problem_label.grid_forget()
@@ -71,6 +125,9 @@ class FinishFrame(ctk.CTkFrame):
         self.total_cost_value_label.grid_forget()
 
     def reset(self):
+        """
+        Resets the finish frame by updating the data labels and re-setting the grid layout.
+        """
         self.data_frame_ungrid()
         self.tooth_number_value_label.configure(text=self.data_bundle["tooth_count"])
         self.dental_problem_value_label.configure(text=self.data_bundle["dental_problem"])
@@ -82,6 +139,9 @@ class FinishFrame(ctk.CTkFrame):
         self.set_main_grid()
         
     def confirm(self):
+        """
+        Sets the grid layout for the data subframe widgets in the finish frame.
+        """
         new_tooth_count = getfromCSV(paths["patients"]["csv"], ("Username", self.data_bundle["username"]), "Anzahl zu behandelnder Zähne")
         new_tooth_count -= self.data_bundle["tooth_count"]
 

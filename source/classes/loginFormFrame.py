@@ -6,6 +6,19 @@ from source.auth_util import username_exists, check_login
 from pandas import read_csv
 
 class LoginFormFrame(ctk.CTkFrame):
+    """
+    A custom login form frame that provides a user interface for logging in.
+
+    Attributes:
+        font15 (ctk.CTkFont): The font used for the labels and entries.
+        input_width (int): The width of the input fields.
+        auth_service (AuthService): The authentication service used for login.
+        error_string (tk.StringVar): The string variable to store the error message.
+
+    Args:
+        master (tk.Widget): The parent widget for this frame.
+    """
+
     def __init__(self, master, bundle: dict):
         super().__init__(master=master)
 
@@ -27,12 +40,24 @@ class LoginFormFrame(ctk.CTkFrame):
         self.set_grid()
 
     def set_grid(self):
+        """
+        Configures the grid layout for the widgets in the frame and displays them.
+        """
         self.heading.grid(row=1, column=0, pady=(20, 0), padx=0, sticky="n")
         self.username_entry.grid(row=2, column=0, pady=(20, 0), padx=50, sticky="n")
         self.password_entry.grid(row=3, column=0, pady=(15, 5), padx=50, sticky="n")
         self.login_button.grid(row=5, column=0, pady=(20, 30), padx=50, sticky="n")
 
     def try_login(self, event=None) -> None:
+        """
+        Attempts to log in the user.
+
+        Args:
+            event (tk.Event, optional): The event that triggered the login attempt. Defaults to None.
+
+        Returns:
+            None
+        """
         username = self.username_entry.get()
         password = self.password_entry.get()
         default_color = ("#979DA2", "#565B5E")
@@ -83,6 +108,12 @@ class LoginFormFrame(ctk.CTkFrame):
         self.nametowidget(".").home_grid()
 
     def reset(self):
+        """
+        Resets the input fields and error label.
+
+        Returns:
+            None
+        """
         # reset entrys for privacy
         self.username_entry.delete(0, "end")
         self.password_entry.delete(0, "end")
@@ -91,6 +122,15 @@ class LoginFormFrame(ctk.CTkFrame):
         self.error_label.grid_forget()  # hide error label
         
     def User_is_doctor(self, username: str) -> bool:
+        """
+        Checks if the given username belongs to a doctor.
+
+        Args:
+            username (str): The username to check.
+
+        Returns:
+            bool: True if the username belongs to a doctor, False otherwise.
+        """
         df = read_csv("data/doctors.csv")
         return username in df["Username"].tolist()   # check if username is in doctors.csv
     

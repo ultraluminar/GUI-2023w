@@ -10,13 +10,41 @@ from dateutil.relativedelta import relativedelta, MO, SA
 from source.classes.customWidgets.doctorAppointmentOverview import DoctorOverview
 
 class DoctorHome(ctk.CTkScrollableFrame):
+    """
+    A class representing the doctor's home page.
+
+    Attributes:
+        auth_service (AuthService): The authentication service.
+        username (str): The username of the doctor.
+
+    Methods:
+        __init__(self, master: ctk.CTk): Initializes the DoctorHome instance.
+        set_main_grid(self): Sets the grid layout for the main widgets.
+        set_profile_grid(self): Sets the grid layout for the profile sub-frame.
+        set_appointments_grid(self): Sets the grid layout for the appointments sub-frame.
+        reset(self): Resets the doctor's home page.
+        get_doctor_name(self) -> str: Retrieves the name of the doctor from a CSV file.
+        get_treated_insurance_types(self) -> str: Retrieves the types of insurance the doctor treats.
+        get_weekly_hours(self) -> int: Calculates the number of weekly working hours for the doctor.
+        get_appointments_week(self) -> int: Calculates the number of appointments for the current week.
+        get_appointments_day(self) -> int: Calculates the number of appointments for the current day.
+        count_appointments(self, date: date) -> int: Counts the number of appointments for a specific date.
+        get_next_week_days(self) -> List[date]: Retrieves the dates of the next week.
+        book_appointment(self): Books an appointment for the doctor.
+    """
     def __init__(self, master: ctk.CTk, bundle: dict):
+        """
+        Initializes the DoctorHome instance.
+
+        Args:
+            master (ctk.CTk): The master widget.
+        """
         super().__init__(master=master, corner_radius=0, fg_color="transparent")
 
         
         self.grid_columnconfigure(0, weight=1)
         self.data_bundle = bundle
-        
+
         # fonts
         font30 = ctk.CTkFont(family="Segoe UI", size=30, weight="bold")
         font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
@@ -52,12 +80,18 @@ class DoctorHome(ctk.CTkScrollableFrame):
         self.set_main_grid()
         
     def set_main_grid(self):
+        """
+        Sets the grid layout for the main widgets.
+        """
         self.main_heading_label.grid(row=0, column=0, columnspan=2, pady=(10, 0), sticky="nsew")
         self.sub_heading_label.grid(row=1, column=0, columnspan=2, pady=(0, 20), sticky="nsew")
         self.profil_frame.grid(row=2, column=0, padx=20, pady=(0, 20), sticky="nsew")
         self.appointments_frame.grid(row=3, column=0, padx=20, pady=(0, 20), sticky="nsew")
         
     def set_profile_grid(self):
+        """
+        Sets the grid layout for the profile sub-frame.
+        """
         self.profil_heading_label.grid(row=0, column=1, columnspan=2, pady=(10, 0))
         self.profil_sub_heading_label.grid(row=1, column=1, columnspan=2, pady=(0, 10))
         self.insurance_type_label.grid(row=2, column=1, pady=(10, 0))
@@ -70,11 +104,17 @@ class DoctorHome(ctk.CTkScrollableFrame):
         self.number_appointments_today_value_label.grid(row=5, column=2, pady=(10, 15))
     
     def set_appointments_grid(self):
+        """
+        Sets the grid layout for the appointments sub-frame.
+        """
         self.appointments_heading_label.grid(row=0, column=1, pady=(10, 0))
         self.appointments_sub_heading_label.grid(row=1, column=1, pady=(0, 10))
         self.appointments_sub_frame.grid(row=2, column=1, pady=(0, 10))
         
     def reset(self):
+        """
+        Resets the doctor's home page.
+        """
         self.main_heading_label.configure(text=f"Willkommen, {self.get_doctor_name()}!")
         self.insurance_value_label.configure(text=self.get_treated_insurance_types())
         self.weekly_hours_value_label.configure(text=self.get_weekly_hours())
@@ -82,11 +122,23 @@ class DoctorHome(ctk.CTkScrollableFrame):
         self.number_appointments_today_value_label.configure(text=self.get_appointments_day())
         self.appointments_sub_frame.reset()
         
-    def get_doctor_name(self):
+    def get_doctor_name(self) -> str:
+        """
+        Retrieves the name of the doctor from a CSV file.
+
+        Returns:
+            str: The name of the doctor.
+        """
         return read_csv("data/doctors.csv", index_col="Username").loc[self.data_bundle["username"]]["Name"]
     
     # csv format: [Username (str),Name (str),ID/Passwort (str),privat (boolean),gesetzlich (boolean),freiwillig gesetzlich (boolean)]
-    def get_treated_insurance_types(self):
+    def get_treated_insurance_types(self) -> str:
+        """
+        Retrieves the types of insurance the doctor treats.
+
+        Returns:
+            str: The types of insurance the doctor treats.
+        """
         df = read_csv("data/doctors.csv", index_col="Username")
         username = self.data_bundle["username"]
         privat = df.loc[username]["privat"]
@@ -112,7 +164,13 @@ class DoctorHome(ctk.CTkScrollableFrame):
 
         return insurance_types[privat][gesetzlich][freiwillig_gesetzlich]
             
-    def get_weekly_hours(self):
+    def get_weekly_hours(self) -> int:
+        """
+        Calculates the number of weekly working hours for the doctor.
+
+        Returns:
+            int: The number of weekly working hours.
+        """
         mo = datetime.now() + relativedelta(weekday=MO(-1), hour=0)
         sa = mo + relativedelta(weekday=SA)
         with open("data/doctors_free.json") as file:
@@ -125,7 +183,13 @@ class DoctorHome(ctk.CTkScrollableFrame):
             ruleset.rrule(rule)
         return len(ruleset.between(mo, sa))
     
-    def get_appointments_week(self):
+    def get_appointments_week(self) -> int:
+        """
+        Calculates the number of appointments for the current week.
+
+        Returns:
+            int: The number of appointments for the current week.
+        """
         next_days_in_week: list[date] = self.get_next_week_days()
         appointments = 0
         
@@ -135,6 +199,13 @@ class DoctorHome(ctk.CTkScrollableFrame):
         return appointments + self.get_appointments_day()
     
     def get_appointments_day(self) -> int:
+        """
+        Calculates the number of appointments for the current day by counting the number
+        of appointments for the current day that are later than the current time.
+
+        Returns:
+            int: The number of appointments for the current day.
+        """
         df = pd.read_csv("data/appointments.csv")   # read appointments.csv
         now = datetime.now()    # get current datetime
         df["dt_start"] = df["dt_start"].apply(lambda x: datetime.strptime(x, "%d-%m-%Y %H:%M"))   # convert date string to datetime object
@@ -144,7 +215,16 @@ class DoctorHome(ctk.CTkScrollableFrame):
         count = len(df[(df["Doctor"] == self.data_bundle["username"]) & (df["dt_start"].dt.date == now.date()) & (df["dt_start"] > now)])
         return count
             
-    def count_appointments(self, date) -> int:
+    def count_appointments(self, date: date) -> int:
+        """
+        Counts the number of appointments for a specific date
+
+        Args:
+            date (date): The date to count appointments for.
+
+        Returns:
+            int: The number of appointments for the specified date.
+        """
         df = pd.read_csv("data/appointments.csv")   # read appointments.csv
         df["dt_start"] = df["dt_start"].apply(lambda x: datetime.strptime(x, "%d-%m-%Y %H:%M").date())   # convert date string to date object
         if len(df) == 0:
@@ -153,6 +233,12 @@ class DoctorHome(ctk.CTkScrollableFrame):
         return count
     
     def get_next_week_days(self) -> list[date]:
+        """
+        Retrieves the dates of the next week.
+
+        Returns:
+            list[date]: The dates of the next week.
+        """
         today = date.today()
         next_days_in_week = []
         for i in range(7):
@@ -163,5 +249,8 @@ class DoctorHome(ctk.CTkScrollableFrame):
         return next_days_in_week
             
     def book_appointment(self):
+        """
+        Books an appointment for the doctor.
+        """
         self.nametowidget(".!mainsidebar").book_event()
     

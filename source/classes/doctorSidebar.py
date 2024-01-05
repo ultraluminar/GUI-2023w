@@ -6,7 +6,37 @@ from source.classes.settings import SettingsWindow
 sidebar_width = 160
 
 class DoctorSidebar(ctk.CTkFrame):
+    """
+    This class represents the sidebar for the doctor view in a GUI application.
+    It inherits from the ctk.CTkFrame class.
+
+    Attributes:
+        logo_image (ctk.CTkImage): The logo image displayed in the sidebar.
+        home_image (ctk.CTkImage): The home image displayed in the sidebar.
+        settings_image (ctk.CTkImage): The settings image displayed in the sidebar.
+        logout_image (ctk.CTkImage): The logout image displayed in the sidebar.
+        logo_label (ctk.CTkLabel): The label displaying the logo image and text.
+        home_button (ctk.CTkButton): The button for navigating to the home page.
+        settings_button (ctk.CTkButton): The button for accessing the settings.
+        settings_window (SettingsWindow): The window for the settings.
+        logout_button (ctk.CTkButton): The button for logging out.
+        copyright_label (ctk.CTkLabel): The label displaying the copyright information.
+        current_state (int): The current state of the sidebar.
+
+    Methods:
+        __init__(self, master: ctk.CTk): Initializes the DoctorSidebar object.
+        set_grid(self): Sets the grid layout for the sidebar widgets.
+        settings(self): Opens the settings window or brings it back to focus if minimized.
+        logout(self): Logs out the user and hides the sidebar and other widgets.
+    """
+
     def __init__(self, master: ctk.CTk):
+        """
+        Initializes the DoctorSidebar object.
+
+        Args:
+            master (ctk.CTk): The master widget for the sidebar.
+        """
         super().__init__(master=master, width=sidebar_width, corner_radius=0)
 
         self.grid_rowconfigure(3, weight=1)
@@ -40,6 +70,9 @@ class DoctorSidebar(ctk.CTkFrame):
         self.set_grid()
         
     def set_grid(self):
+        """
+        Sets the grid layout for the sidebar widgets.
+        """
         self.logo_label.grid(row=0, column=0, padx=15, pady=(20, 20))
         self.home_button.grid(row=1, column=0, sticky="ew")
         self.settings_button.grid(row=4, column=0, sticky="ew")
@@ -48,6 +81,9 @@ class DoctorSidebar(ctk.CTkFrame):
         
         
     def settings(self):
+        """
+        Opens the settings window or brings it back to focus if minimized.
+        """
         if self.settings_window is None or not self.settings_window.winfo_exists():
             self.settings_window = SettingsWindow()     # create window if its None or destroyed
         elif self.settings_window.state() == "iconic":
@@ -56,8 +92,10 @@ class DoctorSidebar(ctk.CTkFrame):
             self.settings_window.focus()
     
     
-    # hides widgets from the main view and brings back login widgets
     def logout(self):
+        """
+        Logs out the user and hides the sidebar and other widgets.
+        """
         if self.settings_window is None or not self.settings_window.winfo_exists():
             pass
         else:
@@ -66,5 +104,5 @@ class DoctorSidebar(ctk.CTkFrame):
         self.grid_forget()
         self.nametowidget(".").doctor_view.grid_forget()
         self.nametowidget(".").booking.grid_forget()
-        self.nametowidget(".").initial_grid()     
+        self.nametowidget(".").initial_grid()
         

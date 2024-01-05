@@ -7,14 +7,38 @@ from source.classes.admin import Admin
 sidebar_width = 160
 
 class LoginSidebar(ctk.CTkFrame):
+    """
+    A custom login sidebar widget for a GUI application.
+
+    This class represents a sidebar widget that contains a logo, admin button, exit button, and a copyright label.
+    It provides functionality to display a pop-up window when the admin button is clicked, and to quit the application
+    when the exit button is clicked.
+
+    Args:
+        master (ctk.CTk): The master widget.
+
+    Attributes:
+        admin (ctk.CTkToplevel): The admin pop-up window.
+
+    Methods:
+        pop_up(event=None): Displays the admin pop-up window.
+        set_grid(): Sets the grid layout for the widgets in the sidebar.
+    """
+
     def __init__(self, master: ctk.CTk, bundle: dict):
+        """
+        Initializes an instance of the LoginSidebar class.
+
+        Args:
+            master (ctk.CTk): The master widget.
+
+        """
         super().__init__(master=master, width=sidebar_width, corner_radius=0)
         self.admin: ctk.CTkToplevel = None
 
         self.grid_rowconfigure(1, weight=1)
         self.data_bundle = bundle
-        
-        
+
         # load images (light and dark)
         image_path = "assets/"
         self.logo_image = ctk.CTkImage(light_image=Image.open(f"{image_path}zahn_logo_light.png"),
@@ -38,6 +62,15 @@ class LoginSidebar(ctk.CTkFrame):
         self.set_grid()
 
     def pop_up(self, event=None):
+        """
+        Displays the admin pop-up window.
+
+        This method is called when the admin button is clicked. It creates a new instance of the Admin class
+        and displays the pop-up window. If the pop-up window already exists, it brings it back to focus.
+
+        Args:
+            event (Event, optional): The event that triggered the pop-up. Defaults to None.
+        """
         if self.admin is None or not self.admin.winfo_exists():
             self.admin = Admin(self, self.data_bundle)     # create window if its None or destroyed
             self.after(0, self.admin.focus)
@@ -47,6 +80,11 @@ class LoginSidebar(ctk.CTkFrame):
             self.admin.focus()   
 
     def set_grid(self):
+        """
+        Sets the grid layout for the widgets in the sidebar.
+
+        This method configures the grid layout for the logo label, admin button, exit button, and copyright label and shows them.
+        """
         self.logo_label.grid(row=0, column=0, padx=15, pady=(20, 10))
         self.admin_button.grid(row=2, column=0, sticky="ew")
         self.exit_button.grid(row=3, column=0, sticky="ew")

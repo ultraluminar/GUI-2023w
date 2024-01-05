@@ -3,7 +3,29 @@ from datetime import time, datetime
 from dateutil.relativedelta import relativedelta
 
 class TimeSpace:
+    """
+    The TimeSpace class represents a time-space grid for scheduling events.
+
+    Attributes:
+        quaters_free (list[set[time]]): A list of sets representing the free quarters for each weekday.
+        quaters_used (list[set[time]]): A list of sets representing the used quarters for each weekday.
+
+    Methods:
+        __init__(self, events_free: list[EventLabel], events_used: list[EventLabel] = None):
+            Initializes a TimeSpace object with the given lists of free and used events.
+
+        get_termine(self, duration: int) -> list[list[time]]:
+            Returns a list of available time slots for each weekday, based on the given duration.
+    """
+
     def __init__(self, events_free: list[EventLabel], events_used: list[EventLabel] = None):
+        """
+        Initializes a TimeSpace object with the given lists of free and used events.
+
+        Args:
+            events_free (list[EventLabel]): A list of free events.
+            events_used (list[EventLabel], optional): A list of used events. Defaults to None.
+        """
         self.quaters_free: list[set[time]] = [set() for _ in range(5)]
         self.quaters_used: list[set[time]] = [set() for _ in range(5)]
 
@@ -15,7 +37,16 @@ class TimeSpace:
             quarters = {(event.dt_start + relativedelta(minutes=15*quarter)).time() for quarter in range(event.rowspan)}
             self.quaters_used[event.dt_start.weekday()] |= quarters
 
-    def get_termine(self, duration: int):
+    def get_termine(self, duration: int) -> list[list[time]]:
+        """
+        Returns a list of available time slots for each weekday, based on the given duration.
+
+        Args:
+            duration (int): The duration of the time slots in minutes.
+
+        Returns:
+            list[list[time]]: A list of available time slots for each weekday.
+        """
         termine: list[list[time]] = [[] for _ in range(5)]
         for weekday, quaters in enumerate(self.quaters_free):
             for start in quaters:
