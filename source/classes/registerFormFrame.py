@@ -6,6 +6,8 @@ from source.classes.customWidgets.intSpinbox import IntSpinbox
 from source.classes.timeSelector import TimeSelector
 from source.auth_util import username_exists, add_patient, add_doctor, check_login, check_code
 
+from CTkToolTip import CTkToolTip
+
 
 class RegisterFormFrame(ctk.CTkTabview):
     """
@@ -127,6 +129,29 @@ class RegisterFormFrame(ctk.CTkTabview):
         # gridding
         self.set_patient_grid()
         self.set_doctor_grid()
+
+        # tooltips
+        CTkToolTip(self.patient_username_entry, message="Benutzername eingeben", alpha=0.8)
+        CTkToolTip(self.patient_name_entry, message="Nachname eingeben", alpha=0.8)
+        CTkToolTip(self.patient_password_entry, message="Passwort eingeben", alpha=0.8)
+        CTkToolTip(self.patient_confirm_password_entry, message="Passwort bestätigen", alpha=0.8)
+        CTkToolTip(self.insurance_combobox, message="Krankenkassenart auswählen", alpha=0.8)
+        CTkToolTip(self.dental_problem_combobox, message="Dentale Problematik auswählen", alpha=0.8)
+        CTkToolTip(self.teeth_count_spinbox, message="Anzahl der zu behandelnden Zähne auswählen", alpha=0.8)
+        CTkToolTip(self.patient_register_button, message="Klicken um sich zu Registrieren (Enter)", alpha=0.8)
+
+        CTkToolTip(self.doctor_username_entry, message="Benutzername eingeben", alpha=0.8)
+        CTkToolTip(self.doctor_name_entry, message="Nachname eingeben", alpha=0.8)
+        CTkToolTip(self.doctor_password_entry, message="Passwort eingeben", alpha=0.8)
+        CTkToolTip(self.doctor_confirm_password_entry, message="Passwort bestätigen", alpha=0.8)
+        CTkToolTip(self.doctor_code, message="Freischalt-Code eingeben", alpha=0.8)
+        CTkToolTip(self.doctor_insurance_checkbox_private, message="Klicken wenn Sie Privatversicherte behandeln", alpha=0.8)
+        CTkToolTip(self.doctor_insurance_checkbox_by_law, message="Klicken wenn Sie Gesetzlichversicherte behandeln", alpha=0.8)
+        CTkToolTip(self.doctor_insurance_checkbox_voluntarily, message="Klicken wenn Sie freiwillig-Gesetzlichversicherte behandeln", alpha=0.8)
+        CTkToolTip(self.doctor_time_selector_button, message="Klicken um Behandlungszeit auszuwählen", alpha=0.8)
+        CTkToolTip(self.doctor_register_button, message="Klicken um sich zu Registrieren (Enter)", alpha=0.8)
+
+
 
     @staticmethod
     def isVarAlpha(action_type: str, string: str):
@@ -388,6 +413,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         """
         if self.time_selector_window is None or not self.time_selector_window.winfo_exists():
             self.time_selector_window = TimeSelector()     # create window if it's None or destroyed
+            self.after(100, lambda: self.time_selector_window.focus())
         elif self.time_selector_window.state() in ("iconic", "withdrawn"):
             self.time_selector_window.deiconify()    # bring back window if it's minimized
         else:

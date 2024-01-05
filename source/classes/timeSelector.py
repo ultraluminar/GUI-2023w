@@ -1,6 +1,7 @@
 import customtkinter as ctk
 
 from source.classes.customWidgets.dateAndTimeSelector import DateAndTimeSelector
+from CTkToolTip import CTkToolTip
 
 class TimeSelector(ctk.CTkToplevel):
     """
@@ -40,7 +41,7 @@ class TimeSelector(ctk.CTkToplevel):
 
         self.title("Behandlungszeiten Selektor")
         self.resizable(False, True)
-        self.attributes("-topmost", 1) # forces window to be on always on top
+        #self.attributes("-topmost", 1) # forces window to be on always on top
         
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=0)
@@ -70,6 +71,12 @@ class TimeSelector(ctk.CTkToplevel):
         self.frame.grid(row=0, column=0, columnspan=3, sticky="nsw")
         self.cancel_button.grid(row=1, column=0, pady=20, padx=(20, 0), sticky="sw")
         self.save_button.grid(row=1, column=2, pady=20, padx=(0, 20), sticky="es")
+
+        # tooltips
+        CTkToolTip(self.cancel_button, message="Klicken um zu Schließen ohne zu Speichern", alpha=0.8)
+        CTkToolTip(self.save_button, message="Klicken um zu Speichern", alpha=0.8)
+        CTkToolTip(self.add_button, message="Klicken um einen neuen Zeitraum hinzuzufügen", alpha=0.8)
+
 
     def cancel(self):
         """

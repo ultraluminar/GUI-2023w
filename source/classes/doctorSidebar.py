@@ -2,6 +2,7 @@ import customtkinter as ctk
 from PIL import Image
 
 from source.classes.settings import SettingsWindow
+from CTkToolTip import CTkToolTip
 
 sidebar_width = 160
 
@@ -57,6 +58,12 @@ class DoctorSidebar(ctk.CTkFrame):
         self.copyright_label = ctk.CTkLabel(self, corner_radius=0, height=20, width=190, text="© 2023 Adrian Lösch, Lukas Klassen",
                                             font=ctk.CTkFont(size=9, weight="normal"), text_color="gray50", fg_color=("gray80", "gray20"))
         self.set_grid()
+
+
+
+        CTkToolTip(self.home_button, message="Zur Startseite klicken", alpha=0.8)
+        CTkToolTip(self.settings_button, message="Klicken um die Einstellungen zu öffnen", alpha=0.8)
+        CTkToolTip(self.logout_button, message="Zum Abmelden klicken", alpha=0.8)
         
     def set_grid(self):
         """

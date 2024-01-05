@@ -2,6 +2,7 @@ import customtkinter as ctk
 from PIL import Image
 
 from source.classes.admin import Admin
+from CTkToolTip import CTkToolTip
 
 # variables
 sidebar_width = 160
@@ -54,6 +55,11 @@ class LoginSidebar(ctk.CTkFrame):
                                             font=ctk.CTkFont(size=9, weight="normal"), text_color="gray50", fg_color=("gray80", "gray20"))
         
         self.set_grid()
+
+        # tooltips
+        CTkToolTip(self.admin_button, message="Klicken um Freischaltcode zu erhalten", alpha=0.8)
+        CTkToolTip(self.exit_button, message="Klicken um das Programm zu schließen", alpha=0.8)
+
 
     def pop_up(self, event=None):
         """

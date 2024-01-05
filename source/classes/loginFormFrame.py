@@ -4,6 +4,7 @@ import logging
 
 from source.auth_util import username_exists, check_login
 from pandas import read_csv
+from CTkToolTip import CTkToolTip
 
 class LoginFormFrame(ctk.CTkFrame):
     """
@@ -48,6 +49,11 @@ class LoginFormFrame(ctk.CTkFrame):
         self.login_button = ctk.CTkButton(self, text="Einloggen", command=self.try_login)
 
         self.set_grid()
+
+
+        CTkToolTip(self.username_entry, message="Benutzername eintragen", alpha=0.8)
+        CTkToolTip(self.password_entry, message="Passwort eintragen", alpha=0.8)
+        CTkToolTip(self.login_button, message="Zum Einloggen klicken (Enter)", alpha=0.8)
 
     def set_grid(self):
         """

@@ -1,6 +1,7 @@
 import customtkinter as ctk
 
 from source.classes.loginFormFrame import LoginFormFrame
+from CTkToolTip import CTkToolTip
 
 # variables
 initial_width = 800
@@ -40,6 +41,9 @@ class MainLoginFrame(ctk.CTkScrollableFrame):
         self.login_register_button = ctk.CTkButton(self, text="Registrieren", command=self.linkToRegister)
 
         self.set_pack()
+
+        # tooltips
+        CTkToolTip(self.login_register_button, message="Klicken um zur Registrierungs-Seite zu gelangen", alpha=0.8)
 
     def set_pack(self):
         """

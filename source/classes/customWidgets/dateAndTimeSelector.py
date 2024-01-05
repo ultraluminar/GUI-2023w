@@ -2,6 +2,7 @@ import tkinter as tk
 import customtkinter as ctk
 
 from dateutil.rrule import rrule, WEEKLY
+from CTkToolTip import CTkToolTip
 
 class DateAndTimeSelector(ctk.CTkFrame):
     """
@@ -82,6 +83,14 @@ class DateAndTimeSelector(ctk.CTkFrame):
         self.day_frame.grid(row=0, column=0, pady=10, padx=10)
         self.time_frame.grid(row=0, column=1, pady=10, padx=(10, 0))
         self.destroy_button.grid(row=0, column=2, pady=10, padx=10)
+
+        # tooltips
+        CTkToolTip(self.day_from_combobox, message="Klicken um Tag auszuwählen", alpha=0.8)
+        CTkToolTip(self.day_to_combobox, message="Klicken um Tag auszuwählen", alpha=0.8)
+        CTkToolTip(self.time_from_combobox, message="Klicken um Uhrzeit auszuwählen", alpha=0.8)
+        CTkToolTip(self.time_to_combobox, message="Klicken um Uhrzeit auszuwählen", alpha=0.8)
+        CTkToolTip(self.destroy_button, message="Klicken um Zeitraum zu entfernen", alpha=0.8)
+
         
     def day_updater(self, *args):
         """
