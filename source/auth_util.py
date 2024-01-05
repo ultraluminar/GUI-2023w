@@ -14,8 +14,7 @@ paths = {
     "appointments": Path("data/appointments.csv"),
     "patients": {"csv": Path("data/patients.csv")},
     "doctors": {"csv": Path("data/doctors.csv"),
-                "free": Path("data/doctors_free.json"),
-                "otp": Path("data/otp_token.json")}
+                "free": Path("data/doctors_free.json")}
 }
 
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
