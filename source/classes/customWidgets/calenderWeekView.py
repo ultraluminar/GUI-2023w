@@ -88,7 +88,7 @@ class WeekCalenderView(ctk.CTkFrame):
         self.date_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, fg_color=("gray70", "gray30")) for _ in workdays]
         self.hour_buttons: list[list[ctk.CTkLabel]] = [[
             ctk.CTkLabel(self, text="", corner_radius=5, fg_color=("gray75", "gray25")
-                ) for hour in range(8, 18)] for _ in workdays]
+                ) for _ in range(8, 18)] for _ in workdays]
 
         self.update_date_labels()
         self.update_month_week_label()

@@ -119,11 +119,11 @@ class ChooseDoctorsFrame(ctk.CTkFrame):
         
         # find available doctors
         df_available_doctors = self.df_doctors.loc[self.df_doctors[patient_insurance_type] == True, ["Username", "Name"]]   
-        self.doctor_list = [tuple(x) for x in df_available_doctors.to_records(index=False)] # convert to list of tuples(Username, Name)
+        self.doctor_list = [tuple(x) for x in df_available_doctors.to_records(index=False)]  # convert to list of tuples(Username, Name)
         self.var_chosen_doctor_username.set(self.doctor_list[0][0])  # prechoose the first doctor in list
         
         # fill doctor select frames
-        self.doctor_select_frames = [ctk.CTkFrame(self.doctor_list_frame) for i in range(0, len(self.doctor_list))] # create frames 
+        self.doctor_select_frames = [ctk.CTkFrame(self.doctor_list_frame) for _ in range(0, len(self.doctor_list))]  # create frames
         # create radio buttons
         for index, frame in enumerate(self.doctor_select_frames): 
             self.doctor_select_radio.append(ctk.CTkRadioButton(frame, text=self.doctor_list[index][1], variable=self.var_chosen_doctor_username, value=self.doctor_list[index][0], command=self.master.changed))
