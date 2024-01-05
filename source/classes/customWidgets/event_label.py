@@ -6,6 +6,14 @@ from dateutil.rrule import rrule
 class EventLabel:
     """
     A custom widget representing an event label in a GUI.
+    
+    Attributes:
+        dt_start (datetime): The start datetime of the event.
+        dt_stop (datetime): The stop datetime of the event.
+        column (int): The column in which the label widget is placed.
+        row (int): The row in which the label widget is placed.
+        rowspan (int): The rowspan of the label widget.
+        label (ctk.CTkLabel): The widget itself.
 
     Methods:
         grid(): Places the label widget in the grid.

@@ -5,6 +5,10 @@ from dateutil.relativedelta import relativedelta
 class TimeSpace:
     """
     The TimeSpace class represents a time-space grid for scheduling events.
+    
+    Attributes:
+        quaters_free (list[set[time]]): A list of sets of free time slots for each weekday.
+        quaters_used (list[set[time]]): A list of sets of used time slots for each weekday.
 
     Methods:
         __init__(self, events_free: list[EventLabel], events_used: list[EventLabel] = None):
