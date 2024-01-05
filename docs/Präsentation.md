@@ -1,4 +1,5 @@
-# Präsentationsablauf
+![image info](../assets/zahn_logo_dark.png)
+# Projektvorstellung
 
 ## 1 Was war unser Projekt?
 
@@ -82,3 +83,76 @@
         - visuelles Anzeigen des gewählten Termins
         - möglichkeit Termin wieder zu ändern
 
+## 4 GUI
+
+### Leitlinien/Prinzipien der Benutzerfreundlichkeit
+
+#### Kriterien für benutzerfreundliches GUI-Design (nach ISO-Standard)
+1. Aufgabenangemessenheit
+    - minimieren unnötige Interaktionen
+        - Auswahl für ganze Zeiträume im Behandlungszeiten Selektor
+2. Selbstbeschreibungsfähigkeit
+    - Platzhalter in Eingabefeldern
+    - Detaillierte Rückmeldung für wichtige Ereignisse
+        - Fehlermeldungen, Bestätigung
+3. Steuerbarkeit
+    - Jederzeit abmeldbar
+    - Nachträgliche bei Buchung
+4. Erwartungskonformität 
+    - Standard Window Icons
+    - Beenden/Abmeldenbuttons mit Icons an gleicher Stelle
+    - Erwartungskonformes behandeln von Pop-Up Fenstern
+5. Fehlertoleranz
+    - Validierung für alle möglichen Eingaben mit detailliertem Feedback
+6. Individualisierbarkeit
+    - Farbschema der GUI individuell anpassbar
+7. Lernförderlichkeit
+    - Tooltips für Shortcuts
+
+#### Usabilty Heuristiken (nach Nielsen)
+1. Sichtbarkeit des Systemstatus
+    - Feedback duch detaillierte Fehlermeldungen
+    - Buttenfarben und states
+2. Übereinstimmung von System und Wirklichkeit
+    - Icons nach Google Standard (der Wirklichkeit nachempfunden)
+3. Nutzerkontrolle und Freiheit
+    - jeder Prozess abbrechbar
+    - Rückschritte möglich
+4. Beständigkeit und Standards
+    - Google Icons
+    - leicht differenzierbare Standardbutton Benennung
+5. Fehlervermeidung
+    - Validierung
+    - nur verfügbare Daten anzeigen/auswählen
+6. Wiedererkennung statt Erinnerung
+    - Verfügbare Optionen jederzeit direkt Sichtbar
+7. Flexibilität und Effizienz
+    - Shortcuts
+8. Ästetisches und minimalistisches Design
+    - nur relevante Informationen
+    - moderne aufgeräumtes Design
+        - klare Differenzierung von Inhalten (Frames)
+9. Hilfestellung beim erkennen, bewerten und beheben von Fehlern
+    - präzises verständliches Feedback bei Fehlern
+    - hervorhebung falscher Eingaben
+10. Hilfe und Dokumentation
+    - Tooltips
+    - Feedback
+    - Platzhalter
+
+### Begründung GUI Design
+- Icons 
+    - schnellere Assoziation mit dem Programmablauf
+    - universell und textunabhängig
+- möglichst schneller Zugriff
+    - Keyboard-Shortcuts
+        - Return, Tab
+    - Sidenav
+- Situationsabhängig sinnvolle Views
+
+## 5 Verkaufsargumente
+- Sicherheit
+    - Passwort hashing/salting
+    - Freischalt-Code
+- Benutzerfreundlichkeit
+- modernes ansprechendes Design
