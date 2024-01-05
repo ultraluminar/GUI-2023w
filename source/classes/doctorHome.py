@@ -3,20 +3,19 @@ import json
 
 import pandas as pd
 from pandas import read_csv
-from dateutil.rrule import rrulestr, weekday, rruleset
+from dateutil.rrule import rrulestr, rruleset
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta, MO, SA
 
 from source.classes.customWidgets.doctorAppointmentOverview import DoctorOverview
 
 class DoctorHome(ctk.CTkScrollableFrame):
-    def __init__(self, master: ctk.CTk):
+    def __init__(self, master: ctk.CTk, bundle: dict):
         super().__init__(master=master, corner_radius=0, fg_color="transparent")
-        
-        self.auth_service = self.nametowidget(".").auth_service
-        self.username = None
+
         
         self.grid_columnconfigure(0, weight=1)
+        self.data_bundle = bundle
         
         # fonts
         font30 = ctk.CTkFont(family="Segoe UI", size=30, weight="bold")
@@ -24,7 +23,7 @@ class DoctorHome(ctk.CTkScrollableFrame):
         fat = ctk.CTkFont(family="Segoe UI", weight="bold")
         
         # main widgets
-        self.main_heading_label = ctk.CTkLabel(self, text=f"Willkommen, {self.username}!", font=font30)
+        self.main_heading_label = ctk.CTkLabel(self, text=f"Willkommen, ERROR!", font=font30)
         self.sub_heading_label = ctk.CTkLabel(self, text="Was möchten sie tun?")
         
         # profil sub Frame
@@ -46,7 +45,7 @@ class DoctorHome(ctk.CTkScrollableFrame):
         self.appointments_frame.grid_columnconfigure((0, 2), weight=1)
         self.appointments_heading_label = ctk.CTkLabel(self.appointments_frame, text="Meine Termine", font=font24)
         self.appointments_sub_heading_label = ctk.CTkLabel(self.appointments_frame, text="Hier können sie ihre Termine einsehen.")
-        self.appointments_sub_frame = DoctorOverview(self.appointments_frame)
+        self.appointments_sub_frame = DoctorOverview(self.appointments_frame, self.data_bundle)
         
         self.set_profile_grid()
         self.set_appointments_grid()
@@ -76,7 +75,6 @@ class DoctorHome(ctk.CTkScrollableFrame):
         self.appointments_sub_frame.grid(row=2, column=1, pady=(0, 10))
         
     def reset(self):
-        self.username = self.auth_service.username
         self.main_heading_label.configure(text=f"Willkommen, {self.get_doctor_name()}!")
         self.insurance_value_label.configure(text=self.get_treated_insurance_types())
         self.weekly_hours_value_label.configure(text=self.get_weekly_hours())
@@ -85,12 +83,12 @@ class DoctorHome(ctk.CTkScrollableFrame):
         self.appointments_sub_frame.reset()
         
     def get_doctor_name(self):
-        return read_csv("data/doctors.csv", index_col="Username").loc[self.username]["Name"]
+        return read_csv("data/doctors.csv", index_col="Username").loc[self.data_bundle["username"]]["Name"]
     
     # csv format: [Username (str),Name (str),ID/Passwort (str),privat (boolean),gesetzlich (boolean),freiwillig gesetzlich (boolean)]
     def get_treated_insurance_types(self):
         df = read_csv("data/doctors.csv", index_col="Username")
-        username = self.username
+        username = self.data_bundle["username"]
         privat = df.loc[username]["privat"]
         gesetzlich = df.loc[username]["gesetzlich"]
         freiwillig_gesetzlich = df.loc[username]["freiwillig gesetzlich"]
@@ -120,7 +118,7 @@ class DoctorHome(ctk.CTkScrollableFrame):
         with open("data/doctors_free.json") as file:
             data = json.load(file)
         ruleset = rruleset()
-        for rulestr in data[self.username]:
+        for rulestr in data[self.data_bundle["username"]]:
             rule = rrulestr(rulestr)
             hours = range(rule._byhour[0], rule._byhour[-1])
             rule = rule.replace(dtstart=mo, byhour=hours)
@@ -137,14 +135,13 @@ class DoctorHome(ctk.CTkScrollableFrame):
         return appointments + self.get_appointments_day()
     
     def get_appointments_day(self) -> int:
-        self.username = "lösch"
         df = pd.read_csv("data/appointments.csv")   # read appointments.csv
         now = datetime.now()    # get current datetime
         df["dt_start"] = df["dt_start"].apply(lambda x: datetime.strptime(x, "%d-%m-%Y %H:%M"))   # convert date string to datetime object
         if len(df) == 0:    
             return 0    # return 0 if there are no appointments
         # count appointments for the given date that are later than the current time
-        count = len(df[(df["Doctor"] == self.username) & (df["dt_start"].dt.date == now.date()) & (df["dt_start"] > now)])
+        count = len(df[(df["Doctor"] == self.data_bundle["username"]) & (df["dt_start"].dt.date == now.date()) & (df["dt_start"] > now)])
         return count
             
     def count_appointments(self, date) -> int:
@@ -152,7 +149,7 @@ class DoctorHome(ctk.CTkScrollableFrame):
         df["dt_start"] = df["dt_start"].apply(lambda x: datetime.strptime(x, "%d-%m-%Y %H:%M").date())   # convert date string to date object
         if len(df) == 0:
             return 0    # return 0 if there are no appointments
-        count = len(df[(df["Doctor"] == self.username) & (df["dt_start"] == date)])  # count appointments for the given date
+        count = len(df[(df["Doctor"] == self.data_bundle["username"]) & (df["dt_start"] == date)])  # count appointments for the given date
         return count
     
     def get_next_week_days(self) -> list[date]:
@@ -161,7 +158,7 @@ class DoctorHome(ctk.CTkScrollableFrame):
         for i in range(7):
             next_day = today + timedelta(days=i)    # add i days to today
             # check if next_day is in the same week and not a weekend
-            if next_day.weekday() < 5 and next_day.isocalendar()[1] == today.isocalendar()[1]:  # isocalendar()[1] returns the week number to make sure its in the same week
+            if next_day.weekday() < 5 and next_day.isocalendar()[1] == today.isocalendar()[1]:  # isocalendar()[1] returns the week number to make sure it's in the same week
                 next_days_in_week.append(next_day)
         return next_days_in_week
             

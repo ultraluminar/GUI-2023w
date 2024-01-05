@@ -8,7 +8,6 @@ class ChooseDoctorsFrame(ctk.CTkFrame):
         super().__init__(master=master)
         
         # variables
-        self.auth_service = self.nametowidget(".").auth_service
         self.doctor_csv_path = "data/doctors.csv"
         self.patients_csv_path = "data/patients.csv"
         self.df_doctors = None
@@ -59,8 +58,7 @@ class ChooseDoctorsFrame(ctk.CTkFrame):
         self.df_doctors = read_csv(self.doctor_csv_path)
         self.df_patients = read_csv(self.patients_csv_path)
         self.doctors_ungrid()
-        username = self.auth_service.username
-        patient_insurance_type = self.df_patients.loc[self.df_patients["Username"] == username, "Krankenkassenart"].iloc[0]
+        patient_insurance_type = self.df_patients.loc[self.df_patients["Username"] == self.data_bundle["username"], "Krankenkassenart"].iloc[0]
         
         # find available doctors
         df_available_doctors = self.df_doctors.loc[self.df_doctors[patient_insurance_type] == True, ["Username", "Name"]]   

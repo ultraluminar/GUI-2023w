@@ -2,11 +2,11 @@ import customtkinter as ctk
 import tkinter as tk
 import logging
 
-from source.auth_util import username_exists
+from source.auth_util import username_exists, check_login
 from pandas import read_csv
 
 class LoginFormFrame(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, bundle: dict):
         super().__init__(master=master)
 
         # fonts
@@ -14,7 +14,7 @@ class LoginFormFrame(ctk.CTkFrame):
 
         # variables
         self.input_width = 200
-        self.auth_service = self.nametowidget(".").auth_service
+        self.data_bundle = bundle
         self.error_string = tk.StringVar(value="")
 
         # widgets
@@ -44,7 +44,7 @@ class LoginFormFrame(ctk.CTkFrame):
             [self.username_entry, username == "", "Kein Benutzername angegeben"],
             [self.username_entry, not username_exists(username), "Benutzername existiert nicht"],
             [self.password_entry, password == "", "Kein Passwort angegeben"],
-            [self.password_entry, not self.auth_service.check_login(username, password), "Passwort ist falsch"]
+            [self.password_entry, not check_login(username, password, self.data_bundle), "Passwort ist falsch"]
         ]
 
         error_entrys = []

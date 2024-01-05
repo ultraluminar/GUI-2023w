@@ -7,11 +7,12 @@ from source.classes.admin import Admin
 sidebar_width = 160
 
 class LoginSidebar(ctk.CTkFrame):
-    def __init__(self, master: ctk.CTk):
+    def __init__(self, master: ctk.CTk, bundle: dict):
         super().__init__(master=master, width=sidebar_width, corner_radius=0)
         self.admin: ctk.CTkToplevel = None
 
         self.grid_rowconfigure(1, weight=1)
+        self.data_bundle = bundle
         
         
         # load images (light and dark)
@@ -38,7 +39,7 @@ class LoginSidebar(ctk.CTkFrame):
 
     def pop_up(self, event=None):
         if self.admin is None or not self.admin.winfo_exists():
-            self.admin = Admin(master=self)     # create window if its None or destroyed
+            self.admin = Admin(self, self.data_bundle)     # create window if its None or destroyed
             self.after(0, self.admin.focus)
         elif self.admin.state() == "iconic":
             self.admin.deiconify()    # bring back window if its minimized

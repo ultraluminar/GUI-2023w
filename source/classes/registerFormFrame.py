@@ -4,10 +4,11 @@ import logging
 
 from source.classes.customWidgets.intSpinbox import IntSpinbox
 from source.classes.timeSelector import TimeSelector
-from source.auth_util import username_exists, add_patient, add_doctor
+from source.auth_util import username_exists, add_patient, add_doctor, check_login, check_code
+
 
 class RegisterFormFrame(ctk.CTkTabview):
-    def __init__(self, master):
+    def __init__(self, master, bundle: dict):
         super().__init__(master=master)
         
         # tabs
@@ -16,7 +17,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         
         # variables
         self.input_width = 200
-        self.auth_service = self.nametowidget(".").auth_service
+        self.data_bundle = bundle
 
         # font
         self.font15 = ctk.CTkFont(family="Segoe UI", size=15)
@@ -202,7 +203,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.reset()     
         
         # automatically log in
-        if (self.auth_service.check_login(username=username, password=password)):
+        if check_login(username, password, self.data_bundle):
             # grid forget
             self.nametowidget(".!ctkframe2.!canvas.!mainregisterframe").grid_forget()
             self.nametowidget(".").login_sidebar.grid_forget()
@@ -223,7 +224,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         insurance_by_law = self.insurance_by_law.get()
         insurance_voluntarily = self.insurance_voluntarily.get()
         insurances = [insurance_voluntarily, insurance_by_law, insurance_private]
-        otp_verified = code != "" and self.auth_service.check_code(code)
+        otp_verified = code != "" and check_code(code, self.data_bundle)
         
         entry_map = [
             [self.doctor_username_entry,             username == "",                "Kein Benutzername angegeben"],
@@ -281,7 +282,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.reset()
         
         # automatically log in
-        if (self.auth_service.check_login(username=username, password=password)):
+        if check_login(username, password, self.data_bundle):
             # grid forget
             self.nametowidget(".!ctkframe2.!canvas.!mainregisterframe").grid_forget()
             self.nametowidget(".").login_sidebar.grid_forget()

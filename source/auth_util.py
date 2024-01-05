@@ -5,9 +5,6 @@ from bcrypt import hashpw, checkpw, gensalt
 from csv import writer
 from json import load, dump
 
-from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
-
 # variables
 paths = {
     "passwords": Path("data/pwd.json"),
@@ -16,12 +13,6 @@ paths = {
     "doctors": {"csv": Path("data/doctors.csv"),
                 "free": Path("data/doctors_free.json")}
 }
-
-alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-
-
-def random_chars(n: int) -> str:
-    return "".join(choices(population=alphabet, k=n))
 
 def mhash(plain: str) -> str:
     # wenig rounds da wir nicht wirklich security brauchen
@@ -36,19 +27,19 @@ def appendCSV(path: Path, row: iter):
     with open(path, mode='a', newline='', encoding="utf-8") as file:
         writer(file).writerow(row)
 
-def getfromCSV(path: Path, filter: tuple[str, str], field: str = None):
+def getfromCSV(path: Path, filter_tuple: tuple[str, str], field: str = None):
     df = read_csv(path)
 
-    df.set_index(filter[0], inplace=True)
-    df = df.loc[filter[1]]
+    df.set_index(filter_tuple[0], inplace=True)
+    df = df.loc[filter_tuple[1]]
 
     return df if field is None else df[field]
 
-def updateCSV(path: Path, filter: tuple[str, str], update: tuple[str, str]):
+def updateCSV(path: Path, filter_tuple: tuple[str, str], update: tuple[str, str]):
     df = read_csv(path)
 
-    df.set_index(filter[0], inplace=True)
-    df.loc[filter[1], update[0]] = update[1]
+    df.set_index(filter_tuple[0], inplace=True)
+    df.loc[filter_tuple[1], update[0]] = update[1]
     df.reset_index(inplace=True)
     df.to_csv(path, index=False)
 
@@ -97,27 +88,32 @@ def add_patient(patient_data: dict):
 def username_exists(username: str) -> bool:
     return username in loadJson(paths["passwords"]).keys()
 
+def update_password(new_password: str, bundle: dict):
+    updateJson(paths["passwords"], {bundle["username"]: mhash(new_password)}, replace=True)
 
-class AuthenticationService:
-    def __init__(self):
-        self.username = None
-        self.code = None
+def check_login(username: str, password: str, bundle: dict) -> bool:
+    if not username_exists(username):
+        return False
+    elif not mcheck(password, loadJson(paths["passwords"])[username]):
+        return False
+    else:
+        bundle["username"] = username
+        return True
 
-    def update_password(self, new_password: str):
-        updateJson(paths["passwords"], {self.username: mhash(new_password)}, replace=True)
+alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
-    def check_login(self, username: str, password: str) -> bool:
-        if not username_exists(username):
-            return False
-        elif not mcheck(password, loadJson(paths["passwords"])[username]):
-            return False
-        else:
-            self.username = username
-            return True
+def random_chars(n: int) -> str:
+    return "".join(choices(population=alphabet, k=n))
 
-    def generate_code(self):
-        if self.code is None:
-            self.code = random_chars(8)
+def generate_code(bundle: dict):
+    if "code" not in bundle:
+        bundle["code"] = random_chars(8)
+    return bundle["code"]
 
-    def check_code(self, code: str):
-        return code == self.code
+def check_code(code: str, bundle: dict):
+    return bundle["code"] == code
+
+
+
+
+

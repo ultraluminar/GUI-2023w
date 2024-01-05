@@ -44,8 +44,6 @@ class Booking(ctk.CTkToplevel):
         self.title("Buchung")
         self.resizable(False, False)
         
-        self.auth_service = self.nametowidget(".").auth_service
-        
         # fonts
         self.font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
         self.font20 = ctk.CTkFont(family="Segoe UI", size=20, weight="bold")
@@ -115,7 +113,7 @@ class Booking(ctk.CTkToplevel):
         stop = start + relativedelta(minutes=15*self.duration)
         row_data = [
             self.data_bundle["doctor"],
-            self.auth_service.username,
+            self.data_bundle["username"],
             start.strftime("%d-%m-%Y %H:%M"),
             stop.strftime("%d-%m-%Y %H:%M"),
             self.data_bundle["dental_problem"],

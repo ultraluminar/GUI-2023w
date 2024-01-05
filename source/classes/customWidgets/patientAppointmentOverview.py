@@ -9,8 +9,6 @@ class PatientOverview(ctk.CTkFrame):
     A custom widget for displaying patient appointment overview.
 
     Attributes:
-        auth_service (AuthService): An instance of the authentication service.
-        username (str): The username of the patient.
         df_appointments (pandas.DataFrame): The dataframe containing the patient's appointments.
         headings (list[str]): The list of column headings for the appointment table.
         header_labels (list[ctk.CTkLabel]): The list of header labels for the appointment table.
@@ -40,7 +38,7 @@ class PatientOverview(ctk.CTkFrame):
             Retrieves the name of the doctor based on the username.
     """
     
-    def __init__(self, master: any, width: int = 200, height: int = 200, corner_radius: int | str | None = None):
+    def __init__(self, master: any, bundle: dict, width: int = 200, height: int = 200, corner_radius: int | str | None = None):
         """
         Initializes the PatientOverview widget.
 
@@ -51,10 +49,9 @@ class PatientOverview(ctk.CTkFrame):
             corner_radius (int | str | None): The corner radius of the widget. Default is None.
         """
         super().__init__(master, width, height, corner_radius)
-        
-        self.auth_service = self.nametowidget(".").auth_service
-        self.username = None
+
         self.df_appointments = None
+        self.data_bundle = bundle
         
         self.headings: list[str] = ["Datum", "Arzt", "Von", "Bis", "Zahnproblem", "Anzahl Zähne", "Art der Füllung"]
         self.header_labels: list[ctk.CTkLabel] = [ctk.CTkLabel(self, width=110, height=30, fg_color=("gray70", "gray30"), corner_radius=5, text=heading, font=ctk.CTkFont(weight="bold")) for heading in self.headings]
@@ -74,9 +71,8 @@ class PatientOverview(ctk.CTkFrame):
         Resets the widget by updating the appointment data and refreshing the table.
         """
         self.table_ungrid()
-        self.username = self.auth_service.username
         self.df_appointments = read_csv("data/appointments.csv")
-        self.df_appointments = self.df_appointments.loc[self.df_appointments["Patient"] == self.username]
+        self.df_appointments = self.df_appointments.loc[self.df_appointments["Patient"] == self.data_bundle["username"]]
         self.df_appointments = self.df_appointments.loc[self.df_appointments["dt_stop"] > datetime.now().strftime("%d-%m-%Y %H:%M")]   # filter out appointments that are already over
         self.df_appointments = self.df_appointments.sort_values("dt_start")
         
@@ -106,7 +102,7 @@ class PatientOverview(ctk.CTkFrame):
         """
         for index, label in enumerate(self.header_labels):
             label.grid(column=index, row=0, sticky="nsew", padx=(10 if index == 0 else 5, 10 if index == 6 else 0), pady=(10, 15))
-        if (self.df_appointments.empty):
+        if self.df_appointments.empty:
             self.empty_label.grid(column=0, row=1, columnspan=7, sticky="nsew", padx=10, pady=(0, 10))
         labels = [self.date_labels, self.doctor_labels, self.time_start_labels, self.time_end_labels, self.dental_problem_labels, self.teeth_count_labels, self.fill_type_labels]
         for index, labels in enumerate(labels):

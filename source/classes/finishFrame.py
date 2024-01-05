@@ -1,10 +1,9 @@
 import customtkinter as ctk
 
 from datetime import datetime
-from source.auth_util import appendCSV, paths
 import logging
 
-from source.auth_util import getfromCSV, updateCSV, paths
+from source.auth_util import getfromCSV, updateCSV, appendCSV, paths
 
 class FinishFrame(ctk.CTkFrame):
     def __init__(self, master, bundle: dict):
@@ -12,7 +11,6 @@ class FinishFrame(ctk.CTkFrame):
         
         # variables
         self.data_bundle = bundle
-        self.auth_service = self.nametowidget(".").auth_service
         self.main_sidebar = self.nametowidget(".").main_sidebar
         
         # fonts
@@ -49,16 +47,16 @@ class FinishFrame(ctk.CTkFrame):
         self.confirm_button.grid(column=1, row=3, pady=(0, 20), sticky="e")
     
     def set_data_frame_grid(self):
-        self.tooth_number_label.grid(column=0, row=0, pady=(20, 0), padx=(20, 0), sticky = "nsew")
-        self.tooth_number_value_label.grid(column=1, row=0, pady=(20, 0), padx=(0, 20), sticky = "nsew")
-        self.dental_problem_label.grid(column=0, row=1, pady=(10, 0), padx=(20, 0), sticky = "nsew")
-        self.dental_problem_value_label.grid(column=1, row=1, pady=(10, 0), padx=(0, 20), sticky = "nsew")
-        self.doctor_name_label.grid(column=0, row=2, pady=(10, 0), padx=(20, 0), sticky = "nsew")
-        self.doctor_name_value_label.grid(column=1, row=2, pady=(10, 0), padx=(0, 20), sticky = "nsew")
-        self.date_label.grid(column=0, row=3, pady=(10, 0), padx=(20, 0), sticky = "nsew")
-        self.date_value_label.grid(column=1, row=3, pady=(10, 0), padx=(0, 20), sticky = "nsew")
-        self.total_cost_label.grid(column=0, row=4, pady=(10, 20), padx=(20, 0), sticky = "nsew")
-        self.total_cost_value_label.grid(column=1, row=4, pady=(10, 20), padx=(0, 20), sticky = "nsew")
+        self.tooth_number_label.grid(column=0, row=0, pady=(20, 0), padx=(20, 0), sticky="nsew")
+        self.tooth_number_value_label.grid(column=1, row=0, pady=(20, 0), padx=(0, 20), sticky="nsew")
+        self.dental_problem_label.grid(column=0, row=1, pady=(10, 0), padx=(20, 0), sticky="nsew")
+        self.dental_problem_value_label.grid(column=1, row=1, pady=(10, 0), padx=(0, 20), sticky="nsew")
+        self.doctor_name_label.grid(column=0, row=2, pady=(10, 0), padx=(20, 0), sticky="nsew")
+        self.doctor_name_value_label.grid(column=1, row=2, pady=(10, 0), padx=(0, 20), sticky="nsew")
+        self.date_label.grid(column=0, row=3, pady=(10, 0), padx=(20, 0), sticky="nsew")
+        self.date_value_label.grid(column=1, row=3, pady=(10, 0), padx=(0, 20), sticky="nsew")
+        self.total_cost_label.grid(column=0, row=4, pady=(10, 20), padx=(20, 0), sticky="nsew")
+        self.total_cost_value_label.grid(column=1, row=4, pady=(10, 20), padx=(0, 20), sticky="nsew")
             
     def data_frame_ungrid(self):
         self.tooth_number_label.grid_forget()
@@ -84,11 +82,10 @@ class FinishFrame(ctk.CTkFrame):
         self.set_main_grid()
         
     def confirm(self):
-        username = self.auth_service.username
-        new_tooth_count = getfromCSV(paths["patients"]["csv"], ("Username", username), "Anzahl zu behandelnder Zähne")
+        new_tooth_count = getfromCSV(paths["patients"]["csv"], ("Username", self.data_bundle["username"]), "Anzahl zu behandelnder Zähne")
         new_tooth_count -= self.data_bundle["tooth_count"]
 
-        updateCSV(paths["patients"]["csv"], ("Username", username), ("Anzahl zu behandelnder Zähne", new_tooth_count))
+        updateCSV(paths["patients"]["csv"], ("Username", self.data_bundle["username"]), ("Anzahl zu behandelnder Zähne", new_tooth_count))
 
         appendCSV(paths["appointments"], self.data_bundle["appointment_row"])
         logging.info(f"Appointment booked: {self.data_bundle['appointment_row']}")

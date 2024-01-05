@@ -4,7 +4,7 @@ from source.classes.customizeTreatmentFrame import TreatmentFrame
 from source.classes.chooseDoctorsFrame import ChooseDoctorsFrame
 from source.classes.calenderViewFrame import CalenderViewFrame
 from source.classes.finishFrame import FinishFrame
-from source.auth_util import getfromCSV
+from source.auth_util import getfromCSV, paths
 
 button_configure_kwargs = {
     "disabled": {
@@ -30,7 +30,6 @@ class MainBookingFrame(ctk.CTkFrame):
         
         # variables
         self.data_bundle = bundle
-        self.auth_service = self.nametowidget(".").auth_service     # get auth service from app
         self.main_sidebar = self.nametowidget(".").main_sidebar   # get login sidebar from app
 
         self.progression: int = 0
@@ -99,7 +98,7 @@ class MainBookingFrame(ctk.CTkFrame):
     def reset(self):
         self.ungrid_all()   # hide all frames
         # check if patient has teeth to treat
-        if int(getfromCSV("data/patients.csv", ("Username", self.auth_service.username), "Anzahl zu behandelnder Zähne")) < 1:
+        if int(getfromCSV(paths["patients"]["csv"], ("Username", self.data_bundle["username"]), "Anzahl zu behandelnder Zähne")) < 1:
             # if not, show no_teeth_frame only
             self.set_no_teeth_grid()
             return

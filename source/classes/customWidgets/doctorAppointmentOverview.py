@@ -35,11 +35,9 @@ class DoctorOverview(ctk.CTkFrame):
 
     """
 
-    def __init__(self, master: any, width: int = 200, height: int = 200, corner_radius: int | str | None = None):
+    def __init__(self, master, bundle: dict, width: int = 200, height: int = 200, corner_radius: int | str | None = None):
         super().__init__(master, width, height, corner_radius)
-        
-        self.auth_service = self.nametowidget(".").auth_service
-        self.username = None
+        self.data_bundle = bundle
         
         # initializing header labels
         self.headings: list[str] = ["Datum", "Patient", "Von", "Bis", "Zahnproblem", "Anzahl Zähne", "Art der Füllung"]
@@ -61,9 +59,8 @@ class DoctorOverview(ctk.CTkFrame):
         Resets the widget by updating the appointment data and refreshing the display.
         """
         self.table_ungrid()
-        self.username = self.auth_service.username
         self.df_appointments = read_csv("data/appointments.csv")
-        self.df_appointments = self.df_appointments.loc[self.df_appointments["Doctor"] == self.username]
+        self.df_appointments = self.df_appointments.loc[self.df_appointments["Doctor"] == self.data_bundle["username"]]
         # filter out appointments that are already over
         self.df_appointments = self.df_appointments.loc[self.df_appointments["dt_stop"] > datetime.now().strftime("%d-%m-%Y %H:%M")]
         # sort appointments by start time

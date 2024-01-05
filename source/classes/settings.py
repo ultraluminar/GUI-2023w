@@ -3,14 +3,18 @@ import tkinter as tk
 
 from PIL import ImageTk, Image
 import logging
-    
+
+from source.auth_util import update_password, check_login
+
+
 class SettingsWindow(ctk.CTkToplevel):
-    def __init__(self):
+    def __init__(self, bundle: dict):
         super().__init__()
-        
+
         # variables
         self.inner_width = 400
         self.error_string = tk.StringVar(value="")
+        self.data_bundle = bundle
         
         # window icon
         self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_icon.png", "r"))
@@ -20,8 +24,6 @@ class SettingsWindow(ctk.CTkToplevel):
         # initialize window
         self.title("Einstellungen")
         self.resizable(False, False)
-        
-        self.auth_service = self.nametowidget(".").auth_service
 
         # fonts
         self.font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")
@@ -82,7 +84,7 @@ class SettingsWindow(ctk.CTkToplevel):
 
         entry_map = [
             [self.old_password_entry, old_password == "", "Bitte geben sie ihr altes Passwort ein"],
-            [self.old_password_entry, not self.auth_service.check_login(self.auth_service.username, old_password), "Das alte Passwort ist falsch"],
+            [self.old_password_entry, not check_login(self.data_bundle["username"], old_password, self.data_bundle), "Das alte Passwort ist falsch"],
             [self.new_password_entry, new_password == "", "Bitte geben sie ihr neues Passwort ein"],
             [self.new_password_entry, old_password == new_password, "Das neue Passwort darf nicht gleich dem alten sein"]
         ]
@@ -107,7 +109,7 @@ class SettingsWindow(ctk.CTkToplevel):
         if error_entrys:  # not empty:
             return
 
-        self.auth_service.update_password(new_password=new_password)
+        update_password(new_password, self.data_bundle["username"])
         self.old_password_entry.configure(border_color="green")
         self.new_password_entry.configure(border_color="green")
         print("password changed")

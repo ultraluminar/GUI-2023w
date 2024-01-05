@@ -8,8 +8,6 @@ class TreatmentFrame(ctk.CTkFrame):
         super().__init__(master=master)
         
         # variables
-        self.auth_service = self.nametowidget(".").auth_service
-        self.username = None
         self.cost = None
         self.total_teeth_count = None
         self.dental_problem = None
@@ -158,12 +156,11 @@ class TreatmentFrame(ctk.CTkFrame):
         self.update_bill()
         
     def reset(self):
-        self.username = self.auth_service.username
         
         df_patients = read_csv("data/patients.csv")
         df_costs = read_csv("data/costs.csv")
-        self.total_teeth_count = df_patients.loc[df_patients["Username"] == self.username, "Anzahl zu behandelnder Zähne"].iat[0]
-        self.dental_problem = df_patients.loc[df_patients["Username"] == self.username, "Dentale Problematik"].iat[0]
+        self.total_teeth_count = df_patients.loc[df_patients["Username"] == self.data_bundle["username"], "Anzahl zu behandelnder Zähne"].iat[0]
+        self.dental_problem = df_patients.loc[df_patients["Username"] == self.data_bundle["username"], "Dentale Problematik"].iat[0]
         
         # teeth selector frame
         self.teeth_selector_counter_label.configure(text="1")
@@ -187,7 +184,7 @@ class TreatmentFrame(ctk.CTkFrame):
         self.high_filling_radio.configure(text=f"höchstwertig - {self.cost[2]}€")
         
         # billing frame        
-        privat = df_patients.loc[df_patients["Username"] == self.username, "Krankenkassenart"].iat[0] == "privat"
+        privat = df_patients.loc[df_patients["Username"] == self.data_bundle["username"], "Krankenkassenart"].iat[0] == "privat"
         self.insurance_shares = df_costs.loc[df_costs["Dentale Problematik"] == self.dental_problem, "privater Anteil" if privat else "gesetzlicher Anteil"]
         self.insurance_shares = list(self.insurance_shares.values)
         

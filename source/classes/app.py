@@ -8,7 +8,6 @@ from source.classes.mainSidebar import MainSidebar
 from source.classes.doctorSidebar import DoctorSidebar
 from source.classes.mainBookingFrame import MainBookingFrame
 
-from source.auth_util import AuthenticationService
 from source.utils import center_window
 from source.classes.home import HomeFrame
 from source.classes.doctorHome import DoctorHome
@@ -42,13 +41,12 @@ class App(ctk.CTk):
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
 
-        self.auth_service = AuthenticationService()
         self.data_bundle = {}
 
         # login
-        self.login_sidebar = LoginSidebar(self)
-        self.main_frame_login = MainLoginFrame(self)
-        self.main_frame_register = MainRegisterFrame(self)
+        self.login_sidebar = LoginSidebar(self, self.data_bundle)
+        self.main_frame_login = MainLoginFrame(self, self.data_bundle)
+        self.main_frame_register = MainRegisterFrame(self, self.data_bundle)
 
         # logged in frames
         # patient
@@ -57,7 +55,7 @@ class App(ctk.CTk):
         self.booking = MainBookingFrame(self, self.data_bundle)
         # doctor
         self.doctor_sidebar = DoctorSidebar(self)
-        self.doctor_view = DoctorHome(self)
+        self.doctor_view = DoctorHome(self, self.data_bundle)
 
         self.initial_grid()
 

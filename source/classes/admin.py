@@ -2,13 +2,14 @@ import customtkinter as ctk
 from tkinter import StringVar
 from PIL import Image, ImageTk
 
+from source.auth_util import generate_code
 from source.utils import center_window
 
-class Frame(ctk.CTkFrame):
-    def __init__(self, master, font):
+class AdminFrame(ctk.CTkFrame):
+    def __init__(self, master, font, bundle: dict):
         super().__init__(master=master)
         self.font = font
-        self.auth_service = self.nametowidget(".").auth_service
+        self.data_bundle = bundle
         
         image_path = "assets/"
         self.copy_image = ctk.CTkImage(light_image=Image.open(f"{image_path}copy_light.png"), size=(30, 30),
@@ -28,20 +29,20 @@ class Frame(ctk.CTkFrame):
         self.entry.grid(row=1, column=0, sticky="nswe", pady=10, padx=(10, 0))
         self.button.grid(row=1, column=1, sticky="nswe", pady=10, padx=(5, 10))
 
-        self.auth_service.generate_code()
-        self.var.set(self.auth_service.code)
+        self.var.set(generate_code(self.data_bundle))
 
     def copy_code(self, event=None):
         self.clipboard_clear()
-        self.clipboard_append(self.auth_service.code)
+        self.clipboard_append(self.data_bundle["code"])
         self.button.configure(fg_color=("#26a31d", "#369130"), hover_color=("#1d8017", "#2c7527"))
 
 
 class Admin(ctk.CTkToplevel):
-    def __init__(self, master):
+    def __init__(self, master, bundle: dict):
         super().__init__(master=master)
 
         self.title("Freischalt-code")
+        self.data_bundle = bundle
         
         # window icon
         self.iconpath = ImageTk.PhotoImage(Image.open("assets/zahn_icon.png", "r"))
@@ -55,5 +56,5 @@ class Admin(ctk.CTkToplevel):
 
         self.font24 = ctk.CTkFont(family="Segoe UI", size=30, weight="bold")
 
-        self.frame = Frame(master=self, font=self.font24)
+        self.frame = AdminFrame(self, self.font24, self.data_bundle)
         self.frame.grid()

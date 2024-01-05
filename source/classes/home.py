@@ -6,12 +6,12 @@ from datetime import datetime
 from source.classes.customWidgets.patientAppointmentOverview import PatientOverview
 from source.classes.customWidgets.infoBanner import InfoBanner
 
+from source.auth_util import getfromCSV, paths
+
 class HomeFrame(ctk.CTkScrollableFrame):
     def __init__(self, master: ctk.CTk, bundle: dict):
         super().__init__(master=master, corner_radius=0, fg_color="transparent")
-        
-        self.auth_service = self.nametowidget(".").auth_service
-        self.username = None
+
         self.data_bundle = bundle
         
         self.grid_columnconfigure(0, weight=1)
@@ -22,7 +22,7 @@ class HomeFrame(ctk.CTkScrollableFrame):
         fat = ctk.CTkFont(family="Segoe UI", weight="bold")
         
         # main widgets
-        self.main_heading_label = ctk.CTkLabel(self, text=f"Willkommen, {self.username}!", font=font30)
+        self.main_heading_label = ctk.CTkLabel(self, text=f"Willkommen, ERROR!", font=font30)
         self.sub_heading_label = ctk.CTkLabel(self, text="Was möchten sie tun?")
         self.info_banner = InfoBanner(self, self.data_bundle)
         
@@ -45,7 +45,7 @@ class HomeFrame(ctk.CTkScrollableFrame):
         self.appointments_frame.grid_columnconfigure((0, 2), weight=1)
         self.appointments_heading_label = ctk.CTkLabel(self.appointments_frame, text="Meine Termine", font=font24)
         self.appointments_sub_heading_label = ctk.CTkLabel(self.appointments_frame, text="Hier können sie ihre Termine einsehen.")
-        self.appointments_sub_frame = PatientOverview(self.appointments_frame)
+        self.appointments_sub_frame = PatientOverview(self.appointments_frame, self.data_bundle)
         self.book_appointment_button = ctk.CTkButton(self.appointments_frame, text="Termin buchen", command=self.book_appointment)
         
         self.set_profile_grid()
@@ -77,36 +77,27 @@ class HomeFrame(ctk.CTkScrollableFrame):
         self.book_appointment_button.grid(column=0, columnspan=3, row=3, pady=20, sticky="e", padx=(0, 20))
         
     def reset(self):
-        self.username = self.auth_service.username
-        self.main_heading_label.configure(text=f"Willkommen, {self.get_patient_name()}!")
-        self.insurance_value_label.configure(text=self.get_insurace_type())
-        self.dental_problem_value_label.configure(text=self.get_dental_problem())
-        self.tooth_number_value_label.configure(text=self.get_tooth_number())
+        kwargs = {"path": paths["patients"]["csv"], "filter_tuple": ("Username", self.data_bundle["username"])}
+        username = getfromCSV(**kwargs, field="Name")
+        insurace_type = getfromCSV(**kwargs, field="Krankenkassenart")
+        dental_problem = getfromCSV(**kwargs, field="Dentale Problematik")
+        tooth_number = getfromCSV(**kwargs, field="Anzahl zu behandelnder Zähne")
+        tooth_number += self.get_tooth_number_with_appointment()
+
+        self.main_heading_label.configure(text=f"Willkommen, {username}!")
+        self.insurance_value_label.configure(text=insurace_type)
+        self.dental_problem_value_label.configure(text=dental_problem)
+        self.tooth_number_value_label.configure(text=tooth_number)
         self.tooth_number_with_appointment_value_label.configure(text=self.get_tooth_number_with_appointment())
         self.appointments_sub_frame.reset()
-        
-    def get_patient_name(self):
-        df = read_csv("data/patients.csv")
-        return df.loc[df["Username"] == self.username, "Name"].iloc[0]
-    
-    def get_insurace_type(self):
-        df = read_csv("data/patients.csv")
-        return df.loc[df["Username"] == self.username, "Krankenkassenart"].iloc[0]
-    
-    def get_dental_problem(self):
-        df = read_csv("data/patients.csv")
-        return df.loc[df["Username"] == self.username, "Dentale Problematik"].iloc[0]
-    
-    def get_tooth_number(self):
-        df = read_csv("data/patients.csv")
-        return df.loc[df["Username"] == self.username, "Anzahl zu behandelnder Zähne"].iloc[0] + self.get_tooth_number_with_appointment()
+
     
     def get_tooth_number_with_appointment(self):
         df = read_csv("data/appointments.csv")
         # filter out appointments that are already over
         df = df.loc[df["dt_stop"] > datetime.now().strftime("%d-%m-%Y %H:%M")]
         # filter out appointments that are not for the patient
-        df = df.loc[df["Patient"] == self.username]
+        df = df.loc[df["Patient"] == self.data_bundle["username"]]
         return df["tooth_count"].sum()
         
     def book_appointment(self):
