@@ -225,7 +225,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         self.doctor_time_selector_button.grid(row=12, column=0, columnspan=2, pady=(15, 0), padx=50, sticky="n")
         self.doctor_register_button.grid(row=14, column=0, columnspan=2, pady=(25, 20), padx=50, sticky="n")
 
-    def try_patient_register(self, event=None) -> None:
+    def try_patient_register(self, *args) -> None:
         """
         Attempts to register a new patient with the provided information.
 
@@ -311,7 +311,7 @@ class RegisterFormFrame(ctk.CTkTabview):
         else: 
             raise PermissionError
         
-    def try_doctor_register(self, event = None) -> None:
+    def try_doctor_register(self, *args) -> None:
         """
         Attempts to register a new doctor.
 

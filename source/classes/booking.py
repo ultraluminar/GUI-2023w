@@ -2,12 +2,11 @@ import customtkinter as ctk
 import tkinter as tk
 
 from PIL import Image, ImageTk
-from datetime import time, datetime
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from CTkToolTip import CTkToolTip
 
 from source.classes.timespace import TimeSpace
-from source.auth_util import appendCSV, paths
 
 
 # function for converting a count of 15 minutes to a tuple of hours and minutes

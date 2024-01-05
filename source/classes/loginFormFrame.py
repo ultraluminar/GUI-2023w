@@ -64,7 +64,7 @@ class LoginFormFrame(ctk.CTkFrame):
         self.password_entry.grid(row=3, column=0, pady=(15, 5), padx=50, sticky="n")
         self.login_button.grid(row=5, column=0, pady=(20, 30), padx=50, sticky="n")
 
-    def try_login(self, event=None) -> None:
+    def try_login(self, *args) -> None:
         """
         Attempts to log in the user.
 

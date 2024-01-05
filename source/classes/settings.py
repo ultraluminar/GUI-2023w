@@ -109,7 +109,7 @@ class SettingsWindow(ctk.CTkToplevel):
             ctk.set_appearance_mode(new_appearance_mode)
             self.after(1, self.lift)
 
-    def change_password(self, event=None):
+    def change_password(self, *args):
         """
         Change the user's password.
 

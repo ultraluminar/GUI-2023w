@@ -1,5 +1,4 @@
 import customtkinter as ctk
-import tkinter as tk
 from datetime import datetime
 
 from pandas import read_csv

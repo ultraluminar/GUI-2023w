@@ -53,12 +53,9 @@ class AdminFrame(ctk.CTkFrame):
         # binding
         self.bind("<Enter>", self.copy_code)
 
-    def copy_code(self, event=None):
+    def copy_code(self, *args):
         """
         Copies the current code to the clipboard.
-
-        Args:
-            event (Event, optional): The event that triggered the copy action.
         """
         self.clipboard_clear()
         self.clipboard_append(self.data_bundle["code"])

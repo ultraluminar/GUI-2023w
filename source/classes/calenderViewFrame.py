@@ -1,8 +1,6 @@
 import customtkinter as ctk
-import tkinter as tk
 from datetime import datetime
 from dateutil.relativedelta import relativedelta, MO
-from dateutil.rrule import rrule, WEEKLY
 from CTkToolTip import CTkToolTip
 
 from source.classes.timespace import TimeSpace

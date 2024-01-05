@@ -1,5 +1,4 @@
 import customtkinter as ctk
-import tkinter as tk
 from datetime import datetime
 
 from pandas import read_csv
@@ -63,7 +62,7 @@ class DoctorOverview(ctk.CTkFrame):
         # update labels with data from df_appointments
         patient_name = getfromCSV(paths["doctors"]["csv"], ("Username", self.data_bundle["username"]), "Name")
         self.date_labels = [ctk.CTkLabel(self, text=datetime.strptime(date, "%d-%m-%Y %H:%M").strftime("%d.%m.%Y")) for date in self.df_appointments["dt_start"]]
-        self.patient_labels = [ctk.CTkLabel(self, text=patient_name) for patient in self.df_appointments["Patient"]]
+        self.patient_labels = [ctk.CTkLabel(self, text=patient_name) for _ in self.df_appointments["Patient"]]
         self.time_start_labels = [ctk.CTkLabel(self, text=datetime.strptime(time, "%d-%m-%Y %H:%M").strftime("%H:%M Uhr")) for time in self.df_appointments["dt_start"]]
         self.time_end_labels = [ctk.CTkLabel(self, text=datetime.strptime(time, "%d-%m-%Y %H:%M").strftime("%H:%M Uhr")) for time in self.df_appointments["dt_stop"]]
         self.dental_problem_labels = [ctk.CTkLabel(self, text=dental_problem) for dental_problem in self.df_appointments["dental_problem"]]

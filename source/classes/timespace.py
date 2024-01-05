@@ -1,5 +1,5 @@
 from source.classes.customWidgets.event_label import EventLabel
-from datetime import time, datetime
+from datetime import time
 from dateutil.relativedelta import relativedelta
 
 class TimeSpace:

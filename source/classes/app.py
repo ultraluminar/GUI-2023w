@@ -26,7 +26,6 @@ class App(ctk.CTk):
         initial_width (int): The initial width of the application window.
         initial_height (int): The initial height of the application window.
         iconpath (str): The path to the application icon image.
-        auth_service (AuthenticationService): An instance of the AuthenticationService class.
         data_bundle (dict): A dictionary to store data used by different frames.
 
     Methods:

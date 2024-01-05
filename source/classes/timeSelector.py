@@ -98,7 +98,7 @@ class TimeSelector(ctk.CTkToplevel):
         """
         rules = [selector.get() for selector in self.selectors]
         
-        # dont save when inputs faulty
+        # don't save when inputs faulty
         if any(rule is None for rule in rules): 
             return
 

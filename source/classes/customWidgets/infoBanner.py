@@ -1,6 +1,4 @@
 import customtkinter as ctk
-from tkinter import IntVar
-from tkinter.font import Font
 
 class InfoBanner(ctk.CTkFrame):
     """

@@ -61,15 +61,12 @@ class LoginSidebar(ctk.CTkFrame):
         CTkToolTip(self.exit_button, message="Klicken um das Programm zu schließen", alpha=0.8)
 
 
-    def pop_up(self, event=None):
+    def pop_up(self, *args):
         """
         Displays the admin pop-up window.
 
         This method is called when the admin button is clicked. It creates a new instance of the Admin class
         and displays the pop-up window. If the pop-up window already exists, it brings it back to focus.
-
-        Args:
-            event (Event, optional): The event that triggered the pop-up. Defaults to None.
         """
         if self.admin is None or not self.admin.winfo_exists():
             self.admin = Admin(self, self.data_bundle)     # create window if its None or destroyed
