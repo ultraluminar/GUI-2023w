@@ -3,6 +3,7 @@ import tkinter as tk
 from datetime import datetime
 
 from pandas import read_csv
+from source.auth_util import getfromCSV, paths
 
 class DoctorOverview(ctk.CTkFrame):
     """
@@ -60,8 +61,9 @@ class DoctorOverview(ctk.CTkFrame):
         self.df_appointments = self.df_appointments.sort_values("dt_start")  
         
         # update labels with data from df_appointments
+        patient_name = getfromCSV(paths["doctors"]["csv"], ("Username", self.data_bundle["username"]), "Name")
         self.date_labels = [ctk.CTkLabel(self, text=datetime.strptime(date, "%d-%m-%Y %H:%M").strftime("%d.%m.%Y")) for date in self.df_appointments["dt_start"]]
-        self.patient_labels = [ctk.CTkLabel(self, text=self.get_patient_name(patient)) for patient in self.df_appointments["Patient"]]
+        self.patient_labels = [ctk.CTkLabel(self, text=patient_name) for patient in self.df_appointments["Patient"]]
         self.time_start_labels = [ctk.CTkLabel(self, text=datetime.strptime(time, "%d-%m-%Y %H:%M").strftime("%H:%M Uhr")) for time in self.df_appointments["dt_start"]]
         self.time_end_labels = [ctk.CTkLabel(self, text=datetime.strptime(time, "%d-%m-%Y %H:%M").strftime("%H:%M Uhr")) for time in self.df_appointments["dt_stop"]]
         self.dental_problem_labels = [ctk.CTkLabel(self, text=dental_problem) for dental_problem in self.df_appointments["dental_problem"]]
@@ -92,16 +94,3 @@ class DoctorOverview(ctk.CTkFrame):
         for index, labels in enumerate(self.labels):
             for label in labels:
                 label.grid(column=index, row=labels.index(label) + 1, sticky="nsew", padx=(10 if index == 0 else 5, 10 if index == 6 else 0), pady=(0, 10))
-        
-    def get_patient_name(self, username: str) -> str:
-        """
-        Retrieves the patient name based on the username.
-
-        Args:
-            username (str): The username of the patient.
-
-        Returns:
-            str: The name of the patient.
-        """
-        df_patients = read_csv("data/patients.csv")
-        return df_patients.loc[df_patients["Username"] == username, "Name"].iloc[0]
