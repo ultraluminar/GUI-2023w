@@ -46,7 +46,7 @@ class FinishFrame(ctk.CTkFrame):
         self.main_heading_label = ctk.CTkLabel(self, text="Buchung bestätigen", font=self.font24)
         self.sub_heading_label = ctk.CTkLabel(self, text="Bestätigen Sie ihre angegebenen Daten und buchen sie verbindlich ihren Termin.")
         self.data_frame = ctk.CTkFrame(self)
-        self.confirm_button = ctk.CTkButton(self, text="Verbindlich buchen", command=self.confirm)
+        self.confirm_button = ctk.CTkButton(self, text="Verbindlich buchen", command=self.next_page)
 
         # data subframe widgets
         self.tooth_number_label = ctk.CTkLabel(self.data_frame, text="Anzahl der zu behandelnden Zähne:", anchor="w", width=250)
@@ -117,7 +117,7 @@ class FinishFrame(ctk.CTkFrame):
         self.set_data_frame_grid()
         self.set_main_grid()
         
-    def confirm(self):
+    def next_page(self, *args):
         """
         Sets the grid layout for the data subframe widgets in the finish frame.
         """

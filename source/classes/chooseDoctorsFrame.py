@@ -110,7 +110,7 @@ class ChooseDoctorsFrame(ctk.CTkFrame):
         self.set_doctors_grid()
         self.set_main_grid()
         
-    def next_page(self):
+    def next_page(self, *args):
         """
         Stores the chosen doctor's username in the data bundle and proceeds to the next page.
         """

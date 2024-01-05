@@ -93,6 +93,8 @@ class Booking(ctk.CTkToplevel):
         self.set_choose_time_frame_grid()
         self.set_main_grid()
 
+        self.bind("<Return>", self.on_Return)
+
     def enable_save(self, *args):
         """
         Enables the save button if a day and time are selected.
@@ -150,7 +152,7 @@ class Booking(ctk.CTkToplevel):
         """
         self.destroy()
 
-    def save(self):
+    def save(self, *args):
         """
         Saves the booking into the bundle and updates the calendar view.
         """
@@ -176,4 +178,10 @@ class Booking(ctk.CTkToplevel):
         calendar_view.add_ex_date(start, stop, fg_color=("#3B8ED0", "#1F6AA5"))
         self.nametowidget(".!mainbookingframe.!calenderviewframe").booking_saved()
         self.destroy()
-        
+
+    def on_Return(self, *args):
+        """
+        Binds the Return key to the save button.
+        """
+        if self.day.get() != "" and self.hour.get() != "":
+            self.save()

@@ -139,6 +139,8 @@ class HomeFrame(ctk.CTkScrollableFrame):
         self.tooth_number_with_appointment_value_label.configure(text=self.get_tooth_number_with_appointment())
         self.appointments_sub_frame.reset()
 
+        self.nametowidget(".").bind("<Return>", self.book_appointment)
+
 
     def get_tooth_number_with_appointment(self):
         """
@@ -154,7 +156,7 @@ class HomeFrame(ctk.CTkScrollableFrame):
         df = df.loc[df["Patient"] == self.data_bundle["username"]]
         return df["tooth_count"].sum()
         
-    def book_appointment(self):
+    def book_appointment(self, *args):
         """
         Books an appointment for the patient.
         """

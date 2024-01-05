@@ -269,11 +269,10 @@ class TreatmentFrame(ctk.CTkFrame):
         fillings_index = self.fillings.index(self.filling.get())
         return int(float(durations[fillings_index].replace(",", "."))*4)  # 4 quarters in an hour
     
-    def next_page(self):
+    def next_page(self, *args):
         """
         Navigates to the next page and updates the data bundle with the treatment details.
         """
-        self.master.next_page()
         self.data_bundle.update({
             "duration_quarters": self.get_treatment_duration_quarters(),
             "dental_problem": self.dental_problem,
@@ -281,4 +280,5 @@ class TreatmentFrame(ctk.CTkFrame):
             "fill_type": self.filling.get(),
             "total_cost": self.total_cost_value_label.cget("text")
         })
+        self.master.next_page()
         

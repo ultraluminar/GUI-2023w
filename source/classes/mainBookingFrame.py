@@ -24,6 +24,16 @@ button_configure_kwargs = {
 frame_grid_kwargs = {"row": 1, "sticky": "nsew", "padx": 20, "pady": (0, 20), "column": 0}
 button_grid_kwargs = {"row": 0, "sticky": "nsew", "padx": 5, "pady": 20}
 
+explainer_text = """Es scheint, dass Sie keine Zähne haben, die einer Behandlung bedürfen.
+
+        Dies kann verschiedene Gründe haben, wie zum Beispiel eine bereits
+        abgeschlossene Behandlung, eine fehlende Zahnproblematik oder bereits gebuchte Termine.
+
+        Falls Sie dennoch Fragen oder Bedenken haben, empfehlen wir Ihnen,
+        sich an Ihren Zahnarzt zu wenden, um weitere Informationen zu erhalten.
+
+        Vielen Dank für Ihr Verständnis."""
+
 class MainBookingFrame(ctk.CTkFrame):
     """
     The main booking frame that displays the booking process.
@@ -90,15 +100,6 @@ class MainBookingFrame(ctk.CTkFrame):
         self.no_teeth_frame = ctk.CTkFrame(self)
         self.no_teeth_frame.columnconfigure((0, 2), weight=1)
         self.no_teeth_heading_label = ctk.CTkLabel(self.no_teeth_frame, text="Keine Behandlung möglich", font=self.font24)
-        explainer_text = """Es scheint, dass Sie keine Zähne haben, die einer Behandlung bedürfen.
-        
-        Dies kann verschiedene Gründe haben, wie zum Beispiel eine bereits
-        abgeschlossene Behandlung, eine fehlende Zahnproblematik oder bereits gebuchte Termine.
-        
-        Falls Sie dennoch Fragen oder Bedenken haben, empfehlen wir Ihnen,
-        sich an Ihren Zahnarzt zu wenden, um weitere Informationen zu erhalten.
-        
-        Vielen Dank für Ihr Verständnis."""
         self.no_teeth_label = ctk.CTkLabel(self.no_teeth_frame, text=explainer_text)
         self.no_teeth_button = ctk.CTkButton(self.no_teeth_frame, text="Zurück zur Startseite", command=self.main_sidebar.home)
 
@@ -157,7 +158,7 @@ class MainBookingFrame(ctk.CTkFrame):
             frame.grid_forget() if index != self.current_state else frame.grid(**frame_grid_kwargs)
 
         
-    def next_page(self):
+    def next_page(self, *args):
         """
         Go to the next page in the booking process.
 
@@ -172,6 +173,7 @@ class MainBookingFrame(ctk.CTkFrame):
             self.main_frames[self.progression].reset()
 
         self.current_state += 1
+        self.nametowidget(".").bind("<Return>", self.main_frames[self.current_state].next_page)
         self.update_progression_bar()
 
     def ungrid_all(self):
@@ -197,6 +199,7 @@ class MainBookingFrame(ctk.CTkFrame):
         if self.current_state != new_state and self.progression >= new_state:
             self.current_state = new_state
             self.update_progression_bar()
+        self.nametowidget(".").bind("<Return>", self.main_frames[self.current_state].next_page)
         
     def changed(self):
         """

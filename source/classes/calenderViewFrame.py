@@ -130,7 +130,7 @@ class CalenderViewFrame(ctk.CTkFrame):
         self.current += relativedelta(weeks=1)
         self.week_calender_view.set_week(day_of_week=self.current)
     
-    def booking_view(self):
+    def booking_view(self, *args):
         """
         Manages the booking window.
 
@@ -143,7 +143,6 @@ class CalenderViewFrame(ctk.CTkFrame):
             events_used = self.week_calender_view.events_used
             if "appointment_row" in self.data_bundle.keys() and events_used:
                 events_used.pop(-1)
-            print("appointment_row" in self.data_bundle.keys(), bool(events_used))
             timespace = TimeSpace(self.week_calender_view.events_free, events_used)
             self.booking = Booking(timespace, self.current, self.data_bundle)    # create window if its None or destroyed
         elif self.booking.state() == "iconic":
@@ -159,11 +158,13 @@ class CalenderViewFrame(ctk.CTkFrame):
         self.book_button.configure(text="Termin ändern", fg_color=("#26a31d", "#369130"), hover_color=("#1d8017", "#2c7527"))
         # grid next button
         self.next_button.configure(state="normal")
+        self.nametowidget(".").bind("<Return>", self.next_page)
         
-    def next_page(self):
+    def next_page(self, *args):
         """
-        Navigates to the next page.
+        Navigates to the next page if appointment is choosen.
         """
-        self.master.next_page()
-
-        
+        if "appointment_row" not in self.data_bundle.keys():
+            self.booking_view()
+        else:
+            self.master.next_page()
