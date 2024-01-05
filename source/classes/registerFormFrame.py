@@ -35,6 +35,13 @@ class RegisterFormFrame(ctk.CTkTabview):
             Resets the registration form to its initial state.
     """
     def __init__(self, master, bundle: dict):
+        """
+        Initializes the RegisterFormFrame.
+        
+        Args:
+            master (tk.Widget): The parent widget for this frame.
+            bundle (dict): A dictionary containing data bundle.
+        """
         super().__init__(master=master)
         
         # tabs

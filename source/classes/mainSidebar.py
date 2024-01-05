@@ -9,22 +9,7 @@ class MainSidebar(ctk.CTkFrame):
     """
     The MainSidebar class represents the main sidebar of the GUI application.
     It contains buttons and labels for navigation and functionality.
-
-    Attributes:
-        logo_image (ctk.CTkImage): The logo image displayed in the sidebar.
-        home_image (ctk.CTkImage): The home button image displayed in the sidebar.
-        event_image (ctk.CTkImage): The event button image displayed in the sidebar.
-        settings_image (ctk.CTkImage): The settings button image displayed in the sidebar.
-        logout_image (ctk.CTkImage): The logout button image displayed in the sidebar.
-        logo_label (ctk.CTkLabel): The label displaying the logo and text in the sidebar.
-        home_button (ctk.CTkButton): The button for navigating to the home page.
-        book_event_button (ctk.CTkButton): The button for booking an event.
-        settings_button (ctk.CTkButton): The button for accessing the settings.
-        settings_window (SettingsWindow): The window for the settings.
-        logout_button (ctk.CTkButton): The button for logging out.
-        copyright_label (ctk.CTkLabel): The label displaying the copyright information.
-        current_state (int): The current state of the sidebar.
-
+    
     Methods:
         __init__(self, master: ctk.CTk): Initializes the MainSidebar object.
         reset(self): Resets the current state of the sidebar.
@@ -42,6 +27,7 @@ class MainSidebar(ctk.CTkFrame):
 
         Args:
             master (ctk.CTk): The master widget for the sidebar.
+            bundle (dict): A dictionary containing data bundle.
         """
         super().__init__(master=master, width=sidebar_width, corner_radius=0)
         self.data_bundle = bundle

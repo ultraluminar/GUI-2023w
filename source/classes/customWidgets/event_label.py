@@ -7,21 +7,6 @@ class EventLabel:
     """
     A custom widget representing an event label in a GUI.
 
-    Args:
-        master: The parent widget.
-        dt_start (datetime): The start datetime of the event.
-        dt_stop (datetime, optional): The stop datetime of the event. Defaults to None.
-        rule (rrule, optional): The recurrence rule for the event. Defaults to None.
-        fg_color (tuple, optional): The foreground color of the label. Defaults to ("#3ba156", "#458556").
-
-    Attributes:
-        dt_start (datetime): The start datetime of the event.
-        dt_stop (datetime): The stop datetime of the event.
-        column (int): The column index in the grid.
-        row (int): The row index in the grid.
-        rowspan (int): The number of rows the label spans.
-        label (CTkLabel): The label widget.
-
     Methods:
         grid(): Places the label widget in the grid.
 
@@ -31,6 +16,16 @@ class EventLabel:
     """
 
     def __init__(self, master, dt_start: datetime, dt_stop: datetime = None, rule: rrule = None, fg_color=("#3ba156", "#458556")):
+        """
+        Initializes the EventLabel widget.
+        
+        Args:
+            master (tkinter.Tk|tkinter.Toplevel): The parent widget.
+            dt_start (datetime): The start datetime of the event.
+            dt_stop (datetime, optional): The stop datetime of the event. Defaults to None.
+            rule (rrule, optional): The recurrence rule for the event. Defaults to None.
+            fg_color (tuple, optional): The foreground color of the label. Defaults to ("#3ba156", "#458556").
+        """
         self.dt_start = dt_start
         self.dt_stop = dt_stop
 

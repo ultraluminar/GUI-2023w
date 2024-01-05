@@ -6,16 +6,6 @@ from dateutil.rrule import rrule, WEEKLY
 class DateAndTimeSelector(ctk.CTkFrame):
     """
     A widget for selecting a date and time range. The widget consists of two subframes, one for selecting the days and one for selecting the times. The widget also has a destroy button.
-    
-    Attributes:
-        day_from (tkinter.StringVar): The day selected in the "Von" combobox.
-        day_to (tkinter.StringVar): The day selected in the "Bis" combobox.
-        time_from (tkinter.StringVar): The time selected in the "Von" combobox.
-        time_to (tkinter.StringVar): The time selected in the "Bis" combobox.
-        weekdays (list): A list of the weekdays.
-        hours (list): A list of the hours.
-        destroy_color (tuple): A tuple containing the colors for the destroy button.
-        destroy_hover_color (tuple): A tuple containing the hover colors for the destroy button.
 
     Methods:
         day_updater: Callback function for updating the available days in the "Bis" combobox based on the selected "Von" day.

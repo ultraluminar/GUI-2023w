@@ -6,20 +6,19 @@ class InfoBanner(ctk.CTkFrame):
     """
     A custom widget that displays an information banner with a label and a progress bar.
 
-    Args:
-        master: The parent widget.
-        bundle (dict): A dictionary containing data bundle.
-        seconds (int): The duration of the banner in seconds. Default is 10 seconds.
-
-    Attributes:
-        data_bundle (dict): A dictionary containing data bundle.
-        duration (int): The duration of the banner in ticks.
-        font24 (ctk.CTkFont): The font used for the label.
-        label (ctk.CTkLabel): The label widget.
-        bar (ctk.CTkProgressBar): The progress bar widget.
+    Methods:
+        show(): Displays the information banner.
     """
 
     def __init__(self, master, bundle: dict, seconds: int = 10):
+        """
+        Initializes the InfoBanner widget.
+        
+        Args:
+            master: The parent widget.
+            bundle (dict): A dictionary containing data bundle.
+            seconds (int): The duration of the banner in seconds. Default is 10 seconds.
+        """
         super().__init__(master, fg_color=("#3ba156", "#458556"))
 
         self.data_bundle = bundle   

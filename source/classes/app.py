@@ -17,8 +17,6 @@ from PIL import ImageTk, Image
 ctk.set_appearance_mode("system")
 ctk.set_default_color_theme("blue")
 
-
-
 class App(ctk.CTk):
     """
     The main application class that represents the Zahn Planer application.

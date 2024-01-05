@@ -7,27 +7,6 @@ class ChooseDoctorsFrame(ctk.CTkFrame):
     """
     A custom frame for selecting a doctor from a list of available doctors.
 
-    Args:
-        master: The parent widget.
-        bundle (dict): A dictionary to store data.
-
-    Attributes:
-        auth_service: The authentication service.
-        doctor_csv_path (str): The path to the doctors' data CSV file.
-        patients_csv_path (str): The path to the patients' data CSV file.
-        df_doctors: The DataFrame containing the doctors' data.
-        df_patients: The DataFrame containing the patients' data.
-        doctor_list (list[tuple]): A list of tuples representing available doctors (Username, Name).
-        data_bundle (dict): A dictionary to store data.
-        font24: The font for the main heading label.
-        main_heading_label: The main heading label widget.
-        sub_heading_label: The sub heading label widget.
-        next_button: The next button widget.
-        var_chosen_doctor_username: The variable to store the chosen doctor's username.
-        doctor_list_frame: The scrollable frame to display the list of doctors.
-        doctor_select_frames (list[ctk.CTkFrame]): A list of frames to hold doctor select radio buttons.
-        doctor_select_radio (list[ctk.CTkRadioButton]): A list of radio buttons to select doctors.
-
     Methods:
         set_main_grid(self):
             Sets the grid layout for the main widgets.
@@ -137,11 +116,4 @@ class ChooseDoctorsFrame(ctk.CTkFrame):
         """
         self.data_bundle["doctor"] = self.var_chosen_doctor_username.get()
         self.master.next_page()
-
-        
-    def get_doctor(self):
-        """
-        Placeholder function. Returns the chosen doctor.
-        """
-        return
         

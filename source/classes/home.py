@@ -12,10 +12,6 @@ class HomeFrame(ctk.CTkScrollableFrame):
     """
     A custom frame class representing the home screen of the GUI application.
 
-    Args:
-        master (ctk.CTk): The master widget.
-        bundle (dict): A dictionary containing data bundle.
-
     Methods:
         __init__(self, master: ctk.CTk, bundle: dict):
             Initializes the HomeFrame.

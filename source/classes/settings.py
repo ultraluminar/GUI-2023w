@@ -29,21 +29,8 @@ class SettingsWindow(ctk.CTkToplevel):
     including labels, frames, and buttons. It also sets up the grid layout of the window and binds the
     Return key to the password changing function.
 
-    Variables:
-        inner_width: The width of the inner window.
-        error_string: A string variable that holds any error messages.
-
-    Widgets:
-        main_label: The main label of the settings window.
-        design_frame: The frame for the design settings.
-        design_label: The label for the design settings.
-        appearance_mode_optionemenu: The option menu for changing the appearance mode.
-        change_password_frame: The frame for the password change settings.
-        change_password_label: The label for the password change settings.
-        old_password_entry: The entry field for the old password.
-        new_password_entry: The entry field for the new password.
-        error_label: The label for displaying error messages.
-        change_password_button: The button for initiating a password change.
+    Args:
+        bundle (dict): A dictionary containing data bundle.
     """
         super().__init__()
 

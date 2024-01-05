@@ -6,10 +6,6 @@ class TimeSpace:
     """
     The TimeSpace class represents a time-space grid for scheduling events.
 
-    Attributes:
-        quaters_free (list[set[time]]): A list of sets representing the free quarters for each weekday.
-        quaters_used (list[set[time]]): A list of sets representing the used quarters for each weekday.
-
     Methods:
         __init__(self, events_free: list[EventLabel], events_used: list[EventLabel] = None):
             Initializes a TimeSpace object with the given lists of free and used events.

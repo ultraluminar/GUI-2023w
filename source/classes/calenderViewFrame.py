@@ -12,10 +12,6 @@ class CalenderViewFrame(ctk.CTkFrame):
     """
     A custom frame class for displaying a calendar view and booking appointments.
 
-    Args:
-        master: The parent widget.
-        bundle (dict): A dictionary containing data bundle.
-
     Methods:
         set_main_grid(): Sets the grid layout for the main widgets.
         update_current(weeks: int = None): Updates the current date for the calendar view.
@@ -27,6 +23,13 @@ class CalenderViewFrame(ctk.CTkFrame):
         next_page(): Navigates to the next page.
     """
     def __init__(self, master, bundle: dict):
+        """
+        Initializes the CalenderViewFrame widget.
+        
+        Args:
+            master: The parent widget.
+            bundle (dict): A dictionary containing data bundle.
+        """
         super().__init__(master=master)
         
         self.grid_columnconfigure(1, weight=1)

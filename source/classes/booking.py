@@ -19,38 +19,6 @@ class Booking(ctk.CTkToplevel):
     """
     Represents a booking window for scheduling appointments.
 
-    Args:
-        timespace (TimeSpace): An instance of the TimeSpace class.
-        day_of_week (datetime): The selected day of the week.
-        bundle (dict): A dictionary containing data for the booking.
-
-    Attributes:
-        day_of_week (datetime): The selected day of the week.
-        timespace (TimeSpace): An instance of the TimeSpace class.
-        duration (int): The duration of the appointment in quarters.
-        termine (list): A list of available time slots for the appointment.
-        data_bundle (dict): A dictionary containing data for the booking.
-        days_names (list): A list of day names.
-        times (list): A list of time slots.
-        day (tk.StringVar): The selected day.
-        hour (tk.StringVar): The selected hour.
-        iconpath (ImageTk.PhotoImage): The path to the window icon.
-        auth_service (AuthService): An instance of the AuthService class.
-        font24 (ctk.CTkFont): The font for the main heading label.
-        font20 (ctk.CTkFont): The font for the subheading labels.
-        main_heading_label (ctk.CTkLabel): The main heading label.
-        main_subheading_label (ctk.CTkLabel): The subheading label for the appointment duration.
-        cancel_button (ctk.CTkButton): The cancel button.
-        save_button (ctk.CTkButton): The save button.
-        choose_day_frame (ctk.CTkFrame): The frame for choosing the day.
-        choose_day_heading_label (ctk.CTkLabel): The heading label for choosing the day.
-        choose_day_subheading_label (ctk.CTkLabel): The subheading label for choosing the day.
-        choose_day_combobox (ctk.CTkComboBox): The combobox for selecting the day.
-        choose_time_frame (ctk.CTkFrame): The frame for choosing the time.
-        choose_time_heading_label (ctk.CTkLabel): The heading label for choosing the time.
-        choose_time_subheading_label (ctk.CTkLabel): The subheading label for choosing the time.
-        choose_time_combobox (ctk.CTkComboBox): The combobox for selecting the time.
-
     Methods:
         enable_save: Enables the save button if a day and time are selected.
         set_main_grid: Sets the grid layout for the main window.
@@ -61,6 +29,14 @@ class Booking(ctk.CTkToplevel):
         save: Saves the booking and updates the calendar view.
     """
     def __init__(self, timespace: TimeSpace, day_of_week: datetime, bundle: dict):
+        """
+        Initializes the Booking window.
+        
+        Args:
+            timespace (TimeSpace): An instance of the TimeSpace class.
+            day_of_week (datetime): The selected day of the week.
+            bundle (dict): A dictionary containing data for the booking.
+        """
         super().__init__()
 
         self.day_of_week = day_of_week

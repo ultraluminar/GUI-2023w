@@ -7,10 +7,6 @@ class TreatmentFrame(ctk.CTkFrame):
     """
     A custom frame for customizing treatment options.
 
-    Args:
-        master: The master widget.
-        bundle (dict): A dictionary containing data bundle.
-
     Methods:
         set_main_grid(): Sets the grid for the main widgets.
         set_teeth_selector_grid(): Sets the grid for the teeth selector subframe.

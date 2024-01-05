@@ -10,19 +10,6 @@ class DoctorSidebar(ctk.CTkFrame):
     This class represents the sidebar for the doctor view in a GUI application.
     It inherits from the ctk.CTkFrame class.
 
-    Attributes:
-        logo_image (ctk.CTkImage): The logo image displayed in the sidebar.
-        home_image (ctk.CTkImage): The home image displayed in the sidebar.
-        settings_image (ctk.CTkImage): The settings image displayed in the sidebar.
-        logout_image (ctk.CTkImage): The logout image displayed in the sidebar.
-        logo_label (ctk.CTkLabel): The label displaying the logo image and text.
-        home_button (ctk.CTkButton): The button for navigating to the home page.
-        settings_button (ctk.CTkButton): The button for accessing the settings.
-        settings_window (SettingsWindow): The window for the settings.
-        logout_button (ctk.CTkButton): The button for logging out.
-        copyright_label (ctk.CTkLabel): The label displaying the copyright information.
-        current_state (int): The current state of the sidebar.
-
     Methods:
         __init__(self, master: ctk.CTk): Initializes the DoctorSidebar object.
         set_grid(self): Sets the grid layout for the sidebar widgets.
@@ -36,6 +23,7 @@ class DoctorSidebar(ctk.CTkFrame):
 
         Args:
             master (ctk.CTk): The master widget for the sidebar.
+            bundle (dict): A dictionary containing data bundle.
         """
         super().__init__(master=master, width=sidebar_width, corner_radius=0)
         self.data_bundle = bundle

@@ -8,25 +8,6 @@ class DoctorOverview(ctk.CTkFrame):
     """
     A custom widget for displaying doctor appointment overview.
 
-    Args:
-        master (any): The master widget.
-        width (int, optional): The width of the widget. Defaults to 200.
-        height (int, optional): The height of the widget. Defaults to 200.
-        corner_radius (int | str | None, optional): The corner radius of the widget. Defaults to None.
-
-    Attributes:
-        headings (list[str]): The list of column headings.
-        header_labels (list[ctk.CTkLabel]): The list of header labels.
-        empty_label (ctk.CTkLabel): The label to display when there are no appointments.
-        date_labels (list[ctk.CTkLabel]): The list of labels for appointment dates.
-        patient_labels (list[ctk.CTkLabel]): The list of labels for patient names.
-        time_start_labels (list[ctk.CTkLabel]): The list of labels for appointment start times.
-        time_end_labels (list[ctk.CTkLabel]): The list of labels for appointment end times.
-        dental_problem_labels (list[ctk.CTkLabel]): The list of labels for dental problems.
-        teeth_count_labels (list[ctk.CTkLabel]): The list of labels for tooth counts.
-        fill_type_labels (list[ctk.CTkLabel]): The list of labels for fill types.
-        labels (list[list[ctk.CTkLabel]]): The master list containing all the attribute labels.
-
     Methods:
         reset(): Resets the widget by updating the appointment data and refreshing the display.
         table_ungrid(): Removes all labels from the widget grid.
@@ -36,6 +17,16 @@ class DoctorOverview(ctk.CTkFrame):
     """
 
     def __init__(self, master, bundle: dict, width: int = 200, height: int = 200, corner_radius: int | str | None = None):
+        """
+        Initializes the DoctorOverview widget.
+        
+        Args:
+            master (any): The master widget.
+            bundle (dict): A dictionary containing the user data.
+            width (int, optional): The width of the widget. Defaults to 200.
+            height (int, optional): The height of the widget. Defaults to 200.
+            corner_radius (int | str | None, optional): The corner radius of the widget. Defaults to None.
+        """
         super().__init__(master, width, height, corner_radius)
 
         self.data_bundle = bundle

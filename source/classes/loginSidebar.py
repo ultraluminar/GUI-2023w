@@ -14,12 +14,6 @@ class LoginSidebar(ctk.CTkFrame):
     It provides functionality to display a pop-up window when the admin button is clicked, and to quit the application
     when the exit button is clicked.
 
-    Args:
-        master (ctk.CTk): The master widget.
-
-    Attributes:
-        admin (ctk.CTkToplevel): The admin pop-up window.
-
     Methods:
         pop_up(event=None): Displays the admin pop-up window.
         set_grid(): Sets the grid layout for the widgets in the sidebar.
@@ -31,7 +25,7 @@ class LoginSidebar(ctk.CTkFrame):
 
         Args:
             master (ctk.CTk): The master widget.
-
+            bundle (dict): A dictionary containing data bundle.
         """
         super().__init__(master=master, width=sidebar_width, corner_radius=0)
         self.admin: ctk.CTkToplevel = None

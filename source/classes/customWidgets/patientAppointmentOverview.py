@@ -8,19 +8,6 @@ class PatientOverview(ctk.CTkFrame):
     """
     A custom widget for displaying patient appointment overview.
 
-    Attributes:
-        df_appointments (pandas.DataFrame): The dataframe containing the patient's appointments.
-        headings (list[str]): The list of column headings for the appointment table.
-        header_labels (list[ctk.CTkLabel]): The list of header labels for the appointment table.
-        empty_label (ctk.CTkLabel): The label to display when there are no appointments.
-        date_labels (list[ctk.CTkLabel]): The list of labels for displaying appointment dates.
-        doctor_labels (list[ctk.CTkLabel]): The list of labels for displaying doctor names.
-        time_start_labels (list[ctk.CTkLabel]): The list of labels for displaying appointment start times.
-        time_end_labels (list[ctk.CTkLabel]): The list of labels for displaying appointment end times.
-        dental_problem_labels (list[ctk.CTkLabel]): The list of labels for displaying dental problems.
-        teeth_count_labels (list[ctk.CTkLabel]): The list of labels for displaying tooth counts.
-        fill_type_labels (list[ctk.CTkLabel]): The list of labels for displaying fill types.
-
     Methods:
         __init__(self, master: any, width: int = 200, height: int = 200, corner_radius: int | str | None = None):
             Initializes the PatientOverview widget.
@@ -44,6 +31,7 @@ class PatientOverview(ctk.CTkFrame):
 
         Args:
             master (any): The master widget.
+            bundle (dict): A dictionary containing the user data.
             width (int): The width of the widget. Default is 200.
             height (int): The height of the widget. Default is 200.
             corner_radius (int | str | None): The corner radius of the widget. Default is None.

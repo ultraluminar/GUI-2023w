@@ -7,20 +7,6 @@ class TimeSelector(ctk.CTkToplevel):
     A custom top-level window for selecting time rules.
     It contains a scrollable frame with a list of DateAndTimeSelector objects.
 
-    Attributes:
-        initial_width (int): The initial width of the window.
-        initial_height (int): The initial height of the window.
-        screen_width (int): The width of the screen.
-        screen_height (int): The height of the screen.
-        startpos_x (int): The x-coordinate of the starting position of the window.
-        startpos_y (int): The y-coordinate of the starting position of the window.
-        frame (ctk.CTkScrollableFrame): The scrollable frame for the time selector.
-        main_label (ctk.CTkLabel): The main label of the window.
-        selectors (list): A list of DateAndTimeSelector objects.
-        add_button (ctk.CTkButton): The button to add a new time selector.
-        cancel_button (ctk.CTkButton): The button to cancel and close the window.
-        save_button (ctk.CTkButton): The button to save the selected time rules.
-
     Methods:
         __init__(): Initializes the TimeSelector object.
         cancel(): Closes the window.
@@ -127,6 +113,9 @@ class TimeSelector(ctk.CTkToplevel):
 
         Removes the specified DateAndTimeSelector object from the selectors list.
         Forgets the packing of the selector widget.
+        
+        Args:
+            selector (DateAndTimeSelector): The DateAndTimeSelector object to remove.
         """
         selector.pack_forget()
         self.selectors.remove(selector)

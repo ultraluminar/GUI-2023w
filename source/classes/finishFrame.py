@@ -9,27 +9,6 @@ class FinishFrame(ctk.CTkFrame):
     """
     A class representing the finish frame of a booking confirmation GUI.
 
-    Attributes:
-        data_bundle (dict): A dictionary containing the booking data.
-        auth_service: An authentication service object.
-        main_sidebar: A main sidebar object.
-        font24: A font object for the main heading label.
-        fat: A font object for the data labels.
-        main_heading_label: A label for the main heading.
-        sub_heading_label: A label for the sub heading.
-        data_frame: A frame for displaying the booking data.
-        confirm_button: A button for confirming the booking.
-        tooth_number_label: A label for the tooth number.
-        tooth_number_value_label: A label for the tooth number value.
-        dental_problem_label: A label for the dental problem.
-        dental_problem_value_label: A label for the dental problem value.
-        doctor_name_label: A label for the doctor name.
-        doctor_name_value_label: A label for the doctor name value.
-        date_label: A label for the appointment date.
-        date_value_label: A label for the appointment date value.
-        total_cost_label: A label for the total cost.
-        total_cost_value_label: A label for the total cost value.
-
     Methods:
         __init__(self, master, bundle: dict):
             Initializes a new instance of the FinishFrame class.

@@ -28,10 +28,6 @@ class MainBookingFrame(ctk.CTkFrame):
     """
     The main booking frame that displays the booking process.
 
-    Args:
-        master: The parent widget.
-        bundle (dict): A dictionary containing data bundle.
-
     Methods:
         set_progress_bar_grid(): Sets the grid layout for the progression bar.
         set_no_teeth_grid(): Sets the grid layout for the no_teeth_frame.

@@ -9,17 +9,27 @@ class LoginFormFrame(ctk.CTkFrame):
     """
     A custom login form frame that provides a user interface for logging in.
 
-    Attributes:
-        font15 (ctk.CTkFont): The font used for the labels and entries.
-        input_width (int): The width of the input fields.
-        auth_service (AuthService): The authentication service used for login.
-        error_string (tk.StringVar): The string variable to store the error message.
-
-    Args:
-        master (tk.Widget): The parent widget for this frame.
+    Methods:
+        __init__(self, master, bundle: dict):
+            Initializes the LoginFormFrame.
+        set_grid(self):
+            Configures the grid layout for the widgets in the frame and displays them.
+        try_login(self, event=None):
+            Attempts to log in the user.
+        reset(self):
+            Resets the input fields and error label.
+        User_is_doctor(self, username: str) -> bool:
+            Checks if the given username belongs to a doctor.
     """
 
     def __init__(self, master, bundle: dict):
+        """
+        Initializes the LoginFormFrame.
+        
+        Args:
+            master (tk.Widget): The parent widget for this frame.
+            bundle (dict): A dictionary containing data bundle.
+        """
         super().__init__(master=master)
 
         # fonts

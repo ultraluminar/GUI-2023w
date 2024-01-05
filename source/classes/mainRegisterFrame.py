@@ -12,22 +12,18 @@ class MainRegisterFrame(ctk.CTkScrollableFrame):
 
     This frame contains the registration form, page heading, login note, and login button.
 
-    Args:
-        master (ctk.CTk): The master widget.
-
-    Attributes:
-        font24 (ctk.CTkFont): The font used for the page heading.
-        register_form_frame (RegisterFormFrame): The registration form frame.
-        register_page_heading (ctk.CTkLabel): The label for the page heading.
-        register_login_note (ctk.CTkLabel): The label for the login note.
-        register_login_button (ctk.CTkButton): The button for the login action.
-
     Methods:
-        __init__(self, master: ctk.CTk): Initializes the MainRegisterFrame.
         set_pack(self): Packs the widgets in the frame.
         linkToLogin(self): Handles the click event of the login button.
     """
     def __init__(self, master: ctk.CTk, bundle: dict):
+        """
+        Initializes the MainRegisterFrame.
+        
+        Args:
+            master (ctk.CTk): The master widget.
+            bundle (dict): A dictionary containing data bundle.
+        """
         super().__init__(master=master, width=initial_width, height=initial_height, corner_radius=0, fg_color="transparent")
 
         self.font24 = ctk.CTkFont(family="Segoe UI", size=24, weight="bold")

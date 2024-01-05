@@ -17,23 +17,6 @@ class WeekCalenderView(ctk.CTkFrame):
     """
     A custom calendar week view widget.
 
-    Attributes:
-        events_free (list[EventLabel]): A list of free event labels.
-        events_used (list[EventLabel]): A list of used event labels.
-        start_3m (datetime): The start date of the 3-month period.
-        stop_3m (datetime): The stop date of the 3-month period.
-        start_week (datetime): The start date of the current week.
-        stop_week (datetime): The stop date of the current week.
-        dates (list[str]): A list of dates in the current week.
-        data_bundle (dict): A bundle of data.
-        day_shortnames (list[str]): A list of short names for the days of the week.
-        month_label (ctk.CTkLabel): A label for displaying the month.
-        week_label (ctk.CTkLabel): A label for displaying the week number.
-        time_labels (list[ctk.CTkLabel]): A list of labels for displaying the time slots.
-        day_labels (list[ctk.CTkLabel]): A list of labels for displaying the day names.
-        date_labels (list[ctk.CTkLabel]): A list of labels for displaying the dates.
-        hour_buttons (list[list[ctk.CTkLabel]]): A 2D list of labels for displaying the hour buttons.
-
     Methods:
         set_week_limits(day_of_week: datetime): Sets the start and stop dates of the current week based on the given day of the week.
         set_week(day_of_week: datetime): Sets the current week based on the given day of the week.

@@ -13,10 +13,6 @@ class DoctorHome(ctk.CTkScrollableFrame):
     """
     A class representing the doctor's home page.
 
-    Attributes:
-        auth_service (AuthService): The authentication service.
-        username (str): The username of the doctor.
-
     Methods:
         __init__(self, master: ctk.CTk): Initializes the DoctorHome instance.
         set_main_grid(self): Sets the grid layout for the main widgets.
@@ -38,6 +34,7 @@ class DoctorHome(ctk.CTkScrollableFrame):
 
         Args:
             master (ctk.CTk): The master widget.
+            bundle (dict): A dictionary containing the user data.
         """
         super().__init__(master=master, corner_radius=0, fg_color="transparent")
 
