@@ -4,6 +4,7 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from datetime import time, datetime
 from dateutil.relativedelta import relativedelta
+from CTkToolTip import CTkToolTip
 
 from source.classes.timespace import TimeSpace
 from source.auth_util import appendCSV, paths
@@ -88,6 +89,12 @@ class Booking(ctk.CTkToplevel):
         self.choose_time_heading_label = ctk.CTkLabel(self.choose_time_frame, text="Uhrzeit auswählen", font=self.font20, anchor="w", width=400)
         self.choose_time_subheading_label = ctk.CTkLabel(self.choose_time_frame, text="Bitte wählen Sie eine Uhrzeit aus", anchor="w", width=400)
         self.choose_time_combobox = ctk.CTkComboBox(self.choose_time_frame, values=self.times, variable=self.hour, state="readonly", command=self.enable_save)
+        
+        # tooltips
+        CTkToolTip(self.choose_day_combobox, "Wählen sie einen Tag aus", alpha=0.8)
+        CTkToolTip(self.choose_time_combobox, "Wählen sie eine Uhrzeit aus", alpha=0.8)
+        CTkToolTip(self.save_button, "Speichern sie den Termin", alpha=0.8)
+        CTkToolTip(self.cancel_button, "Abbrechen ohne zu speichern", alpha=0.8)
 
         self.set_choose_day_frame_grid()
         self.set_choose_time_frame_grid()

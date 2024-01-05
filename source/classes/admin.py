@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from tkinter import StringVar
 from PIL import Image, ImageTk
+from CTkToolTip import CTkToolTip
 
 from source.auth_util import generate_code
 from source.utils import center_window
@@ -45,6 +46,12 @@ class AdminFrame(ctk.CTkFrame):
         self.button.grid(row=1, column=1, sticky="nswe", pady=10, padx=(5, 10))
 
         self.var.set(generate_code(self.data_bundle))
+        
+        # tooltips
+        CTkToolTip(self.button, "Klicken um den Code zu kopieren.", alpha=0.8)
+        
+        # binding
+        self.bind("<Enter>", self.copy_code)
 
     def copy_code(self, event=None):
         """

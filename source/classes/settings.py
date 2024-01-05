@@ -1,5 +1,6 @@
 import customtkinter as ctk
 import tkinter as tk
+from CTkToolTip import CTkToolTip
 
 from PIL import ImageTk, Image
 import logging
@@ -86,6 +87,12 @@ class SettingsWindow(ctk.CTkToplevel):
         self.main_label.grid(column=0, row=0, pady=(10, 15), padx=20, sticky="nsew")
         self.design_frame.grid(column=0, row=1, pady=(0, 15), padx=20, sticky="nsew")
         self.change_password_frame.grid(column=0, row=2, pady=(0, 20), padx=20, sticky="nsew")
+        
+        # tooltips
+        CTkToolTip(self.appearance_mode_optionemenu, "Wählen sie ein Farbdesign aus", alpha=0.8)
+        CTkToolTip(self.old_password_entry, "Geben sie ihr altes Passwort ein", alpha=0.8)
+        CTkToolTip(self.new_password_entry, "Geben sie ihr neues Passwort ein", alpha=0.8)
+        CTkToolTip(self.change_password_button, "Klicken sie hier um ihr Passwort zu ändern", alpha=0.8)
 
         # binding Return Key to password changing function
         self.bind("<Return>", self.change_password)
@@ -147,7 +154,9 @@ class SettingsWindow(ctk.CTkToplevel):
         if error_entrys:  # not empty:
             return
 
-        update_password(new_password, self.data_bundle["username"])
+        update_password(new_password, self.data_bundle)
         self.old_password_entry.configure(border_color="green")
         self.new_password_entry.configure(border_color="green")
-        print("password changed")
+        self.old_password_entry.delete(0, "end")
+        self.new_password_entry.delete(0, "end")
+        logging.info("Password changed successfully")

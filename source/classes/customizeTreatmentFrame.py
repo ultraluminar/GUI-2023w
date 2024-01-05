@@ -2,6 +2,7 @@ import customtkinter as ctk
 import tkinter as tk
 
 from pandas import read_csv
+from CTkToolTip import CTkToolTip
 
 class TreatmentFrame(ctk.CTkFrame):
     """
@@ -111,7 +112,9 @@ class TreatmentFrame(ctk.CTkFrame):
 
         self.total_cost_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, text="Gesamtsumme")
         self.total_cost_value_label = ctk.CTkLabel(self.bill_sub_frame, width=cell_width, font=self.fat, text_color="#00C957")
-                
+        
+        # tooltips
+        CTkToolTip(self.next_button, "Klicken um fortzufahren. (Enter)", alpha=0.8)        
         
         # grid
         self.set_teeth_selector_grid()

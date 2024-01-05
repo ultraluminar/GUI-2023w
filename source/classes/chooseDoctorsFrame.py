@@ -2,6 +2,7 @@ import customtkinter as ctk
 import tkinter as tk
 
 from pandas import read_csv
+from CTkToolTip import CTkToolTip
 
 class ChooseDoctorsFrame(ctk.CTkFrame):
     """
@@ -55,6 +56,9 @@ class ChooseDoctorsFrame(ctk.CTkFrame):
         self.doctor_list_frame.grid_columnconfigure((0, 2), weight=1)
         self.doctor_select_frames: list[ctk.CTkFrame] = []
         self.doctor_select_radio: list[ctk.CTkRadioButton] = []
+        
+        # tooltips
+        CTkToolTip(self.next_button, "Klicken um fortzufahren. (Enter)", alpha=0.8)
         
         self.set_doctors_grid()
         self.set_main_grid()

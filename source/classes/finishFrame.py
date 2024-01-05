@@ -1,6 +1,7 @@
 import customtkinter as ctk
 
 from datetime import datetime
+from CTkToolTip import CTkToolTip
 import logging
 
 from source.auth_util import getfromCSV, updateCSV, appendCSV, paths
@@ -59,6 +60,9 @@ class FinishFrame(ctk.CTkFrame):
         self.date_value_label = ctk.CTkLabel(self.data_frame, width=200, anchor="w", font=self.fat)
         self.total_cost_label = ctk.CTkLabel(self.data_frame, text="Ihre Gesamtkosten:", anchor="w", width=250)
         self.total_cost_value_label = ctk.CTkLabel(self.data_frame, width=200, anchor="w", font=self.fat)
+        
+        # tooltips
+        CTkToolTip(self.confirm_button, "Klicken um den Termin verbindlich zu buchen. (Enter)", alpha=0.8)
         
         self.set_data_frame_grid()
         self.set_main_grid()

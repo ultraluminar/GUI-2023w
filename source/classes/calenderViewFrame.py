@@ -3,6 +3,7 @@ import tkinter as tk
 from datetime import datetime
 from dateutil.relativedelta import relativedelta, MO
 from dateutil.rrule import rrule, WEEKLY
+from CTkToolTip import CTkToolTip
 
 from source.classes.timespace import TimeSpace
 from source.classes.customWidgets.calenderWeekView import WeekCalenderView
@@ -47,13 +48,17 @@ class CalenderViewFrame(ctk.CTkFrame):
         # main widgets
         self.heading_label = ctk.CTkLabel(self, text="Termin auswählen", font=self.font24)
         self.sub_heading_label = ctk.CTkLabel(self, text="Sehen sie sich den Kalender an und buchen sie einen Termin.")
-        self.last_week_button = ctk.CTkButton(self, text="last", command=lambda: self.update_current(weeks=-1))
-        self.next_week_button = ctk.CTkButton(self, text="next", command=lambda: self.update_current(weeks=1))
+        self.last_week_button = ctk.CTkButton(self, text="letzte Woche", command=lambda: self.update_current(weeks=-1))
+        self.next_week_button = ctk.CTkButton(self, text="nächste Woche", command=lambda: self.update_current(weeks=1))
         self.week_calender_view = WeekCalenderView(self, self.data_bundle)
         self.booking = None
         self.book_button = ctk.CTkButton(self, text="Buchen", command=self.booking_view)
         self.next_button = ctk.CTkButton(self, text="Weiter", command=self.next_page, state="disabled")
         self.buttons = [self.last_week_button, self.next_week_button]
+        
+        # tooltips
+        CTkToolTip(self.next_button, "Klicken um zum nächsten Schritt zu gelangen. (Enter)", alpha=0.8)
+        CTkToolTip(self.book_button, "Klicken um einen Termin zu buchen. (Enter)", alpha=0.8)
 
         self.set_main_grid()
         

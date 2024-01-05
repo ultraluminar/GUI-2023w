@@ -1,5 +1,7 @@
 import customtkinter as ctk
 
+from CTkToolTip import CTkToolTip
+
 from source.classes.customizeTreatmentFrame import TreatmentFrame
 from source.classes.chooseDoctorsFrame import ChooseDoctorsFrame
 from source.classes.calenderViewFrame import CalenderViewFrame
@@ -103,6 +105,11 @@ class MainBookingFrame(ctk.CTkFrame):
         self.no_teeth_label = ctk.CTkLabel(self.no_teeth_frame, text=explainer_text)
         self.no_teeth_button = ctk.CTkButton(self.no_teeth_frame, text="Zurück zur Startseite", command=self.main_sidebar.home)
 
+        # tooltips
+        CTkToolTip(self.buttons[0], "Klicken, um zur Behandlungsseite zu springen", alpha=0.8)
+        CTkToolTip(self.buttons[1], "Klicken, um zur Zahnarztseite zu springen", alpha=0.8)
+        CTkToolTip(self.buttons[2], "Klicken, um zur Terminseite zu springen", alpha=0.8)
+        CTkToolTip(self.buttons[3], "Klicken, um zur Fertigseite zu springen", alpha=0.8)
 
     def set_progress_bar_grid(self):
         """
