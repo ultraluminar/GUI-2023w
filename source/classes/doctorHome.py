@@ -170,8 +170,9 @@ class DoctorHome(ctk.CTkScrollableFrame):
         """
         mo = datetime.now() + relativedelta(weekday=MO(-1), hour=0)
         sa = mo + relativedelta(weekday=SA)
-        with open("data/doctors_free.json") as file:
-            data = json.load(file)
+
+        from source.auth_util import loadJson, paths
+        data = loadJson(paths["doctors"]["free"])
         ruleset = rruleset()
         for rulestr in data[self.data_bundle["username"]]:
             rule = rrulestr(rulestr)

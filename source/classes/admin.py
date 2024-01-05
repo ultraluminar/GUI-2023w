@@ -51,7 +51,7 @@ class AdminFrame(ctk.CTkFrame):
         CTkToolTip(self.button, "Klicken um den Code zu kopieren.", alpha=0.8)
         
         # binding
-        self.bind("<Enter>", self.copy_code)
+        self.bind("<Return>", self.copy_code)
 
     def copy_code(self, *args):
         """
