@@ -1,15 +1,7 @@
-# TODO: Testing
-# TODO: verbliebene Englische Texte übersetzen
-# TODO: Anforderung aus der Vorlesung
-# TODO: GUI-Elemente aus der Vorlesung studieren, um zu schauen, welche wir schon benutzen (in die Powerpoint einfügen) oder welche uns auch noch fehlen könnten (gegebenenfalls noch implementieren)
-# TODO: Powerpoint erstellen
-# TODO: Vortrag machen/üben
-
-# TODO: Dokumentation auf Githubfdddddf
-
-# Wenn noch Zeit ist:
-# TODO: Mehr Icons hinzufügen
-# TODO: Tooltipps hinzufügen
+# Unbedingt machen:
+# TODO: Konsolenerror der Tooltips bei schließen von TopLevel-Fenstern mit Buttons, die Tooltips haben, beheben
+# TODO: Übergebliebene Termin-Highlights im Kalender (Blaue) nach Wechseln des Arztes entfernen
+# TODO: Updaten der Daten aus dem customizeTreatmentFrame (Anzahl Zähne, Füllungsart) fixen
 
 # machen wir nicht mehr:
 # Nicht zulassen, dass ein Termin gebucht wird, der schon vorbei ist (heute frühere Zeit)
