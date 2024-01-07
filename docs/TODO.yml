@@ -1,6 +1,5 @@
 # Unbedingt machen:
 # TODO: Konsolenerror der Tooltips bei schließen von TopLevel-Fenstern mit Buttons, die Tooltips haben, beheben
-# TODO: Updaten der Daten aus dem customizeTreatmentFrame (Anzahl Zähne, Füllungsart) fixen
 # eventuell TODO: Errors catchen und feedback in der Konsole ausgeben, wenn Parsing-exce noch nicht ausgeführt wurde und versucht wird auf Files zuzugreifen, die noch nicht existieren / bzw pasing excel automatisch ausführen, wenn die files noch nicht existieren.
 
 # machen wir nicht mehr:
