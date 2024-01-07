@@ -28,7 +28,7 @@ class Booking(ctk.CTkToplevel):
         cancel: Cancels the booking and closes the window.
         save: Saves the booking and updates the calendar view.
     """
-    def __init__(self, timespace: TimeSpace, day_of_week: datetime, bundle: dict):
+    def __init__(self, master, timespace: TimeSpace, day_of_week: datetime, bundle: dict):
         """
         Initializes the Booking window.
         
@@ -37,7 +37,7 @@ class Booking(ctk.CTkToplevel):
             day_of_week (datetime): The selected day of the week.
             bundle (dict): A dictionary containing data for the booking.
         """
-        super().__init__()
+        super().__init__(master)
 
         self.day_of_week = day_of_week
         self.timespace = timespace

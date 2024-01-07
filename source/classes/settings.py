@@ -21,7 +21,7 @@ class SettingsWindow(ctk.CTkToplevel):
         change_password: Changes the user's password.
         update_appearance: Updates the appearance of the application.
     """
-    def __init__(self, bundle: dict):
+    def __init__(self, master, bundle: dict):
         """
     Initialize the SettingsWindow class.
 
@@ -33,7 +33,7 @@ class SettingsWindow(ctk.CTkToplevel):
     Args:
         bundle (dict): A dictionary containing data bundle.
     """
-        super().__init__()
+        super().__init__(master)
 
         # variables
         self.inner_width = 400

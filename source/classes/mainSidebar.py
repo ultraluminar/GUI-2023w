@@ -110,7 +110,7 @@ class MainSidebar(ctk.CTkFrame):
         Opens the settings window or brings it to focus if already open.
         """
         if self.settings_window is None or not self.settings_window.winfo_exists():
-            self.settings_window = SettingsWindow(self.data_bundle)     # create window if its None or destroyed
+            self.settings_window = SettingsWindow(self, self.data_bundle)     # create window if its None or destroyed
         elif self.settings_window.state() == "iconic":
             self.settings_window.deiconify()    # bring back window if its minimized
         else:
