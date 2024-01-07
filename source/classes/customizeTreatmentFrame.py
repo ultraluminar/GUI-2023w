@@ -264,6 +264,15 @@ class TreatmentFrame(ctk.CTkFrame):
         total_cost_value = (single_cost * self.teeth_count.get()) - (single_cost * self.teeth_count.get() * self.insurance_share)
         self.total_cost_value_label.configure(text=f"{total_cost_value:.2f}€")
 
+        print("bundle updated")
+        self.data_bundle.update({
+            "duration_quarters": self.get_treatment_duration_quarters(),
+            "dental_problem": self.dental_problem,
+            "tooth_count": self.teeth_count.get(),
+            "fill_type": self.filling.get(),
+            "total_cost": self.total_cost_value_label.cget("text")
+        })
+
     def filling_changed(self, *args):
         """
         Updates the bill when the filling is changed.
@@ -285,13 +294,6 @@ class TreatmentFrame(ctk.CTkFrame):
         """
         Navigates to the next page and updates the data bundle with the treatment details.
         """
-        self.data_bundle.update({
-            "duration_quarters": self.get_treatment_duration_quarters(),
-            "dental_problem": self.dental_problem,
-            "tooth_count": self.teeth_count.get(),
-            "fill_type": self.filling.get(),
-            "total_cost": self.total_cost_value_label.cget("text")
-        })
         self.master.next_page()
 
 
