@@ -37,7 +37,7 @@ class Booking(ctk.CTkToplevel):
             day_of_week (datetime): The selected day of the week.
             bundle (dict): A dictionary containing data for the booking.
         """
-        super().__init__(master)
+        super().__init__(master=master)
 
         self.day_of_week = day_of_week
         self.timespace = timespace
