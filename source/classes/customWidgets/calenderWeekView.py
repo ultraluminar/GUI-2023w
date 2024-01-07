@@ -100,6 +100,9 @@ class WeekCalenderView(ctk.CTkFrame):
         self.update_ex_dates()
         self.update_month_week_label()
 
+        if not self.events_free:
+            self.set_week(day_of_week + relativedelta(weeks=1))
+
     def update_ex_dates(self):
         """
         Updates the excluded dates based on the appointments data.
